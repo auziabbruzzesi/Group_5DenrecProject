@@ -29,7 +29,9 @@ public class Main {
 		v.getJPanel().addMouseListener(new MouseEventListener());
 		v.repaint();
 		
-		for(int i = 0; i < 100; i++){    			
+		
+		
+		for(int i = 0; i < 1000; i++){    			
     		v.repaint();
     		try {
     			Thread.sleep(100);
