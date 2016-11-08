@@ -155,6 +155,7 @@ public abstract class Character implements MoveObjects {
  * 
  */
 	public boolean pickUp(HoldingType boType) {
+		System.out.println("In pickup of character");
 		if (this.h == HoldingType.EMPTY) {
 			this.h = boType;
 			return true;

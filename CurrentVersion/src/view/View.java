@@ -23,16 +23,17 @@ public class View extends JFrame {
 	private int playerDims;
 	String playerDir = "";
 	private int playerVelocity = 7;//may need this to be public-static-final at some point
-
-	jpanel j = new jpanel();
+	JPanel jP = new JPanel();
+	
+	//jpanel j = new jpanel();
 
 	// Constructor
 	public View() {
 
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-		j.setPreferredSize(new Dimension(viewWidth, viewHeight));
-		add(j);
+		jP.setPreferredSize(new Dimension(viewWidth, viewHeight));
+		add(jP);
 		pack();
 
 		setVisible(true);
@@ -41,14 +42,13 @@ public class View extends JFrame {
 	
 	//Inner classes	
 	//if we have time, change this to a component, rather than a whole jpanel
-	public class jpanel extends JPanel {
-
-		protected void paintComponent(Graphics g) {
-			g.setColor(Color.black);
-			g.fillRect(playerPos.x, playerPos.y, Player.playerDimensions, Player.playerDimensions);
-			//movePlayer();
-		}
-	}
+//	public class jpanel extends JPanel {
+//
+//		protected void paintComponent(Graphics g) {
+//			g.setColor(Color.black);
+//			g.fillRect(playerPos.x, playerPos.y, Player.playerDimensions, Player.playerDimensions);
+//		}
+//	}
 	
 	
 	//Setters & getters
@@ -68,8 +68,8 @@ public class View extends JFrame {
 		return playerPos;
 	}
 	public JPanel getJPanel() {
-		// TODO Auto-generated method stub
-		return this.j;
+		System.out.println("Returning JPanel");
+		return this.jP;
 	}	
 	
 }//end View class

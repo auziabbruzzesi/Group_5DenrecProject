@@ -24,40 +24,39 @@ import model.Model;
 import model.Player;
 import view.View;
 
-public class Controller implements MouseListener{
+public class Controller implements MouseListener {
 	private static Model m;
 	private static View v;
 	private boolean pickUpRequest = false;
 	button b = new button();
-	
-	Timer timer = new Timer(0,new ActionListener(){
+	button player = new button();
+
+	Timer timer = new Timer(0, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
+
 			m.getP().updateDirection();
 			m.getP().move();
-			System.out.println("currentPos: " +m.getP().getCurrentPos() + " Current destination: " + m.getP().getDestination());
+			System.out.println(
+					"currentPos: " + m.getP().getCurrentPos() + " Current destination: " + m.getP().getDestination());
 			updatePlayerMV();
-			v.getJPanel().repaint();
-			
-		
+			v.repaint();
+			System.out.println("here01");
+
+//			try {
+//				Thread.sleep(100);
+//			} catch (InterruptedException e2) {
+//				e2.printStackTrace();
+//			}
+
 		}
 	});
-	
-	
-	
-	
-	
-	
-	
-	
-	
-/**
- * Constructor
- */
-	
-	
+
+	/**
+	 * Constructor
+	 */
+
 	public Controller(Model m, View v) {
 		this.m = m;
 		this.v = v;
@@ -109,92 +108,87 @@ public class Controller implements MouseListener{
 			// BEACH OBJECT ADDED TO JPANEL HERE (but created in model)
 			v.getJPanel().add(l);
 		}
+
+		player.setMargin(new Insets(0, 0, 0, 0));
+		player.setBackground(Color.black);
+		player.setBounds(Player.startPosition.x, Player.startPosition.y, Player.playerDimensions,
+				Player.playerDimensions);
+		v.getJPanel().add(player);
 	}
 
-	
-	
-/**
- * @author EAviles 
- * 
- * decides whether or not we've reached our destination 
- * TODO: make this work with pickup and putdown functionality
- */
+	/**
+	 * @author EAviles
+	 * 
+	 *         decides whether or not we've reached our destination TODO: make
+	 *         this work with pickup and putdown functionality
+	 */
 	public void updatePlayerMV() {
-		
-		
-		
-		//System.out.println("distance to dest: " + m.getP().getCurrentPos().distance(m.getP().getDestination()));
-		if(m.getP().getDestination().distance(m.getP().getCurrentPos())<10){
+
+		// System.out.println("distance to dest: " +
+		// m.getP().getCurrentPos().distance(m.getP().getDestination()));
+
+		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			timer.stop();
 			System.out.println("we've reached our destination");
-			if(pickUpRequest){
-				//call pickup send b.type
-				m.getP().pickUp( b.getHoldingType() );
+			if (pickUpRequest) {
+				// call pickup send b.type
+				m.getP().pickUp(b.getHoldingType());
 			}
-			//update
+			// update
 		}
-		
-		//else if we're still moving toward destination		
-		else{
-			m.updatePlayerPosition(v.getPlayerPos());
+
+		// else if we're still moving toward destination
+		else {
+			player.setLocation(m.getP().getCurrentPos());
+			//m.updatePlayerPosition(v.getPlayerPos());
+
 		}
 	}
 
-	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		v.setPlayerDest(e.getComponent().getLocation());
 		m.getP().setDestination(e.getPoint());
-		if(e.getComponent() instanceof button){
-			b = (button)( e.getComponent() );
+		if (e.getComponent() instanceof button) {
+			b = (button) (e.getComponent());
 			m.getP().setDestination(b.getLocation());
-			
-			if(b.getHoldingType() == HoldingType.BOX){
+
+			if (b.getHoldingType() == HoldingType.BOX) {
 				System.out.println("Box button clicked");
-				//call putdown or create putdown request
+				// call putdown or create putdown request
 				System.out.println(this);
-			}
-			else{
+			} else {
 				pickUpRequest = true;
 			}
-			
+
 		}
 		timer.start();
 	}
-	
-	
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
-	}
-			
-			
 
-		
-	 
+	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
 		// TODO Auto-generated method stub
-		
+
 	}
-	
-	
-	
+
 	public class button extends JButton {
 		private HoldingType h = HoldingType.EMPTY;
 
@@ -211,7 +205,3 @@ public class Controller implements MouseListener{
 		}
 	}
 }
-
-	
-
-
