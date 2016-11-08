@@ -164,8 +164,29 @@ public abstract class Character implements MoveObjects {
 		}
 	}
 
-	public void putDown(HoldingType boxObjectType) {
-		;
+	@Override
+	public boolean putDown(HoldingType boxObjectType, Box toPut) {
+		System.out.println("In putdown of character");
+		boolean canPut = false;
+		if(this.h != HoldingType.EMPTY){
+			//if box is empty, set its type to that of the player's current holding type
+			if(toPut.getH() == HoldingType.EMPTY){
+				toPut.setH(this.h);
+				toPut.incrementCount();
+				this.h = HoldingType.EMPTY;
+				canPut = true;
+			}
+			//else, if box's type matches player's curr holdType, increment box's count
+			else if(toPut.getH() == this.h){
+				toPut.incrementCount();
+				this.h = HoldingType.EMPTY;
+				canPut = true;
+			}
+			else{
+				System.out.println("you can't put this type of object in this box");
+			}
+		}
+		return canPut;
 	}
 
 	// Setters and Getters

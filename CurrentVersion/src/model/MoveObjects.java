@@ -3,7 +3,7 @@ package model;
 public interface MoveObjects {
 	
 	public boolean pickUp(HoldingType beachObjectType);
-	public void putDown(HoldingType boxObjectType);
+	public boolean putDown(HoldingType boxObjectType, Box toPut);
 	public void move();
 
 }

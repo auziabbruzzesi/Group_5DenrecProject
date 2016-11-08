@@ -28,6 +28,7 @@ public class Controller implements MouseListener {
 	private static Model m;
 	private static View v;
 	private boolean pickUpRequest = false;
+	private boolean putDownRequest = false;
 	button b = new button();
 	button player = new button();
 
@@ -38,11 +39,10 @@ public class Controller implements MouseListener {
 
 			m.getP().updateDirection();
 			m.getP().move();
-			System.out.println(
-					"currentPos: " + m.getP().getCurrentPos() + " Current destination: " + m.getP().getDestination());
+			//System.out.println(
+				//	"currentPos: " + m.getP().getCurrentPos() + " Current destination: " + m.getP().getDestination());
 			updatePlayerMV();
 			v.repaint();
-			System.out.println("here01");
 
 //			try {
 //				Thread.sleep(100);
@@ -130,11 +130,30 @@ public class Controller implements MouseListener {
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			timer.stop();
 			System.out.println("we've reached our destination");
+			
 			if (pickUpRequest) {
 				// call pickup send b.type
-				m.getP().pickUp(b.getHoldingType());
+				System.out.println("pickupreq after stopping timer = " + pickUpRequest);
+				
+				//pickup representation in model: check if we can pickup, if yes: update holding type & return true
+				if( m.getP().pickUp(b.getHoldingType()) ){
+					//if we were able to pickUp an object
+					//view's representation of pickUp
+					//note: this seems to work fine, but
+						//could possibly get problematic if the player overlaps with the button's position.
+						//getComponentAt returns the component on jpanel containing the specified point.
+					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
+				}				
+			}//end if(pickup)
+			
+			else if(putDownRequest){
+				//do putdown
+				//match b. position (last known position) to collection
+				if(m.getP().putDown(b.getHoldingType(), )){
+					//put down
+				}
+				//make view changes
 			}
-			// update
 		}
 
 		// else if we're still moving toward destination
@@ -155,10 +174,11 @@ public class Controller implements MouseListener {
 
 			if (b.getHoldingType() == HoldingType.BOX) {
 				System.out.println("Box button clicked");
-				// call putdown or create putdown request
+				putDownRequest = true;
 				System.out.println(this);
 			} else {
 				pickUpRequest = true;
+				//System.out.println("pickuprequest = " + pickUpRequest);
 			}
 
 		}

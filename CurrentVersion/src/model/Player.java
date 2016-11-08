@@ -32,11 +32,7 @@ public class Player extends Character {
 		this.health = health;
 	}
 
-	@Override
-	public void putDown(HoldingType boxObjectType) {
-		// TODO Auto-generated method stub
-		
-	}
+	
 	
 	
 }

@@ -42,6 +42,9 @@ public class Box {
 	public void setCount(int count) {
 		this.count = count;
 	}
+	public void incrementCount(){
+		this.count++;
+	}
 	public HoldingType getH() {
 		return h;
 	}
