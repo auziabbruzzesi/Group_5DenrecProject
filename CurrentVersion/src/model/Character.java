@@ -9,10 +9,12 @@ public abstract class Character implements MoveObjects {
 	HoldingType h = HoldingType.EMPTY;
 	String direction = "";
 
-	public void setCurrentPos(double d, double e){
-		this.currentPos.setLocation(d, e);
-	}	
-	
+		
+	/**
+	 * @author EAviles
+	 * 
+	 * updates current position once based on current destination
+	 */
 	@Override
 	public void move() {
 		//System.out.println("calling move");
@@ -116,7 +118,14 @@ public abstract class Character implements MoveObjects {
 	}// end move()
 	
 	
-	
+	/**
+	 * @author EAviles
+	 * 
+	 * figures out which direction we'll be moving in so 
+	 * move can function properly
+	 * 
+	 * make directions Enums (enum class already made)
+	 */
 	public void updateDirection() {
 		//System.out.println("updateDirection");
 		if (currentPos.getY() < destination.getY()) {
@@ -139,7 +148,12 @@ public abstract class Character implements MoveObjects {
 			}
 		}
 	}
-
+/**
+ * @author Auzi
+ * 
+ * @param boType: the enum type of the beach object we're picking up
+ * 
+ */
 	public boolean pickUp(HoldingType boType) {
 		if (this.h == HoldingType.EMPTY) {
 			this.h = boType;
@@ -176,5 +190,8 @@ public abstract class Character implements MoveObjects {
 
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
+	}
+	public void setCurrentPos(double d, double e){
+		this.currentPos.setLocation(d, e);
 	}
 }

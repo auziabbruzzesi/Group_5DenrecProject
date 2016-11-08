@@ -30,22 +30,7 @@ public class Main {
 		v.getJPanel().addMouseListener(c);
 		v.repaint();
 
-		Timer timer = new Timer(0, new ActionListener(){
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				//System.out.println("running timer");
-				c.updatePlayerMV();
-				v.repaint();
-	    		try {
-	    			Thread.sleep(100);
-	    		} catch (InterruptedException e2) {
-	    			e2.printStackTrace();
-	    		}
-				
-			}
-			
-		});
+		
 		//timer.start();
 //		for(int i = 0; i < 100; i++){    			
 //    		v.repaint();

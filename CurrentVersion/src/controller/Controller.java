@@ -46,28 +46,18 @@ public class Controller implements MouseListener{
 	});
 	
 	
-
-	public void updatePlayerMV() {
-		
-		
-		
-		//System.out.println("distance to dest: " + m.getP().getCurrentPos().distance(m.getP().getDestination()));
-		if(m.getP().getDestination().distance(m.getP().getCurrentPos())<10){
-			timer.stop();
-			System.out.println("we've reached our destination");
-			if(pickUpRequest){
-				//call pickup send b.type
-				m.getP().pickUp( b.getHoldingType() );
-			}
-			//update
-		}
-		
-		//else if we're still moving toward destination		
-		else{
-			m.updatePlayerPosition(v.getPlayerPos());
-		}
-	}
-
+	
+	
+	
+	
+	
+	
+	
+/**
+ * Constructor
+ */
+	
+	
 	public Controller(Model m, View v) {
 		this.m = m;
 		this.v = v;
@@ -121,16 +111,36 @@ public class Controller implements MouseListener{
 		}
 	}
 
-
-
-
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+	
+	
+/**
+ * @author EAviles 
+ * 
+ * decides whether or not we've reached our destination 
+ * TODO: make this work with pickup and putdown functionality
+ */
+	public void updatePlayerMV() {
 		
+		
+		
+		//System.out.println("distance to dest: " + m.getP().getCurrentPos().distance(m.getP().getDestination()));
+		if(m.getP().getDestination().distance(m.getP().getCurrentPos())<10){
+			timer.stop();
+			System.out.println("we've reached our destination");
+			if(pickUpRequest){
+				//call pickup send b.type
+				m.getP().pickUp( b.getHoldingType() );
+			}
+			//update
+		}
+		
+		//else if we're still moving toward destination		
+		else{
+			m.updatePlayerPosition(v.getPlayerPos());
+		}
 	}
 
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		v.setPlayerDest(e.getComponent().getLocation());
@@ -150,6 +160,14 @@ public class Controller implements MouseListener{
 			
 		}
 		timer.start();
+	}
+	
+	
+	
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 			
 			
