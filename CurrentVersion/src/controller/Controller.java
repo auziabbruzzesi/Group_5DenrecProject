@@ -29,18 +29,32 @@ public class Controller implements MouseListener{
 	private static View v;
 	private boolean pickUpRequest = false;
 	button b = new button();
-	// private gameEndStatus winLose = gameEndStatus.EMPTY;
-	// private int minigame = 0;
 	
+	Timer timer = new Timer(0,new ActionListener(){
 
-  // hi
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			m.getP().updateDirection();
+			m.getP().move();
+			System.out.println("currentPos: " +m.getP().getCurrentPos() + " Current destination: " + m.getP().getDestination());
+			updatePlayerMV();
+			v.getJPanel().repaint();
+			
+		
+		}
+	});
+	
+	
 
 	public void updatePlayerMV() {
 		
 		
 		
-		//if we've arrived
-		if(m.getP().getCurrentPos() == m.getP().getDestination() ){
+		//System.out.println("distance to dest: " + m.getP().getCurrentPos().distance(m.getP().getDestination()));
+		if(m.getP().getDestination().distance(m.getP().getCurrentPos())<10){
+			timer.stop();
+			System.out.println("we've reached our destination");
 			if(pickUpRequest){
 				//call pickup send b.type
 				m.getP().pickUp( b.getHoldingType() );
@@ -108,21 +122,7 @@ public class Controller implements MouseListener{
 	}
 
 
-	public class button extends JButton {
-		private HoldingType h = HoldingType.EMPTY;
 
-		public HoldingType getHoldingType() {
-			return this.h;
-		}
-
-		public void setHoldingType(HoldingType h) {
-			this.h = h;
-		}
-
-		public button() {
-			this.setPreferredSize(new Dimension(20, 20));
-		}
-	}
 
 
 	@Override
@@ -133,18 +133,11 @@ public class Controller implements MouseListener{
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-	
-		//change destination to the location of screen that user just clicked
 		v.setPlayerDest(e.getComponent().getLocation());
-		//update direction based on the new destination
-		//v.updatePlayerDir();
-
-		//move player 1 tic closer to destination
-		//v.movePlayer();
-		
+		m.getP().setDestination(e.getPoint());
 		if(e.getComponent() instanceof button){
-			System.out.println("button listener registered a click");
 			b = (button)( e.getComponent() );
+			m.getP().setDestination(b.getLocation());
 			
 			if(b.getHoldingType() == HoldingType.BOX){
 				System.out.println("Box button clicked");
@@ -154,18 +147,13 @@ public class Controller implements MouseListener{
 			else{
 				pickUpRequest = true;
 			}
+			
 		}
+		timer.start();
 	}
 			
 			
-//			else if( m.getP().pickUp( b.getHoldingType() ) ){
-//					m.getBeachObject().remove(b.getLocationOnScreen());
-//					v.getJPanel().remove(e.getComponent());
-//					v.repaint();
-//				}
-			
-			
-			//updatePlayerMV(b.getLocationOnScreen());
+
 		
 	 
 
@@ -186,22 +174,26 @@ public class Controller implements MouseListener{
 		// TODO Auto-generated method stub
 		
 	}
+	
+	
+	
+	public class button extends JButton {
+		private HoldingType h = HoldingType.EMPTY;
 
+		public HoldingType getHoldingType() {
+			return this.h;
+		}
+
+		public void setHoldingType(HoldingType h) {
+			this.h = h;
+		}
+
+		public button() {
+			this.setPreferredSize(new Dimension(20, 20));
+		}
+	}
 }
 
-// if(m.getBeachObject().contains(e.getPoint())){
-// System.out.println("about to pick something up");
-// m.getP().setH(m.getBeachObject().get(destination).getH());
-// m.getBeachObject().remove(destination);
-// v.repaint();
-// } Point destination = e.getPoint();
-//System.out.println("Mouse pressed.");
-//
-//// if user clicked a button, we need to move as close to that button as we can
-//// (i.e. until we collide), and then call pickup or putdown
-//if(e.getComponent()instanceof button){System.out.println("A button was clicked");}
-//
-//// else, we are just moving:
-//else{
-//// Set direction & destination in view
-//updatePlayerMV(destination);}
+	
+
+

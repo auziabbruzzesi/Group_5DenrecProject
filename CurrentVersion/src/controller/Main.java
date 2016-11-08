@@ -46,7 +46,7 @@ public class Main {
 			}
 			
 		});
-		timer.start();
+		//timer.start();
 //		for(int i = 0; i < 100; i++){    			
 //    		v.repaint();
 //    		try {

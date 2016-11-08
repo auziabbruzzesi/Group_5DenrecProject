@@ -4,7 +4,7 @@ import java.awt.Point;
 
 public abstract class Character implements MoveObjects {
 	private Point currentPos;
-	private Point destination;
+	private Point destination = currentPos;
 	private int velocity = 7;
 	HoldingType h = HoldingType.EMPTY;
 	String direction = "";
@@ -15,6 +15,7 @@ public abstract class Character implements MoveObjects {
 	
 	@Override
 	public void move() {
+		//System.out.println("calling move");
 		// movement of player based on direction & whether current position =
 		// destination
 		switch (direction) {
@@ -117,6 +118,7 @@ public abstract class Character implements MoveObjects {
 	
 	
 	public void updateDirection() {
+		//System.out.println("updateDirection");
 		if (currentPos.getY() < destination.getY()) {
 			// then we're moving generally south
 			if (currentPos.getX() < destination.getX()) {
