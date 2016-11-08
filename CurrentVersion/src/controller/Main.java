@@ -17,7 +17,7 @@ import view.View;
 
 public class Main {
 	// this is mayahs change
-	
+
 	static Model m = new Model();
 	static View v = new View();
 	static Controller c = new Controller(m,v);
