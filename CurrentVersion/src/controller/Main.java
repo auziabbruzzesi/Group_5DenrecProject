@@ -29,7 +29,21 @@ public class Main {
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
 		v.repaint();
+<<<<<<< HEAD
+		
+		
+		
+		for(int i = 0; i < 1000; i++){    			
+    		v.repaint();
+    		try {
+    			Thread.sleep(100);
+    		} catch (InterruptedException e) {
+    			e.printStackTrace();
+    		}
+    	}
+=======
 		Timer timer = new Timer(0, new ActionListener(){
+>>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
