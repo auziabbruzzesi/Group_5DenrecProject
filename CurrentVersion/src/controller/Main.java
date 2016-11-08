@@ -27,13 +27,13 @@ public class Main {
 
 	public static void main(String[] args) {
 		v.setLayout(null);
-		v.getJPanel().addMouseListener(new MouseEventListener());
+		v.getJPanel().addMouseListener(c);
 		v.repaint();
 		Timer timer = new Timer(0, new ActionListener(){
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("running timer");
+				//System.out.println("running timer");
 				v.repaint();
 	    		try {
 	    			Thread.sleep(100);

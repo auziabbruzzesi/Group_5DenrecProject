@@ -24,18 +24,16 @@ import model.Model;
 import model.Player;
 import view.View;
 
-public class Controller {
+public class Controller implements MouseListener{
 	private static Model m;
 	private static View v;
 	// private gameEndStatus winLose = gameEndStatus.EMPTY;
 	// private int minigame = 0;
-	MouseEventListener concreteListener = new MouseEventListener();
-	MouseEventListener oysterListener = new MouseEventListener();
-	MouseEventListener boxListener = new MouseEventListener();
+	
 
   // hi
 
-	public static void updatePlayerMV(Point d) {
+	public void updatePlayerMV(Point d) {
 		v.setPlayerDest(d);
 		v.updatePlayerDir();
 		m.updatePlayerPosition(v.getPlayerPos());
@@ -61,7 +59,7 @@ public class Controller {
 			// BOXES ARE ADDED TO JPANEL HERE (but created in model)
 			v.getJPanel().add(j);
 
-			j.addMouseListener(boxListener);
+			j.addMouseListener(this);
 
 		}
 
@@ -81,12 +79,12 @@ public class Controller {
 				l.setHoldingType(HoldingType.CONCRETE);
 				l.setText("c");
 				l.setBackground(Color.gray);
-				l.addMouseListener(concreteListener);
+				l.addMouseListener(this);
 			} else if (bo.getH() == HoldingType.OYSTER) {
 				l.setHoldingType(HoldingType.OYSTER);
 				l.setText("o");
 				l.setBackground(Color.blue);
-				l.addMouseListener(oysterListener);
+				l.addMouseListener(this);
 			}
 
 			// BEACH OBJECT ADDED TO JPANEL HERE (but created in model)
@@ -109,6 +107,73 @@ public class Controller {
 		public button() {
 			this.setPreferredSize(new Dimension(20, 20));
 		}
+	}
+
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+	
+		if(e.getComponent() instanceof button){
+			System.out.println("button listener registered a click");
+			button b = (button)( e.getComponent() );
+//			int Xb = b.getX();
+//			int Yb = b.getY();
+			
+			if(b.getHoldingType() == HoldingType.CONCRETE){
+				System.out.println("Concrete button clicked");
+				System.out.println(this);
+			}
+			
+			else if(b.getHoldingType() == HoldingType.OYSTER){
+				System.out.println("Oyster button clicked");
+				System.out.println(this);
+			}
+			
+			else if(b.getHoldingType() == HoldingType.BOX){
+				System.out.println("Box button clicked");
+				System.out.println(this);
+			}
+			
+			updatePlayerMV(b.getLocation());
+			//if distance to button greater than some number (e.g. 2 pixels)
+//			if(){
+//				
+//				
+//				// move toward it
+//			}
+			//then, regardless, if player not holding an object
+				//call pickup()
+			//if player IS holding an object
+				//display help saying you're holding an object already, press some button to put it down
+			 
+		}//end if button
+		else{
+			updatePlayerMV(e.getPoint());
+		}
+	 }
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
