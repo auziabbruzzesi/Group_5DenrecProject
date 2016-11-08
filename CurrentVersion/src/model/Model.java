@@ -23,8 +23,9 @@ public class Model {
 
 	private int score = 0;
 	private Player p = new Player(new Point(Player.startPosition));
-	//private Collection<BeachObject> beachObjHM = new ArrayList<BeachObject>();
-	private HashMap<Point,BeachObject> beachObjHM = new HashMap<Point,BeachObject>();
+	// private Collection<BeachObject> beachObjHM = new
+	// ArrayList<BeachObject>();
+	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private Collection<Box> boxes = new ArrayList<Box>();
 	private Collection<Wave> waves = new ArrayList<Wave>();
 
@@ -33,8 +34,10 @@ public class Model {
 		Boolean canPlace;
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < 4; i++) {
-			this.boxes.add(new Box(new Point((2*View.viewWidth)/3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
-					i * Box.boxToBoxInterval + 20)));//Auzi did this. this is bad. please fix it when the time comes.
+			this.boxes.add(new Box(new Point((2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
+					i * Box.boxToBoxInterval + 20)));// Auzi did this. this is
+														// bad. please fix it
+														// when the time comes.
 
 		}
 
@@ -54,13 +57,24 @@ public class Model {
 
 					if (i % 2 == 0) {
 						BeachObject bo = new BeachObject(p, HoldingType.OYSTER);
-						this.beachObjHM.put(bo.getCurrentPos(),bo);
+						this.beachObjHM.put(bo.getCurrentPos(), bo);
 					} else {
 						BeachObject bo = new BeachObject(p, HoldingType.CONCRETE);
-						this.beachObjHM.put(bo.getCurrentPos(),bo);
+						this.beachObjHM.put(bo.getCurrentPos(), bo);
 					}
 				}
 			} while (!canPlace);
+
+		}
+		// WAVES CREATED HERE
+		for (int i = 0; i < 4; i++) {
+			// create point and check if they overlap
+			Point p = new Point(r.nextInt(Wave.waveSpawnSpacing), r.nextInt(Wave.waveSpawnSpacing));
+			if (checkBeachObjectOverlap(p) && checkBoxOverlap(p))
+				canPlace = true;
+			else {
+				canPlace = false;
+			}
 
 		}
 
@@ -81,11 +95,11 @@ public class Model {
 		double X2 = toCreate.getX();
 		double Y2 = toCreate.getY();
 
-		if(X1==X2 && Y1==Y2){
+		if (X1 == X2 && Y1 == Y2) {
 			return false;
-			
+
 		}
-		
+
 		// if the left side of the obj we want to create would overlap with the
 		// existing object
 		if ((X2 + BeachObject.beachObjDimensions >= X1)
@@ -133,11 +147,13 @@ public class Model {
 		System.out.println("canCreate = " + canCreate);
 		return canCreate;
 	}
-/**
- * 
- * @param toCreate : proposed point of creation
- * @return true = spot available false = not
- */
+
+	/**
+	 * 
+	 * @param toCreate
+	 *            : proposed point of creation
+	 * @return true = spot available false = not
+	 */
 	public Boolean checkBoxOverlap(Point toCreate) {
 		// System.out.println("In box overlap check function");
 		Boolean canCreate = true;
@@ -328,11 +344,11 @@ public class Model {
 		this.p = p;
 	}
 
-	public HashMap<Point,BeachObject> getBeachObject() {
+	public HashMap<Point, BeachObject> getBeachObject() {
 		return beachObjHM;
 	}
 
-	public void setBeachObject(HashMap<Point,BeachObject> beachObject) {
+	public void setBeachObject(HashMap<Point, BeachObject> beachObject) {
 		beachObjHM = beachObject;
 	}
 
