@@ -146,14 +146,14 @@ public class Controller implements MouseListener {
 				}				
 			}//end if(pickup)
 			
-			else if(putDownRequest){
-				//do putdown
-				//match b. position (last known position) to collection
-				if(m.getP().putDown(b.getHoldingType(), )){
-					//put down
-				}
-				//make view changes
-			}
+//			else if(putDownRequest){
+//				//do putdown
+//				//match b. position (last known position) to collection
+//				if(m.getP().putDown(b.getHoldingType() )){
+//					//put down
+//				}
+//				//make view changes
+//			}
 		}
 
 		// else if we're still moving toward destination

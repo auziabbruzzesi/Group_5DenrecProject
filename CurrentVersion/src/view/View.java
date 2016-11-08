@@ -23,7 +23,7 @@ public class View extends JFrame {
 	private int playerDims;
 	String playerDir = "";
 	private int playerVelocity = 7;//may need this to be public-static-final at some point
-	JPanel jP = new JPanel();
+	JPanel jP = new jpanel();
 	
 	//jpanel j = new jpanel();
 
@@ -33,6 +33,7 @@ public class View extends JFrame {
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP.setPreferredSize(new Dimension(viewWidth, viewHeight));
+		
 		add(jP);
 		pack();
 
@@ -42,13 +43,15 @@ public class View extends JFrame {
 	
 	//Inner classes	
 	//if we have time, change this to a component, rather than a whole jpanel
-//	public class jpanel extends JPanel {
-//
-//		protected void paintComponent(Graphics g) {
-//			g.setColor(Color.black);
-//			g.fillRect(playerPos.x, playerPos.y, Player.playerDimensions, Player.playerDimensions);
-//		}
-//	}
+	public class jpanel extends JPanel {
+
+		protected void paintComponent(Graphics g) {
+			g.setColor(Color.BLUE);
+			g.fillRect((2*viewWidth)/3, 0, viewHeight, viewWidth);
+			g.setColor(Color.yellow);
+			g.fillRect(0, 0, (2*viewWidth)/3, viewHeight);
+		}
+	}
 	
 	
 	//Setters & getters

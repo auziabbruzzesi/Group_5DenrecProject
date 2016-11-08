@@ -33,8 +33,8 @@ public class Model {
 		Boolean canPlace;
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < 4; i++) {
-			this.boxes.add(new Box(new Point(View.viewWidth - Box.boxDimensions - Box.boxToViewEdgeSpacing,
-					i * Box.boxToBoxInterval)));
+			this.boxes.add(new Box(new Point((2*View.viewWidth)/3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
+					i * Box.boxToBoxInterval + 20)));//Auzi did this. this is bad. please fix it when the time comes.
 
 		}
 
