@@ -2,6 +2,7 @@
 package controller;
 
 import java.awt.GridLayout;
+//GITHUB SUCKS PLEASE WORK THOUGH SERIOUSLY
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,7 @@ import model.Player;
 import view.View;
 
 public class Main {
+	// this is mayahs change
 	
 	static Model m = new Model();
 	static View v = new View();
