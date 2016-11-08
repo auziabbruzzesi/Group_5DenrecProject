@@ -23,11 +23,13 @@ public class Main {
 	static View v = new View();
 	static Controller c = new Controller(m,v);
 	
+	
 
 	public static void main(String[] args) {
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(new MouseEventListener());
 		v.repaint();
+<<<<<<< HEAD
 		
 		
 		
@@ -39,7 +41,33 @@ public class Main {
     			e.printStackTrace();
     		}
     	}
+=======
+		Timer timer = new Timer(0, new ActionListener(){
+>>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("running timer");
+				v.repaint();
+	    		try {
+	    			Thread.sleep(100);
+	    		} catch (InterruptedException e2) {
+	    			e2.printStackTrace();
+	    		}
+				
+			}
+			
+		});
+		timer.start();
+//		for(int i = 0; i < 100; i++){    			
+//    		v.repaint();
+//    		try {
+//    			Thread.sleep(100);
+//    		} catch (InterruptedException e) {
+//    			e.printStackTrace();
+//    		}
+//    	}
+		//System.out.println("for loop ended");
 	}
 
 }

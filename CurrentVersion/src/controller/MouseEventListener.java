@@ -32,7 +32,7 @@ public class MouseEventListener implements MouseListener {
 				System.out.println(this);
 			}
 			
-			Controller.updatePlayerMV(e.getLocationOnScreen());
+			Controller.updatePlayerMV(b.getLocation());
 			//if distance to button greater than some number (e.g. 2 pixels)
 //			if(){
 //				
