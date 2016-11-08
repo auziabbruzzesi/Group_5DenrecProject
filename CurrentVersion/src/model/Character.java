@@ -2,7 +2,7 @@ package model;
 
 import java.awt.Point;
 
-public abstract class Character {
+public abstract class Character  {
 	private Point currentPos;
 	private Point destination; //?
 	private int velocity;

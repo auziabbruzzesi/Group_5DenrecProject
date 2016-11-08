@@ -23,7 +23,8 @@ public class Model {
 
 	private int score = 0;
 	private Player p = new Player(new Point(Player.startPosition));
-	private Collection<BeachObject> beachObjectList = new ArrayList<BeachObject>();
+	//private Collection<BeachObject> beachObjHM = new ArrayList<BeachObject>();
+	private HashMap<Point,BeachObject> beachObjHM = new HashMap<Point,BeachObject>();
 	private Collection<Box> boxes = new ArrayList<Box>();
 	private Collection<Wave> waves = new ArrayList<Wave>();
 
@@ -53,10 +54,10 @@ public class Model {
 
 					if (i % 2 == 0) {
 						BeachObject bo = new BeachObject(p, HoldingType.OYSTER);
-						this.beachObjectList.add(bo);
+						this.beachObjHM.put(bo.getCurrentPos(),bo);
 					} else {
 						BeachObject bo = new BeachObject(p, HoldingType.CONCRETE);
-						this.beachObjectList.add(bo);
+						this.beachObjHM.put(bo.getCurrentPos(),bo);
 					}
 				}
 			} while (!canPlace);
@@ -67,7 +68,7 @@ public class Model {
 		System.out.println("Player Position: " + this.p.getCurrentPos());
 		System.out.println(this.boxes.size() + " Boxes.");
 		System.out.println(this.waves.size() + " Waves.");
-		System.out.println(this.beachObjectList.size() + " Beach Objects.");
+		System.out.println(this.beachObjHM.size() + " Beach Objects.");
 
 	}
 
@@ -132,7 +133,11 @@ public class Model {
 		System.out.println("canCreate = " + canCreate);
 		return canCreate;
 	}
-
+/**
+ * 
+ * @param toCreate : proposed point of creation
+ * @return true = spot available false = not
+ */
 	public Boolean checkBoxOverlap(Point toCreate) {
 		// System.out.println("In box overlap check function");
 		Boolean canCreate = true;
@@ -207,7 +212,7 @@ public class Model {
 
 		// Set<Entry<Point, model.BeachObject>> BOs = BeachObject.entrySet();
 
-		for (BeachObject bo : beachObjectList) {
+		for (BeachObject bo : beachObjHM.values()) {
 			Point existing = bo.getCurrentPos();
 			// if the element we want to create would overlap horizontally with
 			// the element already created
@@ -323,12 +328,12 @@ public class Model {
 		this.p = p;
 	}
 
-	public Collection<BeachObject> getBeachObject() {
-		return beachObjectList;
+	public HashMap<Point,BeachObject> getBeachObject() {
+		return beachObjHM;
 	}
 
-	public void setBeachObject(Collection<BeachObject> beachObject) {
-		beachObjectList = beachObject;
+	public void setBeachObject(HashMap<Point,BeachObject> beachObject) {
+		beachObjHM = beachObject;
 	}
 
 	public Collection<Box> getBoxes() {

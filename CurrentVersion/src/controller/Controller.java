@@ -63,7 +63,7 @@ public class Controller implements MouseListener{
 
 		}
 
-		for (BeachObject bo : m.getBeachObject()) {
+		for (BeachObject bo : m.getBeachObject().values()) {
 			button l = new button();
 			// The line of code below fixes the issue of displaying c/o text in
 			// windows
@@ -125,19 +125,25 @@ public class Controller implements MouseListener{
 //			int Xb = b.getX();
 //			int Yb = b.getY();
 			
-			if(b.getHoldingType() == HoldingType.CONCRETE){
-				System.out.println("Concrete button clicked");
-				System.out.println(this);
-			}
-			
-			else if(b.getHoldingType() == HoldingType.OYSTER){
-				System.out.println("Oyster button clicked");
-				System.out.println(this);
-			}
-			
-			else if(b.getHoldingType() == HoldingType.BOX){
+			if(b.getHoldingType() == HoldingType.BOX){
 				System.out.println("Box button clicked");
 				System.out.println(this);
+			}
+			else{
+////			if(b.getHoldingType() == HoldingType.CONCRETE){
+//				System.out.println("Concrete button clicked");
+//				System.out.println(this);
+//			//}
+//			
+//			else if(b.getHoldingType() == HoldingType.OYSTER){
+//				System.out.println("Oyster button clicked");
+//				System.out.println(this);
+//			}
+				if( m.getP().pickUp( b.getHoldingType() ) ){
+					m.getBeachObject().remove(b.getLocationOnScreen());
+					v.getJPanel().remove(e.getComponent());
+					v.repaint();
+				}
 			}
 			
 			updatePlayerMV(b.getLocation());

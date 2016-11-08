@@ -35,6 +35,8 @@ public class BeachObject extends Character {
 		this.setH(h);
 		this.setCurrentPos(position);
 	}
+
+
 	
 	
 	
