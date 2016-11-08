@@ -40,14 +40,13 @@ public class View extends JFrame {
 
 	
 	//Inner classes	
+	//if we have time, change this to a component, rather than a whole jpanel
 	public class jpanel extends JPanel {
 
 		protected void paintComponent(Graphics g) {
-
 			g.setColor(Color.black);
 			g.fillRect(playerPos.x, playerPos.y, Player.playerDimensions, Player.playerDimensions);
-	
-			movePlayer();			
+			//movePlayer();
 		}
 	}
 	
@@ -71,134 +70,8 @@ public class View extends JFrame {
 	public JPanel getJPanel() {
 		// TODO Auto-generated method stub
 		return this.j;
-	}
+	}	
 	
-	
-	// VIEW'S REPRESENTATION OF MOVEMENT HANDLED IN 2 FUNCTIONS BELOW
-	// TODO:
-	// convert playerDir to enum type instead of string
-	//Add in basic NSEW directions
-	
-	public void updatePlayerDir() {
-		if (playerPos.getY() < playerDest.getY()) {
-			// then we're moving generally south
-			if (playerPos.getX() < playerDest.getX()) {
-				// then we're moving southeast
-				playerDir = "southeast";
-			} else if (playerPos.getX() > playerDest.getX()) {
-				// then we're moving southwest
-				playerDir = "southwest";
-			}
-		} else if (playerPos.getY() > playerDest.getY()) {
-			// then we're moving generally north
-			if (playerPos.getX() > playerDest.getX()) {
-				// then we're moving northwest
-				playerDir = "northwest";
-			} else if (playerPos.getX() < playerDest.getX()) {
-				// then we're moving northeast
-				playerDir = "northeast";
-			}
-		}
-	}
-	
-	public void movePlayer(){
-		//movement of player based on direction & whether current position = destination
-		switch (playerDir) {
-		// SOUTHEAST
-		case "southeast": // dest x&y > pos x&y
-			if (playerPos.getX() != playerDest.getX()) {
-				if (playerDest.getX() - playerPos.getX() < playerVelocity) {
-					// don't overshoot destination
-					playerPos.translate((int) (playerDest.getX() - playerPos.getX()), 0);
-				} else {
-					playerPos.translate(playerVelocity, 0);
-				}
-			}
-			if (playerPos.getY() != playerDest.getY()) {
-				if (playerDest.getY() - playerPos.getY() < playerVelocity) {
-					// don't overshoot destination
-					playerPos.translate(0, (int) (playerDest.getY() - playerPos.getY()));
-				} else {
-					playerPos.translate(0, playerVelocity);
-				}
-			}
-		break;
-		// SOUTHWEST
-		case "southwest": // dest x< pos x, dest y > pos y (Moving down and
-						// left)
-			// Handling x
-			if (playerPos.getX() != playerDest.getX()) {
-				if (playerPos.getX() - playerVelocity < playerDest.getX()) {
-					// don't overshoot destination
-					setPlayerPos(playerDest.getX(), getPlayerPos().getY());//update rest of code to this
-				} else {
-					playerPos.translate(-playerVelocity, 0);
-				}
-			}
-			// Handling y
-			if (playerPos.getY() != playerDest.getY()) {
-				if (playerPos.getY() + playerVelocity > playerDest.getY() ) {
-					// don't overshoot destination
-					playerPos.translate(0, (int) (playerDest.getY() - playerPos.getY()));
-				} else {
-					playerPos.translate(0, playerVelocity);
-				}
-			}
-		break;
-		// NORTHEAST
-		case "northeast": // dest x > pos x, dest y < pos y
-			// Handling x
-			if (playerPos.getX() != playerDest.getX()) {
-				if (playerDest.getX() - playerPos.getX() < playerVelocity) {
-					// don't overshoot destination
-					playerPos.translate((int) (playerDest.getX() - playerPos.getX()), 0);
-				} else {
-					playerPos.translate(playerVelocity, 0);
-				}
-			}
-
-			// Handling y
-			if (playerPos.getY() != playerDest.getY()) {
-				
-				if (playerPos.getY() - playerDest.getY() < playerVelocity) {
-					playerPos.translate((int) (playerPos.getY() - playerDest.getY()), 0);
-				} else {		
-					playerPos.translate(0, -playerVelocity);
-				}
-			}
-		break;
-	// NORTHWEST
-		case "northwest":
-			// Handling x
-			if (playerPos.getX() != playerDest.getX()) {
-				// Handling x
-				if (playerPos.getX() != playerDest.getX()) {
-					if (playerPos.getX() - playerVelocity < playerDest.getX()) {
-						// don't overshoot destination
-						setPlayerPos(playerDest.getX(), getPlayerPos().getY());//update rest of code to this
-					} else {
-						playerPos.translate(-playerVelocity, 0);
-					}
-				} else {
-					playerPos.translate(-playerVelocity, 0);
-				}
-			}
-
-			// Handling y
-			if (playerPos.getY() != playerDest.getY()) {
-				
-				if (playerPos.getY() - playerDest.getY() < playerVelocity) {
-					playerPos.translate((int) (playerPos.getY() - playerDest.getY()), 0);
-				} else {
-					playerPos.translate(0, -playerVelocity);
-				}
-			}
-		break;
-
-		default:
-		break;
-		}//end switch
-	}//end move()
 }//end View class
 
 

@@ -35,6 +35,7 @@ public class Main {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				//System.out.println("running timer");
+				c.updatePlayerMV();
 				v.repaint();
 	    		try {
 	    			Thread.sleep(100);

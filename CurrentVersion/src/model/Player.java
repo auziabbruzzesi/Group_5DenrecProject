@@ -2,18 +2,12 @@ package model;
 
 import java.awt.Point;
 
-public class Player extends Character implements MoveObjects {
+public class Player extends Character {
 	private HoldingType h = HoldingType.EMPTY;
 	private int health = 100;
 	public static final Point startPosition = new Point(100,100);
 	public static final int playerDimensions = 40;
 	
-	
-
-	@Override
-	public void move(Point destination) {
-		this.setCurrentPos(new Point(destination.x,destination.y));
-	}
 		
 	//Constructors (2)
 	public Player(Point p){
@@ -36,18 +30,6 @@ public class Player extends Character implements MoveObjects {
 	}
 	public void setHealth(int health) {
 		this.health = health;
-	}
-
-	@Override
-	public boolean pickUp(HoldingType beachObjectType) {
-		if(this.h == HoldingType.EMPTY){
-			this.h = beachObjectType;
-			return true;
-		}else{
-			return false;
-		}
-		
-		
 	}
 
 	@Override

@@ -12,10 +12,10 @@ public class Wave extends Character {
 		this.setCurrentPos(p);
 		this.setVelocity(speed);
 	}
-	@Override
-	public void move(Point destination) {
-		// TODO Auto-generated method stub
-		
-	}
+//	@Override
+//	public void move(Point destination) {
+//		// TODO Auto-generated method stub
+//		
+//	}
 
 }

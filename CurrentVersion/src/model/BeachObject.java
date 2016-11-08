@@ -25,11 +25,11 @@ public class BeachObject extends Character {
 		this.h = h;
 	}
 
-	@Override
-	public void move(Point destination) {
+	//@Override
+	//public void move(Point destination) {
 		// TODO Auto-generated method stub
 		
-	}
+	//}
 	
 	public BeachObject(Point position, HoldingType h){
 		this.setH(h);

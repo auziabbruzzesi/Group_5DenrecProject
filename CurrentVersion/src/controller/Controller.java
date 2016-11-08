@@ -27,16 +27,31 @@ import view.View;
 public class Controller implements MouseListener{
 	private static Model m;
 	private static View v;
+	private boolean pickUpRequest = false;
+	button b = new button();
 	// private gameEndStatus winLose = gameEndStatus.EMPTY;
 	// private int minigame = 0;
 	
 
   // hi
 
-	public void updatePlayerMV(Point d) {
-		v.setPlayerDest(d);
-		v.updatePlayerDir();
-		m.updatePlayerPosition(v.getPlayerPos());
+	public void updatePlayerMV() {
+		
+		
+		
+		//if we've arrived
+		if(m.getP().getCurrentPos() == m.getP().getDestination() ){
+			if(pickUpRequest){
+				//call pickup send b.type
+				m.getP().pickUp( b.getHoldingType() );
+			}
+			//update
+		}
+		
+		//else if we're still moving toward destination		
+		else{
+			m.updatePlayerPosition(v.getPlayerPos());
+		}
 	}
 
 	public Controller(Model m, View v) {
@@ -119,50 +134,40 @@ public class Controller implements MouseListener{
 	@Override
 	public void mousePressed(MouseEvent e) {
 	
+		//change destination to the location of screen that user just clicked
+		v.setPlayerDest(e.getComponent().getLocation());
+		//update direction based on the new destination
+		//v.updatePlayerDir();
+
+		//move player 1 tic closer to destination
+		//v.movePlayer();
+		
 		if(e.getComponent() instanceof button){
 			System.out.println("button listener registered a click");
-			button b = (button)( e.getComponent() );
-//			int Xb = b.getX();
-//			int Yb = b.getY();
+			b = (button)( e.getComponent() );
 			
 			if(b.getHoldingType() == HoldingType.BOX){
 				System.out.println("Box button clicked");
+				//call putdown or create putdown request
 				System.out.println(this);
 			}
 			else{
-////			if(b.getHoldingType() == HoldingType.CONCRETE){
-//				System.out.println("Concrete button clicked");
-//				System.out.println(this);
-//			//}
-//			
-//			else if(b.getHoldingType() == HoldingType.OYSTER){
-//				System.out.println("Oyster button clicked");
-//				System.out.println(this);
-//			}
-				if( m.getP().pickUp( b.getHoldingType() ) ){
-					m.getBeachObject().remove(b.getLocationOnScreen());
-					v.getJPanel().remove(e.getComponent());
-					v.repaint();
-				}
+				pickUpRequest = true;
 			}
-			
-			updatePlayerMV(b.getLocation());
-			//if distance to button greater than some number (e.g. 2 pixels)
-//			if(){
-//				
-//				
-//				// move toward it
-//			}
-			//then, regardless, if player not holding an object
-				//call pickup()
-			//if player IS holding an object
-				//display help saying you're holding an object already, press some button to put it down
-			 
-		}//end if button
-		else{
-			updatePlayerMV(e.getPoint());
 		}
-	 }
+	}
+			
+			
+//			else if( m.getP().pickUp( b.getHoldingType() ) ){
+//					m.getBeachObject().remove(b.getLocationOnScreen());
+//					v.getJPanel().remove(e.getComponent());
+//					v.repaint();
+//				}
+			
+			
+			//updatePlayerMV(b.getLocationOnScreen());
+		
+	 
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
