@@ -14,6 +14,7 @@ import model.Player;
 import view.View;
 
 public class Main {
+	// this is mayahs change
 	
 	static Model m = new Model();
 	static View v = new View();
