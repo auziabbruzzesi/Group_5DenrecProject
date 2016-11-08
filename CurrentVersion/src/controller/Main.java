@@ -14,7 +14,7 @@ import model.Player;
 import view.View;
 
 public class Main {
-	
+	//Rita is making change
 	static Model m = new Model();
 	static View v = new View();
 	static Controller c = new Controller(m,v);
