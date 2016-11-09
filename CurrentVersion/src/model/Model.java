@@ -23,9 +23,10 @@ public class Model {
 
 	private int score = 0;
 	private Player p = new Player(new Point(Player.startPosition));
-	//private Collection<BeachObject> beachObjHM = new ArrayList<BeachObject>();
-	private HashMap<Point,BeachObject> beachObjHM = new HashMap<Point,BeachObject>();
-	private Collection<Box> boxes = new ArrayList<Box>();
+	// private Collection<BeachObject> beachObjHM = new
+	// ArrayList<BeachObject>();
+	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
+	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private Collection<Wave> waves = new ArrayList<Wave>();
 
 	public Model() {
@@ -33,8 +34,9 @@ public class Model {
 		Boolean canPlace;
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < 4; i++) {
-			this.boxes.add(new Box(new Point(View.viewWidth - Box.boxDimensions - Box.boxToViewEdgeSpacing,
-					i * Box.boxToBoxInterval)));
+			Point boxPt = new Point(View.viewWidth - Box.boxDimensions - Box.boxToViewEdgeSpacing,
+					i * Box.boxToBoxInterval);
+			this.boxes.put(boxPt, new Box(boxPt));
 
 		}
 
@@ -54,10 +56,10 @@ public class Model {
 
 					if (i % 2 == 0) {
 						BeachObject bo = new BeachObject(p, HoldingType.OYSTER);
-						this.beachObjHM.put(bo.getCurrentPos(),bo);
+						this.beachObjHM.put(bo.getCurrentPos(), bo);
 					} else {
 						BeachObject bo = new BeachObject(p, HoldingType.CONCRETE);
-						this.beachObjHM.put(bo.getCurrentPos(),bo);
+						this.beachObjHM.put(bo.getCurrentPos(), bo);
 					}
 				}
 			} while (!canPlace);
@@ -73,7 +75,7 @@ public class Model {
 	}
 
 	public Boolean checkPlayerOverlap(Point toCreate) {
-		System.out.println("In player overlap checking function");
+//		System.out.println("In player overlap checking function");
 		Boolean canCreate = true;
 		double X1 = p.getCurrentPos().getX();
 		double Y1 = p.getCurrentPos().getY();
@@ -81,29 +83,29 @@ public class Model {
 		double X2 = toCreate.getX();
 		double Y2 = toCreate.getY();
 
-		if(X1==X2 && Y1==Y2){
+		if (X1 == X2 && Y1 == Y2) {
 			return false;
-			
+
 		}
-		
+
 		// if the left side of the obj we want to create would overlap with the
 		// existing object
 		if ((X2 + BeachObject.beachObjDimensions >= X1)
 				&& (X2 + BeachObject.beachObjDimensions <= X1 + Player.playerDimensions)) {
 			// We know X's overlap, so check if Y's do, too. If they don't, it's
 			// okay. If they do, it's a true overlap.
-			System.out.println("x overlap from the left occurred");
+//			System.out.println("x overlap from the left occurred");
 			// if the top of the obj we're creating would overlap with the
 			// existing object
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				System.out.println("overlap from the top occurred");
+//				System.out.println("overlap from the top occurred");
 			}
 			// bottom of creating would overlap
 			else if (Y2 >= Y1 && Y2 <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				System.out.println("overlap from the bottom occurred");
+//				System.out.println("overlap from the bottom occurred");
 			}
 
 		}
@@ -115,34 +117,36 @@ public class Model {
 			// okay. If they do, it's a true overlap.
 			// if the top of the obj we're creating would overlap with the
 			// existing object
-			System.out.println("x overlap from the right occurred");
+//			System.out.println("x overlap from the right occurred");
 
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				System.out.println("overlap from the top occurred");
+//				System.out.println("overlap from the top occurred");
 			}
 			// bottom of creating would overlap
 			else if (Y2 >= Y1 && Y2 <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				System.out.println("overlap from the bottom occurred");
+//				System.out.println("overlap from the bottom occurred");
 			}
 
 		}
 
-		System.out.println("canCreate = " + canCreate);
+//		System.out.println("canCreate = " + canCreate);
 		return canCreate;
 	}
-/**
- * 
- * @param toCreate : proposed point of creation
- * @return true = spot available false = not
- */
+
+	/**
+	 * 
+	 * @param toCreate
+	 *            : proposed point of creation
+	 * @return true = spot available false = not
+	 */
 	public Boolean checkBoxOverlap(Point toCreate) {
 		// System.out.println("In box overlap check function");
 		Boolean canCreate = true;
 
-		for (Box b : this.boxes) {
+		for (Box b : this.boxes.values()) {
 
 			// check if the position would cause overlap
 			double X1 = b.getPosition().getX();
@@ -270,47 +274,46 @@ public class Model {
 		return canCreate;
 	}
 
-	public String putDown(Player p, Box b) {
-		// if the player isn't holding anything, return the original type/count
-		if (p.getH() == HoldingType.EMPTY) {
-			return (b.getH().toString() + b.getCount());
+	// // if the player isn't holding anything, return the original type/count
+	// if (p.getH() == HoldingType.EMPTY) {
+	// return (b.getH().toString() + b.getCount());
+	//
+	// // If the box is empty
+	// } else if (b.getH() == HoldingType.EMPTY) {
+	// // set boxtype to player type -- note: okay if player HT is EMPTY
+	// b.setH(p.getH());
+	// // if the box isn't empty, increase the count
+	// if (b.getH() != HoldingType.EMPTY) {
+	// b.setCount(b.getCount() + 1);
+	// p.setH(HoldingType.EMPTY);
+	// }
+	// return (b.getH().toString() + b.getCount());
+	//
+	// // if the object is compatible
+	// } else if (p.getH() == b.getH()) {
+	//
+	// // if the box is full
+	// if (b.getCount() >= b.getCapacity()) {
+	//
+	// // return the original type/count
+	// return (b.getH().toString() + b.getCount());
+	//
+	// // the count is less than the capacity (and type compatible
+	// // w/box)
+	// } else {
+	// // player drops object
+	// p.setH(HoldingType.EMPTY);
+	// b.setCount(b.getCount() + 1);
+	// System.out.println("the count is less than blah");
+	// return (b.getH().toString() + b.getCount());
+	//
+	// }
+	//
+	// } else {
+	// return (String) (b.getH().toString() + b.getCount());
+	// }
 
-			// If the box is empty
-		} else if (b.getH() == HoldingType.EMPTY) {
-			// set boxtype to player type -- note: okay if player HT is EMPTY
-			b.setH(p.getH());
-			// if the box isn't empty, increase the count
-			if (b.getH() != HoldingType.EMPTY) {
-				b.setCount(b.getCount() + 1);
-				p.setH(HoldingType.EMPTY);
-			}
-			return (b.getH().toString() + b.getCount());
-
-			// if the object is compatible
-		} else if (p.getH() == b.getH()) {
-
-			// if the box is full
-			if (b.getCount() >= b.getCapacity()) {
-
-				// return the original type/count
-				return (b.getH().toString() + b.getCount());
-
-				// the count is less than the capacity (and type compatible
-				// w/box)
-			} else {
-				// player drops object
-				p.setH(HoldingType.EMPTY);
-				b.setCount(b.getCount() + 1);
-				System.out.println("the count is less than blah");
-				return (b.getH().toString() + b.getCount());
-
-			}
-
-		} else {
-			return (String) (b.getH().toString() + b.getCount());
-		}
-
-	}
+	// }
 
 	public int getScore() {
 		return score;
@@ -328,19 +331,19 @@ public class Model {
 		this.p = p;
 	}
 
-	public HashMap<Point,BeachObject> getBeachObject() {
+	public HashMap<Point, BeachObject> getBeachObject() {
 		return beachObjHM;
 	}
 
-	public void setBeachObject(HashMap<Point,BeachObject> beachObject) {
+	public void setBeachObject(HashMap<Point, BeachObject> beachObject) {
 		beachObjHM = beachObject;
 	}
 
-	public Collection<Box> getBoxes() {
+	public HashMap<Point, Box> getBoxes() {
 		return boxes;
 	}
 
-	public void setBoxes(Collection<Box> boxes) {
+	public void setBoxes(HashMap<Point, Box> boxes) {
 		this.boxes = boxes;
 	}
 

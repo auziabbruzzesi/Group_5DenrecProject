@@ -3,7 +3,7 @@ package model;
 import java.awt.Point;
 
 public class Player extends Character {
-	private HoldingType h = HoldingType.EMPTY;
+
 	private int health = 100;
 	public static final Point startPosition = new Point(100,100);
 	public static final int playerDimensions = 40;
@@ -19,12 +19,8 @@ public class Player extends Character {
 	}
 	
 	//Setters and Getters
-	public HoldingType getH() {
-		return h;
-	}
-	public void setH(HoldingType h) {
-		this.h = h;
-	}
+	
+	
 	public int getHealth() {
 		return health;
 	}

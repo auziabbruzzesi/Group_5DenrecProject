@@ -68,7 +68,7 @@ public class View extends JFrame {
 		return playerPos;
 	}
 	public JPanel getJPanel() {
-		System.out.println("Returning JPanel");
+		//System.out.println("Returning JPanel");
 		return this.jP;
 	}	
 	

@@ -6,7 +6,8 @@ public class Box {
 	private Point position;
 	private int capacity = 10;
 	private int count;
-	private HoldingType h = HoldingType.EMPTY;
+	private HoldingType h = HoldingType.BOX;
+	private HoldingType contains = HoldingType.EMPTY;
 	private boolean isfull = false;
 	public static final int boxDimensions = 100;//box dimensions (boxes are square, so don't need individual width/height)
 	public static final int boxSpawnSpacing = 50; //minimum distance spawned objects should be from boxes upon creation 
@@ -21,8 +22,7 @@ public class Box {
 		this.position = p;
 		this.capacity = capacity;
 	}
-	
-	
+
 	//Setters and Getters
 	public Point getPosition() {
 		return position;
@@ -51,11 +51,17 @@ public class Box {
 	public void setH(HoldingType h) {
 		this.h = h;
 	}
-	public boolean isIsfull() {
+	public boolean isfull() {
 		return isfull;
 	}
 	public void setIsfull(boolean isfull) {
 		this.isfull = isfull;
+	}
+	public HoldingType getContains() {
+		return contains;
+	}
+	public void setContains(HoldingType contains) {
+		this.contains = contains;
 	}
 	
 	

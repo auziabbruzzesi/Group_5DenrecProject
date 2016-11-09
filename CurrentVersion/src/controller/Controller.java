@@ -12,6 +12,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.Timer;
@@ -39,16 +40,17 @@ public class Controller implements MouseListener {
 
 			m.getP().updateDirection();
 			m.getP().move();
-			//System.out.println(
-				//	"currentPos: " + m.getP().getCurrentPos() + " Current destination: " + m.getP().getDestination());
+			// System.out.println(
+			// "currentPos: " + m.getP().getCurrentPos() + " Current
+			// destination: " + m.getP().getDestination());
 			updatePlayerMV();
 			v.repaint();
 
-//			try {
-//				Thread.sleep(100);
-//			} catch (InterruptedException e2) {
-//				e2.printStackTrace();
-//			}
+			// try {
+			// Thread.sleep(100);
+			// } catch (InterruptedException e2) {
+			// e2.printStackTrace();
+			// }
 
 		}
 	});
@@ -64,7 +66,7 @@ public class Controller implements MouseListener {
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
 
-		for (Box b : m.getBoxes()) {
+		for (Box b : m.getBoxes().values()) {
 			button j = new button();
 			j.setMargin(new Insets(0, 0, 0, 0));
 			j.setBounds(b.getPosition().x, b.getPosition().y, Box.boxDimensions, Box.boxDimensions);
@@ -129,56 +131,97 @@ public class Controller implements MouseListener {
 
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			timer.stop();
-			System.out.println("we've reached our destination");
-			
+//			System.out.println("we've reached our destination");
+
 			if (pickUpRequest) {
 				// call pickup send b.type
-				System.out.println("pickupreq after stopping timer = " + pickUpRequest);
-				
-				//pickup representation in model: check if we can pickup, if yes: update holding type & return true
-				if( m.getP().pickUp(b.getHoldingType()) ){
-					//if we were able to pickUp an object
-					//view's representation of pickUp
-					//note: this seems to work fine, but
-						//could possibly get problematic if the player overlaps with the button's position.
-						//getComponentAt returns the component on jpanel containing the specified point.
+//				System.out.println("pickupreq after stopping timer = " + pickUpRequest);
+
+				// pickup representation in model: check if we can pickup, if
+				// yes: update holding type & return true
+				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
+				System.out.println("beachobj holding type = " + b.getHoldingType());
+				if (m.getP().pickUp(b.getHoldingType())) {
+					
+					System.out.println("player holding type = " + m.getP().getH());
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
-				}				
-			}//end if(pickup)
-			
-			else if(putDownRequest){
-				//do putdown
-				//match b. position (last known position) to collection
-				if(m.getP().putDown(b.getHoldingType(), )){
-					//put down
 				}
-				//make view changes
+				pickUpRequest = false;
+			} // end if(pickup)
+
+			else if (putDownRequest) {
+				System.out.println("\nin putdown request:");
+				System.out.println("player holding type = " + m.getP().getH());
+				System.out.println("box holding type = " + b.getHoldingType());
+				
+				b.setText(putDown());
+				putDownRequest = false;
 			}
 		}
 
 		// else if we're still moving toward destination
 		else {
 			player.setLocation(m.getP().getCurrentPos());
-			//m.updatePlayerPosition(v.getPlayerPos());
-
 		}
 	}
 
+	public String putDown(){
+		String type = "";
+		// check player is holding something
+		if (m.getP().getH() != HoldingType.EMPTY) {
+			HoldingType boxContains = m.getBoxes().get( b.getLocation() ).getContains();
+			
+			// check type of obj matches box type, or box is empty
+			if (m.getP().getH() == boxContains || boxContains == HoldingType.EMPTY) {
+
+				// check box not full
+				if (!(m.getBoxes().get(b.getLocation()).isfull())) {
+
+					// set box type if this is 1st item placed in box
+					if (boxContains == HoldingType.EMPTY) {
+						//in model
+						m.getBoxes().get(b.getLocation()).setContains(m.getP().getH());
+					}
+					
+					m.getBoxes().get(b.getLocation()).incrementCount();
+					m.getP().setH(HoldingType.EMPTY);
+					
+				}
+				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH() + 
+						"\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + 
+						"\nBox contains = " + m.getBoxes().get( b.getLocation() ).getContains() + "\nBox count = " + 
+						m.getBoxes().get( b.getLocation() ).getCount() );
+			}
+		} else {
+			System.out.println("you can't put this type of object in this box");
+			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH() + 
+					"\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + 
+					"\nBox contains = " + m.getBoxes().get( b.getLocation() ).getContains() +
+					"\nBox count = " + m.getBoxes().get( b.getLocation() ).getCount() );
+		}
+		
+		type = m.getBoxes().get(b.getLocation()).getContains().name();
+		return type;
+	}
+	
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		v.setPlayerDest(e.getComponent().getLocation());
 		m.getP().setDestination(e.getPoint());
+
+		// if a button was clicked
 		if (e.getComponent() instanceof button) {
 			b = (button) (e.getComponent());
 			m.getP().setDestination(b.getLocation());
 
 			if (b.getHoldingType() == HoldingType.BOX) {
-				System.out.println("Box button clicked");
+				System.out.println("\nBox button clicked");
 				putDownRequest = true;
-				System.out.println(this);
+				//System.out.println(this);
 			} else {
 				pickUpRequest = true;
-				//System.out.println("pickuprequest = " + pickUpRequest);
+				// System.out.println("pickuprequest = " + pickUpRequest);
 			}
 
 		}

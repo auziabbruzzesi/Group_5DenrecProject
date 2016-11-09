@@ -6,7 +6,7 @@ public abstract class Character implements MoveObjects {
 	private Point currentPos;
 	private Point destination = currentPos;
 	private int velocity = 7;
-	HoldingType h = HoldingType.EMPTY;
+	private HoldingType h = HoldingType.EMPTY;
 	String direction = "";
 
 		
@@ -155,7 +155,6 @@ public abstract class Character implements MoveObjects {
  * 
  */
 	public boolean pickUp(HoldingType boType) {
-		System.out.println("In pickup of character");
 		if (this.h == HoldingType.EMPTY) {
 			this.h = boType;
 			return true;
@@ -164,32 +163,15 @@ public abstract class Character implements MoveObjects {
 		}
 	}
 
-	@Override
-	public boolean putDown(HoldingType boxObjectType, Box toPut) {
-		System.out.println("In putdown of character");
-		boolean canPut = false;
-		if(this.h != HoldingType.EMPTY){
-			//if box is empty, set its type to that of the player's current holding type
-			if(toPut.getH() == HoldingType.EMPTY){
-				toPut.setH(this.h);
-				toPut.incrementCount();
-				this.h = HoldingType.EMPTY;
-				canPut = true;
-			}
-			//else, if box's type matches player's curr holdType, increment box's count
-			else if(toPut.getH() == this.h){
-				toPut.incrementCount();
-				this.h = HoldingType.EMPTY;
-				canPut = true;
-			}
-			else{
-				System.out.println("you can't put this type of object in this box");
-			}
-		}
-		return canPut;
-	}
-
+	
+	
 	// Setters and Getters
+	public void setH(HoldingType h) {
+		this.h = h;
+	}
+	public HoldingType getH() {
+		return h;
+	}
 	public Point getCurrentPos() {
 		return currentPos;
 	}
