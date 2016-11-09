@@ -1,6 +1,5 @@
-//Estella Avilesssssss
 package controller;
-//ritaaaaaa
+
 
 import java.awt.GridLayout;
 //GITHUB SUCKS PLEASE WORK THOUGH SERIOUSLY
@@ -17,7 +16,6 @@ import model.Player;
 import view.View;
 
 public class Main {
-	// this is mayahs change
 
 	static Model m = new Model();
 	static View v = new View();
@@ -29,18 +27,6 @@ public class Main {
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
 		v.repaint();
-
-		
-	//	timer.start();
-//		for(int i = 0; i < 100; i++){    			
-//    		v.repaint();
-//    		try {
-//    			Thread.sleep(100);
-//    		} catch (InterruptedException e) {
-//    			e.printStackTrace();
-//    		}
-//    	}
-		//System.out.println("for loop ended");
 	}
 
 }

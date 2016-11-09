@@ -12,8 +12,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.Timer;
 
@@ -26,12 +31,26 @@ import model.Player;
 import view.View;
 
 public class Controller implements MouseListener {
+	
 	private static Model m;
 	private static View v;
 	private boolean pickUpRequest = false;
 	private boolean putDownRequest = false;
 	button b = new button();
 	button player = new button();
+	
+	//sprite-related variables
+	ImageIcon oystIcon;
+	ImageIcon concIcon;
+	//JButton button = new JButton(icon);
+	final int numSprites = 6;
+	final int startPSprites = 0;
+	final int oystSprite = 4;
+	final int concSprite = 5;
+	int picNum = 0;
+	BufferedImage[] pics;//holds all sprites for all characters
+	
+	
 
 	Timer timer = new Timer(0, new ActionListener() {
 
@@ -63,6 +82,10 @@ public class Controller implements MouseListener {
 		this.m = m;
 		this.v = v;
 
+		initSprites();
+		oystIcon = new ImageIcon(pics[oystSprite]);
+		concIcon = new ImageIcon(pics[concSprite]);
+		
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
 
@@ -100,11 +123,13 @@ public class Controller implements MouseListener {
 				l.setText("c");
 				l.setBackground(Color.gray);
 				l.addMouseListener(this);
+				l.setIcon(concIcon);
 			} else if (bo.getH() == HoldingType.OYSTER) {
 				l.setHoldingType(HoldingType.OYSTER);
 				l.setText("o");
 				l.setBackground(Color.blue);
 				l.addMouseListener(this);
+				l.setIcon(oystIcon);
 			}
 
 			// BEACH OBJECT ADDED TO JPANEL HERE (but created in model)
@@ -266,4 +291,31 @@ public class Controller implements MouseListener {
 			this.setPreferredSize(new Dimension(20, 20));
 		}
 	}
+	
+	public void initSprites() {
+		System.out.println("in View's initSprites function");
+
+		pics = new BufferedImage[numSprites];
+
+		String[] myNames = { "pUP", "pDOWN", "pRIGHT", "pLEFT", "oyster", "concrete" };
+
+		for (int i = 0; i < numSprites; i++) {
+			pics[i] = createImage(myNames[i]);
+		}
+	}
+
+	//Read image from file and return
+    private BufferedImage createImage(String n){
+    	BufferedImage bufferedImage;
+    	try {
+    		System.out.println("About to read an image");
+    		bufferedImage = ImageIO.read(new File("Sprites/Player/" + n));
+    		return bufferedImage;
+    	} catch (IOException e) {
+    		e.printStackTrace();
+    	}
+    	return null;
+    	
+    	// TODO: Change this method so you can load other orc animation bitmaps DONE (takes parameter now)
+    }
 }
