@@ -297,9 +297,9 @@ public class Controller implements MouseListener {
 
 		pics = new BufferedImage[numSprites];
 
-		String[] myNames = { "pUP", "pDOWN", "pRIGHT", "pLEFT", "oyster", "concrete" };
+		String[] myNames = { "concrete.png", "oyster.png", "pDOWN.png",  "pLEFT.png", "pRIGHT.png", "pUP.png"};
 
-		for (int i = 0; i < numSprites; i++) {
+		for (int i = 0; i < 1; i++) {
 			pics[i] = createImage(myNames[i]);
 		}
 	}
@@ -309,7 +309,7 @@ public class Controller implements MouseListener {
     	BufferedImage bufferedImage;
     	try {
     		System.out.println("About to read an image");
-    		bufferedImage = ImageIO.read(new File("Sprites/Player/" + n));
+    		bufferedImage = ImageIO.read(new File("/Sprites/Player/" + n));
     		return bufferedImage;
     	} catch (IOException e) {
     		e.printStackTrace();
