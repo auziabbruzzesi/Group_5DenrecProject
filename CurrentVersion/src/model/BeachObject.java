@@ -15,7 +15,7 @@ public class BeachObject extends Character {
 	 * 		Should be pretty minor to do this. (FLW)
 	 */
 	
-	public static final int spawnZoneWidth = View.viewWidth - Box.boxToViewEdgeSpacing - Box.boxDimensions - Box.boxSpawnSpacing;
+	public static final int spawnZoneWidth = (2*View.viewWidth)/3 - Box.boxToViewEdgeSpacing - Box.boxDimensions - Box.boxSpawnSpacing;
 
 	public HoldingType getH() {
 		return h;

@@ -131,18 +131,19 @@ public class Controller implements MouseListener {
 
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			timer.stop();
-//			System.out.println("we've reached our destination");
+			// System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
 				// call pickup send b.type
-//				System.out.println("pickupreq after stopping timer = " + pickUpRequest);
+				// System.out.println("pickupreq after stopping timer = " +
+				// pickUpRequest);
 
 				// pickup representation in model: check if we can pickup, if
 				// yes: update holding type & return true
 				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
 				System.out.println("beachobj holding type = " + b.getHoldingType());
 				if (m.getP().pickUp(b.getHoldingType())) {
-					
+
 					System.out.println("player holding type = " + m.getP().getH());
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
@@ -153,24 +154,23 @@ public class Controller implements MouseListener {
 				System.out.println("\nin putdown request:");
 				System.out.println("player holding type = " + m.getP().getH());
 				System.out.println("box holding type = " + b.getHoldingType());
-				
+
 				b.setText(putDown());
 				putDownRequest = false;
 			}
-		}
-
+		} // end if(pickup)
 		// else if we're still moving toward destination
-		else {
+		else{
 			player.setLocation(m.getP().getCurrentPos());
 		}
 	}
 
-	public String putDown(){
+	public String putDown() {
 		String type = "";
 		// check player is holding something
 		if (m.getP().getH() != HoldingType.EMPTY) {
-			HoldingType boxContains = m.getBoxes().get( b.getLocation() ).getContains();
-			
+			HoldingType boxContains = m.getBoxes().get(b.getLocation()).getContains();
+
 			// check type of obj matches box type, or box is empty
 			if (m.getP().getH() == boxContains || boxContains == HoldingType.EMPTY) {
 
@@ -179,32 +179,31 @@ public class Controller implements MouseListener {
 
 					// set box type if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						//in model
+						// in model
 						m.getBoxes().get(b.getLocation()).setContains(m.getP().getH());
 					}
-					
+
 					m.getBoxes().get(b.getLocation()).incrementCount();
 					m.getP().setH(HoldingType.EMPTY);
-					
+
 				}
-				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH() + 
-						"\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + 
-						"\nBox contains = " + m.getBoxes().get( b.getLocation() ).getContains() + "\nBox count = " + 
-						m.getBoxes().get( b.getLocation() ).getCount() );
+				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
+						+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
+						+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
+						+ m.getBoxes().get(b.getLocation()).getCount());
 			}
 		} else {
 			System.out.println("you can't put this type of object in this box");
-			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH() + 
-					"\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + 
-					"\nBox contains = " + m.getBoxes().get( b.getLocation() ).getContains() +
-					"\nBox count = " + m.getBoxes().get( b.getLocation() ).getCount() );
+			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
+					+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
+					+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
+					+ m.getBoxes().get(b.getLocation()).getCount());
 		}
-		
+
 		type = m.getBoxes().get(b.getLocation()).getContains().name();
 		return type;
 	}
-	
-	
+
 	@Override
 	public void mousePressed(MouseEvent e) {
 		v.setPlayerDest(e.getComponent().getLocation());
@@ -218,7 +217,7 @@ public class Controller implements MouseListener {
 			if (b.getHoldingType() == HoldingType.BOX) {
 				System.out.println("\nBox button clicked");
 				putDownRequest = true;
-				//System.out.println(this);
+				// System.out.println(this);
 			} else {
 				pickUpRequest = true;
 				// System.out.println("pickuprequest = " + pickUpRequest);
