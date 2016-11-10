@@ -22,11 +22,14 @@ public abstract class Character implements MoveObjects {
 		// destination
 		switch (direction) {
 		// SOUTHEAST
+		case NORTH:
+			
+			
 		case SOUTHEAST: // dest x&y > pos x&y
 			if (currentPos.getX() != destination.getX()) {
 				if (destination.getX() - currentPos.getX() < velocity) {
 					// don't overshoot destination
-					currentPos.translate((int) (destination.getX() - currentPos.getX()), 0);
+					currentPos.translate((int) (destination.getX()- currentPos.getX()), 0);
 				} else {
 					currentPos.translate(velocity, 0);
 				}
@@ -127,6 +130,29 @@ public abstract class Character implements MoveObjects {
 	 * make directions Enums (enum class already made)
 	 */
 	public void updateDirection() {
+	//moving North
+//		if((getAngle() > 60) && (getAngle() <= 120)){
+//			direction = Direction.NORTH;
+//		//moving south
+//		}else if((getAngle() > 240) && (getAngle() <= 300)){
+//			direction = Direction.SOUTH;
+//		}else if((getAngle() > 300) && (getAngle() <= 30)){
+//			direction = Direction.EAST;
+//		}else if((getAngle() > 150) && (getAngle() <= 210)){
+//			direction = Direction.WEST;
+//		}else if((getAngle() > 30) && (getAngle() <= 60)){
+//			direction = Direction.NORTHEAST;
+//			
+//		}else if((getAngle() > 120) && (getAngle() <= 150)){
+//			direction = Direction.NORTHWEST;
+//		}else if((getAngle() > 300) && (getAngle() <= 330)){
+//			direction = Direction.SOUTHEAST;
+//		}else{
+//			direction = Direction.SOUTHWEST;
+//		}
+//		System.out.println(direction);
+		
+	
 		//System.out.println("updateDirection");
 		if (currentPos.getY() < destination.getY()) {
 			// then we're moving generally south
@@ -147,6 +173,25 @@ public abstract class Character implements MoveObjects {
 				direction = Direction.NORTHEAST;
 			}
 		}
+	}
+	
+	
+	
+	
+	/**
+	 * 
+	 * @param location:currentPos
+	 * @param target:destination
+	 * @return angle for use in finding direction
+	 */
+	public float getAngle() {
+	    float angle = (float) Math.toDegrees(Math.atan2(destination.y - currentPos.y, destination.x - currentPos.x));
+
+	    if(angle < 0){
+	        angle += 360;
+	    }
+
+	    return angle;
 	}
 /**
  * @author Auzi

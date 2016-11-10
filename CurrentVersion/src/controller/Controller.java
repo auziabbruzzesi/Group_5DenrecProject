@@ -60,6 +60,7 @@ public class Controller implements MouseListener {
 				//v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 //				Point nP = new Point((int)w.getCurrentPos().getX() + w.getVelocity() , 
 //						(int)w.getCurrentPos().getY());
+//				System.out.println(v.getJPanel());
 //				v.getJPanel().getComponentAt( w.getCurrentPos() ).setLocation(nP);
 				
 				v.repaint();
@@ -316,7 +317,7 @@ public class Controller implements MouseListener {
 
 
 
-        String[] myNames = {"pNORTH.png","pSOUTH.png","pEAST.png","WEST.png","pNORTHEAST.png","pNORTHWEST.png","pSOUTHEAST.png","pSOUTHWEST.png","concrete.png","oyster.png"};
+        String[] myNames = {"pNORTH.png","pSOUTH.png","pEAST.png","pWEST.png","pNORTHEAST.png","pNORTHWEST.png","pSOUTHEAST.png","pSOUTHWEST.png","concrete.png","oyster.png"};
         pics = new ImageIcon[myNames.length];
         int i = 0;
         for (String s : myNames) {
