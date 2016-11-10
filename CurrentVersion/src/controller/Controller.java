@@ -50,7 +50,7 @@ public class Controller implements MouseListener {
 	final int oystSprite = 1;
 	final int concSprite = 0;
 	int picNum = 0;
-	BufferedImage[] pics;// holds all sprites for all characters
+	ImageIcon[] pics;// holds all sprites for all characters
 
 	Timer wTimer = new Timer(30, new ActionListener(){
 		@Override
@@ -82,8 +82,8 @@ public class Controller implements MouseListener {
 		this.v = v;
 		
 		initSprites();
-		oystIcon = new ImageIcon(pics[oystSprite]);
-		concIcon = new ImageIcon(pics[concSprite]);
+		oystIcon = pics[oystSprite];
+		concIcon = pics[concSprite];
 
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
@@ -304,32 +304,36 @@ public class Controller implements MouseListener {
 		}
 	}
 
-	public void initSprites() {
-		System.out.println("in View's initSprites function");
+    public void initSprites() {
+        System.out.println("in View's initSprites function");
 
-		pics = new BufferedImage[numSprites];
+        pics = new ImageIcon[15];
 
-		String[] myNames = { "concrete.png", "oyster.png", "pDOWN.png", "pLEFT.png", "pRIGHT.png", "pUP.png" };
 
-		for (int i = 0; i < numSprites; i++) {
-			pics[i] = createImage(myNames[i]);
-		}
-	}
+        String[] myNames = {"pUP.png","pDOWN.png","pRIGHT.png","pLEFT.png","pRIGHT.png","pLEFT.png","pRIGHT.png","pLEFT.png","concrete.png","oyster.png"};
+        int i = 0;
+        for (String s : myNames) {
+            pics[i] = createImage(s);
+            
+            i++;
+
+        }
+    }
 
 	// Read image from file and return
-	private BufferedImage createImage(String n) {
-		BufferedImage bufferedImage;
-		try {
-//			System.out.println("About to read an image");
-			bufferedImage = ImageIO.read(new File("src/Sprites/Player/copy/" + n));
-//			System.out.println("bufferedImage");
-			return bufferedImage;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
 
-		// TODO: Change this method so you can load other orc animation bitmaps
-		// DONE (takes parameter now)
-	}
+    private ImageIcon createImage(String n){
+        ImageIcon imageIcon;
+        try {
+            System.out.println("About to read an image");
+            imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
+            System.out.println("bufferedImage");
+            return imageIcon;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+        
+        // TODO: Change this method so you can load other orc animation bitmaps DONE (takes parameter now)
+    }
 }
