@@ -5,7 +5,7 @@ import java.awt.Point;
 public abstract class Character implements MoveObjects {
 	private Point currentPos;
 	private Point destination = currentPos;
-	private int velocity = 7;
+	private int velocity;
 	private HoldingType h = HoldingType.EMPTY;
 	String direction = "";
 

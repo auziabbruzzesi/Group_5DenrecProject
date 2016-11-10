@@ -28,31 +28,31 @@ import model.Box;
 import model.HoldingType;
 import model.Model;
 import model.Player;
+import model.Wave;
 import view.View;
 
 public class Controller implements MouseListener {
-	
+
 	private static Model m;
 	private static View v;
 	private boolean pickUpRequest = false;
 	private boolean putDownRequest = false;
 	button b = new button();
 	button player = new button();
-	
-	//sprite-related variables
+	private int numWaves = 5;
+
+	// sprite-related variables
 	ImageIcon oystIcon;
 	ImageIcon concIcon;
-	//JButton button = new JButton(icon);
+	// JButton button = new JButton(icon);
 	final int numSprites = 6;
 	final int startPSprites = 0;
 	final int oystSprite = 1;
 	final int concSprite = 0;
 	int picNum = 0;
-	BufferedImage[] pics;//holds all sprites for all characters
-	
-	
+	BufferedImage[] pics;// holds all sprites for all characters
 
-	Timer timer = new Timer(0, new ActionListener() {
+	Timer timer = new Timer(10, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -81,11 +81,11 @@ public class Controller implements MouseListener {
 	public Controller(Model m, View v) {
 		this.m = m;
 		this.v = v;
-
+		
 		initSprites();
 		oystIcon = new ImageIcon(pics[oystSprite]);
 		concIcon = new ImageIcon(pics[concSprite]);
-		
+
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
 
@@ -106,34 +106,46 @@ public class Controller implements MouseListener {
 
 		}
 
+		for (Wave w : m.getWaves().values()) {
+				System.out.println("Wave at: " + w.getCurrentPos());
+				button k = new button();
+				k.setMargin(new Insets(0, 0, 0, 0));
+				k.setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
+
+				k.setBackground(Color.pink);
+				// k.setIcon(defaultIcon);
+
+				v.getJPanel().add(k);
+		}
+
 		for (BeachObject bo : m.getBeachObject().values()) {
-			button l = new button();
+			button s = new button();
 			// The line of code below fixes the issue of displaying c/o text in
 			// windows
 			// note, if this starts giving trouble later, try:
 			// l.setBorder(null);
-			l.setMargin(new Insets(0, 0, 0, 0));
+			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
-			l.setBounds(bo.getCurrentPos().x, bo.getCurrentPos().y, BeachObject.beachObjDimensions,
+			s.setBounds(bo.getCurrentPos().x, bo.getCurrentPos().y, BeachObject.beachObjDimensions,
 					BeachObject.beachObjDimensions);
 
 			if (bo.getH() == HoldingType.CONCRETE) {
-				l.setHoldingType(HoldingType.CONCRETE);
-				l.setText("c");
-				l.setBackground(Color.gray);
-				l.addMouseListener(this);
-				l.setIcon(concIcon);
+				s.setHoldingType(HoldingType.CONCRETE);
+				s.setText("c");
+				s.setBackground(Color.gray);
+				s.addMouseListener(this);
+				s.setIcon(concIcon);
 			} else if (bo.getH() == HoldingType.OYSTER) {
-				l.setHoldingType(HoldingType.OYSTER);
-				l.setText("o");
-				l.setBackground(Color.blue);
-				l.addMouseListener(this);
-				l.setIcon(oystIcon);
+				s.setHoldingType(HoldingType.OYSTER);
+				s.setText("o");
+				s.setBackground(Color.blue);
+				s.addMouseListener(this);
+				s.setIcon(oystIcon);
 			}
 
 			// BEACH OBJECT ADDED TO JPANEL HERE (but created in model)
-			v.getJPanel().add(l);
+			v.getJPanel().add(s);
 		}
 
 		player.setMargin(new Insets(0, 0, 0, 0));
@@ -184,8 +196,8 @@ public class Controller implements MouseListener {
 				putDownRequest = false;
 			}
 		} // end if(pickup)
-		// else if we're still moving toward destination
-		else{
+			// else if we're still moving toward destination
+		else {
 			player.setLocation(m.getP().getCurrentPos());
 		}
 	}
@@ -291,32 +303,33 @@ public class Controller implements MouseListener {
 			this.setPreferredSize(new Dimension(20, 20));
 		}
 	}
-	
+
 	public void initSprites() {
 		System.out.println("in View's initSprites function");
 
 		pics = new BufferedImage[numSprites];
 
-		String[] myNames = { "concrete.png", "oyster.png", "pDOWN.png",  "pLEFT.png", "pRIGHT.png", "pUP.png"};
+		String[] myNames = { "concrete.png", "oyster.png", "pDOWN.png", "pLEFT.png", "pRIGHT.png", "pUP.png" };
 
 		for (int i = 0; i < numSprites; i++) {
 			pics[i] = createImage(myNames[i]);
 		}
 	}
 
-	//Read image from file and return
-    private BufferedImage createImage(String n){
-    	BufferedImage bufferedImage;
-    	try {
-    		System.out.println("About to read an image");
-    		bufferedImage = ImageIO.read(new File("src/Sprites/Player/copy/" + n));
-    		System.out.println("bufferedImage");
-    		return bufferedImage;
-    	} catch (IOException e) {
-    		e.printStackTrace();
-    	}
-    	return null;
-    	
-    	// TODO: Change this method so you can load other orc animation bitmaps DONE (takes parameter now)
-    }
+	// Read image from file and return
+	private BufferedImage createImage(String n) {
+		BufferedImage bufferedImage;
+		try {
+			System.out.println("About to read an image");
+			bufferedImage = ImageIO.read(new File("src/Sprites/Player/copy/" + n));
+			System.out.println("bufferedImage");
+			return bufferedImage;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+		// TODO: Change this method so you can load other orc animation bitmaps
+		// DONE (takes parameter now)
+	}
 }

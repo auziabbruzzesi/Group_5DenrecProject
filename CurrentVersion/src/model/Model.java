@@ -27,11 +27,12 @@ public class Model {
 	// ArrayList<BeachObject>();
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
-	private Collection<Wave> waves = new ArrayList<Wave>();
+	private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
 
 	public Model() {
 		Random r = new Random();
 		Boolean canPlace;
+
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < 4; i++) {
 			Point p = new Point((2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
@@ -39,6 +40,12 @@ public class Model {
 			this.boxes.put(p, new Box(p));
 		}
 
+		//WAVES ARE CREATED HERE
+		for(int i=0; i<5; i++){
+			Point p = new Point( View.viewWidth - Wave.waveWidth, i * View.viewHeight + Wave.waveSpawnSpacing );
+			this.waves.put(p, new Wave(p));
+		}
+		
 		// BEACH OBJECTS ARE CREATED HERE
 		for (int i = 0; i < 20; i++) {
 			do {
@@ -319,11 +326,11 @@ public class Model {
 		this.boxes = boxes;
 	}
 
-	public Collection<Wave> getWaves() {
+	public HashMap<Point, Wave> getWaves() {
 		return waves;
 	}
 
-	public void setWaves(Collection<Wave> waves) {
+	public void setWaves(HashMap<Point, Wave> waves) {
 		this.waves = waves;
 	}
 
