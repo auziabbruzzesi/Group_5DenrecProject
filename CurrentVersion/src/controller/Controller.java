@@ -152,7 +152,7 @@ public class Controller implements MouseListener {
 				Player.playerDimensions);
 		v.getJPanel().add(player);
 		
-		wTimer.start();
+		//wTimer.start();
 	}
 
 	/**
