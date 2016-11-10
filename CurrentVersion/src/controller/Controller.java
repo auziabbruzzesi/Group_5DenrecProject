@@ -310,7 +310,7 @@ public class Controller implements MouseListener {
         pics = new ImageIcon[15];
 
 
-        String[] myNames = {"pNORTH.png","pSOUTH.png","pEAST.png","WEST.png","pRIGHT.png","pLEFT.png","pRIGHT.png","pLEFT.png","concrete.png","oyster.png"};
+        String[] myNames = {"pNORTH.png","pSOUTH.png","pEAST.png","WEST.png","pNORTHEAST.png","pNORTHWEST.png","pSOUTHEAST.png","pSOUTHWEST.png","concrete.png","oyster.png"};
         int i = 0;
         for (String s : myNames) {
             pics[i] = createImage(s);
