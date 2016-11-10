@@ -26,6 +26,7 @@ public class Main {
 	public static void main(String[] args) {
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
+		c.wTimer.start();
 		v.repaint();
 	}
 
