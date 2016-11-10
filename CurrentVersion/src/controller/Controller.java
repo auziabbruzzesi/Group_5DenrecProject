@@ -45,8 +45,8 @@ public class Controller implements MouseListener {
 	//JButton button = new JButton(icon);
 	final int numSprites = 6;
 	final int startPSprites = 0;
-	final int oystSprite = 4;
-	final int concSprite = 5;
+	final int oystSprite = 1;
+	final int concSprite = 0;
 	int picNum = 0;
 	BufferedImage[] pics;//holds all sprites for all characters
 	
@@ -309,7 +309,8 @@ public class Controller implements MouseListener {
     	BufferedImage bufferedImage;
     	try {
     		System.out.println("About to read an image");
-    		bufferedImage = ImageIO.read(new File("/Sprites/Player/" + n));
+    		bufferedImage = ImageIO.read(new File("src/Sprites/Player/copy/" + n));
+    		System.out.println("bufferedImage");
     		return bufferedImage;
     	} catch (IOException e) {
     		e.printStackTrace();
