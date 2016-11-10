@@ -52,25 +52,24 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	BufferedImage[] pics;// holds all sprites for all characters
 
-	Timer timer = new Timer(10, new ActionListener() {
+	Timer wTimer = new Timer(30, new ActionListener(){
+		@Override
+		public void actionPerformed(ActionEvent e){
+			for(Wave w : m.getWaves().values()){
+				w.move();
+				v.repaint();
+			}
+		}
+	});
+	
+	Timer pTimer = new Timer(10, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-
 			m.getP().updateDirection();
 			m.getP().move();
-			// System.out.println(
-			// "currentPos: " + m.getP().getCurrentPos() + " Current
-			// destination: " + m.getP().getDestination());
 			updatePlayerMV();
 			v.repaint();
-
-			// try {
-			// Thread.sleep(100);
-			// } catch (InterruptedException e2) {
-			// e2.printStackTrace();
-			// }
-
 		}
 	});
 
@@ -106,8 +105,8 @@ public class Controller implements MouseListener {
 
 		}
 
-		for (Wave w : m.getWaves().values()) {
-				System.out.println("Wave at: " + w.getCurrentPos());
+		for (Wave w : m.getWaves().values() ) {
+//				System.out.println("Wave at: " + w.getCurrentPos());
 				button k = new button();
 				k.setMargin(new Insets(0, 0, 0, 0));
 				k.setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
@@ -116,14 +115,13 @@ public class Controller implements MouseListener {
 				// k.setIcon(defaultIcon);
 
 				v.getJPanel().add(k);
+				System.out.println("Added wave button at: " + k.getLocationOnScreen());
 		}
 
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
-			// The line of code below fixes the issue of displaying c/o text in
-			// windows
-			// note, if this starts giving trouble later, try:
-			// l.setBorder(null);
+			// The line of code below fixes the issue of displaying c/o text in windows
+			// note, if this starts giving trouble later, try: l.setBorder(null);
 			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
@@ -153,6 +151,8 @@ public class Controller implements MouseListener {
 		player.setBounds(Player.startPosition.x, Player.startPosition.y, Player.playerDimensions,
 				Player.playerDimensions);
 		v.getJPanel().add(player);
+		
+		wTimer.start();
 	}
 
 	/**
@@ -167,7 +167,7 @@ public class Controller implements MouseListener {
 		// m.getP().getCurrentPos().distance(m.getP().getDestination()));
 
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
-			timer.stop();
+			pTimer.stop();
 			// System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
@@ -261,7 +261,7 @@ public class Controller implements MouseListener {
 			}
 
 		}
-		timer.start();
+		pTimer.start();
 	}
 
 	@Override
@@ -320,9 +320,9 @@ public class Controller implements MouseListener {
 	private BufferedImage createImage(String n) {
 		BufferedImage bufferedImage;
 		try {
-			System.out.println("About to read an image");
+//			System.out.println("About to read an image");
 			bufferedImage = ImageIO.read(new File("src/Sprites/Player/copy/" + n));
-			System.out.println("bufferedImage");
+//			System.out.println("bufferedImage");
 			return bufferedImage;
 		} catch (IOException e) {
 			e.printStackTrace();

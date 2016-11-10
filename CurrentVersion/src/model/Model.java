@@ -42,7 +42,7 @@ public class Model {
 
 		//WAVES ARE CREATED HERE
 		for(int i=0; i<5; i++){
-			Point p = new Point( View.viewWidth - Wave.waveWidth, i * View.viewHeight + Wave.waveSpawnSpacing );
+			Point p = new Point( View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing );
 			this.waves.put(p, new Wave(p));
 		}
 		
