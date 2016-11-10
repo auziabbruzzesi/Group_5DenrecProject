@@ -195,6 +195,16 @@ public abstract class Character implements MoveObjects {
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
 	}
+	public Direction getDirection() {
+		return direction;
+	}
+
+
+	public void setDirection(Direction direction) {
+		this.direction = direction;
+	}
+
+
 	public void setCurrentPos(double d, double e){
 		this.currentPos.setLocation(d, e);
 	}

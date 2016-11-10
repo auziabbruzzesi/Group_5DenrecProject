@@ -47,8 +47,8 @@ public class Controller implements MouseListener {
 	// JButton button = new JButton(icon);
 	final int numSprites = 6;
 	final int startPSprites = 0;
-	final int oystSprite = 1;
-	final int concSprite = 0;
+	final int oystSprite = 9;
+	final int concSprite = 8;
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 
@@ -67,6 +67,7 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
+			player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
 			v.repaint();
@@ -307,10 +308,10 @@ public class Controller implements MouseListener {
     public void initSprites() {
         System.out.println("in View's initSprites function");
 
-        pics = new ImageIcon[15];
 
 
         String[] myNames = {"pNORTH.png","pSOUTH.png","pEAST.png","WEST.png","pNORTHEAST.png","pNORTHWEST.png","pSOUTHEAST.png","pSOUTHWEST.png","concrete.png","oyster.png"};
+        pics = new ImageIcon[myNames.length];
         int i = 0;
         for (String s : myNames) {
             pics[i] = createImage(s);
