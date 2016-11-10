@@ -36,16 +36,20 @@ public class Model {
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < 4; i++) {
 			Point p = new Point((2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
-					i * Box.boxToBoxInterval + 20);// Auzi did this. this is bad. please fix it when the time comes.
+					i * Box.boxToBoxInterval + 20);// Auzi did this. this is
+													// bad. please fix it when
+													// the time comes.
 			this.boxes.put(p, new Box(p));
 		}
 
-		//WAVES ARE CREATED HERE
-		for(int i=0; i<5; i++){
-			Point p = new Point( View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing );
+		// WAVES ARE CREATED HERE
+		for (int i = 0; i < 5; i++) {
+
+			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+			// System.out.println("wave at pt: " + p);
 			this.waves.put(p, new Wave(p));
 		}
-		
+
 		// BEACH OBJECTS ARE CREATED HERE
 		for (int i = 0; i < 20; i++) {
 			do {
@@ -290,9 +294,6 @@ public class Model {
 
 		return canCreate;
 	}
-	
-	
-	
 
 	public int getScore() {
 		return score;
@@ -338,4 +339,14 @@ public class Model {
 		this.p.setCurrentPos(updatedPos);
 	}
 
+	public void resetWaves() {
+		for (int i = 0; i < 5; i++) {
+			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+			// System.out.println("wave at pt: " + p);
+			for(Wave w : waves.values()){
+				w.setCurrentPos(p);
+			}
+		}
+		
+	}
 }

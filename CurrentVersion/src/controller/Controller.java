@@ -40,6 +40,8 @@ public class Controller implements MouseListener {
 	button b = new button();
 	button player = new button();
 	private int numWaves = 5;
+	private button[] waveBtns = new button[numWaves];
+	int i = 0;
 
 	// sprite-related variables
 	ImageIcon oystIcon;
@@ -52,22 +54,24 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 
-	Timer wTimer = new Timer(30, new ActionListener(){
+	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
-		public void actionPerformed(ActionEvent e){
-			for(Wave w : m.getWaves().values()){
+		public void actionPerformed(ActionEvent e) {
+			for (Wave w : m.getWaves().values()) {
 				w.move();
-				//v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
-//				Point nP = new Point((int)w.getCurrentPos().getX() + w.getVelocity() , 
-//						(int)w.getCurrentPos().getY());
-//				v.getJPanel().getComponentAt( w.getCurrentPos() ).setLocation(nP);
-				
+				// v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
+				// Point nP = new Point((int)w.getCurrentPos().getX() +
+				// w.getVelocity() ,
+				// (int)w.getCurrentPos().getY());
+				//
+				// v.getJPanel().getComponentAt(w.getCurrentPos()).setLocation(nP);
+
 				v.repaint();
-				//player.setLocation(m.getP().getCurrentPos());
+				// player.setLocation(m.getP().getCurrentPos());
 			}
 		}
 	});
-	
+
 	Timer pTimer = new Timer(10, new ActionListener() {
 
 		@Override
@@ -87,7 +91,7 @@ public class Controller implements MouseListener {
 	public Controller(Model m, View v) {
 		this.m = m;
 		this.v = v;
-		
+
 		initSprites();
 		oystIcon = pics[oystSprite];
 		concIcon = pics[concSprite];
@@ -112,23 +116,27 @@ public class Controller implements MouseListener {
 
 		}
 
-		for (Wave w : m.getWaves().values() ) {
-//				System.out.println("Wave at: " + w.getCurrentPos());
-				button k = new button();
-				k.setMargin(new Insets(0, 0, 0, 0));
-				k.setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
+		for (Wave w : m.getWaves().values()) {
+			// System.out.println("Wave at: " + w.getCurrentPos());
 
-				k.setBackground(Color.pink);
-				// k.setIcon(defaultIcon);
+			waveBtns[i].setMargin(new Insets(0, 0, 0, 0));
+			waveBtns[i].setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
 
-				v.getJPanel().add(k);
-				System.out.println("Added wave button at: " + k.getLocationOnScreen());
+			waveBtns[i].setBackground(Color.pink);
+			// k.setIcon(defaultIcon);
+
+			v.getJPanel().add(waveBtns[i]);
+			i++;
+			// System.out.println("Added wave button at: " +
+			// k.getLocationOnScreen());
 		}
-
+		i = 0;
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
-			// The line of code below fixes the issue of displaying c/o text in windows
-			// note, if this starts giving trouble later, try: l.setBorder(null);
+			// The line of code below fixes the issue of displaying c/o text in
+			// windows
+			// note, if this starts giving trouble later, try:
+			// l.setBorder(null);
 			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
@@ -158,8 +166,8 @@ public class Controller implements MouseListener {
 		player.setBounds(Player.startPosition.x, Player.startPosition.y, Player.playerDimensions,
 				Player.playerDimensions);
 		v.getJPanel().add(player);
-		
-		//wTimer.start();
+
+		// wTimer.start();
 	}
 
 	/**
@@ -311,36 +319,52 @@ public class Controller implements MouseListener {
 		}
 	}
 
-    public void initSprites() {
-        System.out.println("in View's initSprites function");
+	public void resetWave(){
+		
+		for(button b : waveBtns){
+//			v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(false);			
+		}
 
+		m.resetWaves();
+		int i = 0;
+		for(Wave w : m.getWaves().values()){
+			waveBtns[i].setLocation(w.getCurrentPos());
+			i++;
+		}
+		for(button b : waveBtns){
+//			v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(true);			
+		}
+	}
 
+	public void initSprites() {
 
-        String[] myNames = {"pNORTH.png","pSOUTH.png","pEAST.png","WEST.png","pNORTHEAST.png","pNORTHWEST.png","pSOUTHEAST.png","pSOUTHWEST.png","concrete.png","oyster.png"};
-        pics = new ImageIcon[myNames.length];
-        int i = 0;
-        for (String s : myNames) {
-            pics[i] = createImage(s);
-            
-            i++;
+		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
+				"pSOUTHEAST.png", "pSOUTHWEST.png", "concrete.png", "oyster.png" };
+		pics = new ImageIcon[myNames.length];
+		int i = 0;
+		for (String s : myNames) {
+			pics[i] = createImage(s);
 
-        }
-    }
+			i++;
+
+		}
+	}
 
 	// Read image from file and return
 
-    private ImageIcon createImage(String n){
-        ImageIcon imageIcon;
-        try {
-            System.out.println("About to read an image");
-            imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
-            System.out.println("bufferedImage");
-            return imageIcon;
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return null;
-        
-        // TODO: Change this method so you can load other orc animation bitmaps DONE (takes parameter now)
-    }
+	private ImageIcon createImage(String n) {
+		ImageIcon imageIcon;
+		try {
+			// System.out.println("About to read an image");
+			imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
+			// System.out.println("bufferedImage");
+			return imageIcon;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+
+		// TODO: Change this method so you can load other orc animation bitmaps
+		// DONE (takes parameter now)
+	}
 }
