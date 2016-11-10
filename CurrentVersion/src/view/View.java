@@ -22,6 +22,7 @@ import model.Player;
 public class View extends JFrame {
 	public static final int viewHeight = 650;
 	public static final int viewWidth = 1200;
+	public static final int erosionInterval = 300; // point where you lose
 
 	
 
@@ -51,6 +52,7 @@ public class View extends JFrame {
 
 		setVisible(true);
 	}
+	
 
 	// Inner classes
 	// if we have time, change this to a component, rather than a whole jpanel
@@ -58,9 +60,15 @@ public class View extends JFrame {
 
 		protected void paintComponent(Graphics g) {
 			g.setColor(Color.BLUE);
-			g.fillRect((2 * viewWidth) / 3, 0, viewHeight, viewWidth);
+			g.fillRect((2 * viewWidth / 3) , 0, viewHeight, viewWidth);
+			// how to get water to move 
+		
+			//g.fillRect((2 * viewWidth / 3) - 300, 0, viewHeight, viewWidth);
+			
 			g.setColor(Color.yellow);
-			g.fillRect(0, 0, (2 * viewWidth) / 3, viewHeight);
+			
+			//g.fillRect(0, 0, ((2 * viewWidth) / 3) - 300, viewHeight);
+			g.fillRect(0, 0, ((2 * viewWidth) / 3), viewHeight);
 		}
 	}
 

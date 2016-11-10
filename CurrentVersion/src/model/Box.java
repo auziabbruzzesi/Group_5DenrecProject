@@ -23,6 +23,9 @@ public class Box {
 		this.capacity = capacity;
 	}
 
+	public Box() {
+		// TODO Auto-generated constructor stub
+	}
 	//Setters and Getters
 	public Point getPosition() {
 		return position;
