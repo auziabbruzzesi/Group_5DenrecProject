@@ -119,14 +119,14 @@ public class Controller implements MouseListener {
 		for (Wave w : m.getWaves().values()) {
 			// System.out.println("Wave at: " + w.getCurrentPos());
 
-			waveBtns[i].setMargin(new Insets(0, 0, 0, 0));
-			waveBtns[i].setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
+			//waveBtns[i].setMargin(new Insets(0, 0, 0, 0));
+			//waveBtns[i].setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
 
-			waveBtns[i].setBackground(Color.pink);
+			//waveBtns[i].setBackground(Color.pink);
 			// k.setIcon(defaultIcon);
 
-			v.getJPanel().add(waveBtns[i]);
-			i++;
+			//v.getJPanel().add(waveBtns[i]);
+			//i++;
 			// System.out.println("Added wave button at: " +
 			// k.getLocationOnScreen());
 		}
