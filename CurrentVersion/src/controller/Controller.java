@@ -59,13 +59,13 @@ public class Controller implements MouseListener {
 		public void actionPerformed(ActionEvent e) {
 			for (Wave w : m.getWaves().values()) {
 				w.move();
-				// v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
-				// Point nP = new Point((int)w.getCurrentPos().getX() +
-				// w.getVelocity() ,
-				// (int)w.getCurrentPos().getY());
-				//
-				// v.getJPanel().getComponentAt(w.getCurrentPos()).setLocation(nP);
 
+				//v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
+//				Point nP = new Point((int)w.getCurrentPos().getX() + w.getVelocity() , 
+//						(int)w.getCurrentPos().getY());
+//				System.out.println(v.getJPanel());
+//				v.getJPanel().getComponentAt( w.getCurrentPos() ).setLocation(nP);
+				
 				v.repaint();
 				// player.setLocation(m.getP().getCurrentPos());
 			}
@@ -344,7 +344,6 @@ public class Controller implements MouseListener {
 		int i = 0;
 		for (String s : myNames) {
 			pics[i] = createImage(s);
-
 			i++;
 
 		}
