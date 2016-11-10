@@ -7,7 +7,7 @@ public abstract class Character implements MoveObjects {
 	private Point destination = currentPos;
 	private int velocity;
 	private HoldingType h = HoldingType.EMPTY;
-	String direction = "";
+	Direction direction = Direction.EAST;//default
 
 		
 	/**
@@ -22,7 +22,7 @@ public abstract class Character implements MoveObjects {
 		// destination
 		switch (direction) {
 		// SOUTHEAST
-		case "southeast": // dest x&y > pos x&y
+		case SOUTHEAST: // dest x&y > pos x&y
 			if (currentPos.getX() != destination.getX()) {
 				if (destination.getX() - currentPos.getX() < velocity) {
 					// don't overshoot destination
@@ -41,7 +41,7 @@ public abstract class Character implements MoveObjects {
 			}
 			break;
 		// SOUTHWEST
-		case "southwest": // dest x< pos x, dest y > pos y (Moving down and
+		case SOUTHWEST: // dest x< pos x, dest y > pos y (Moving down and
 							// left)
 			// Handling x
 			if (currentPos.getX() != destination.getX()) {
@@ -63,7 +63,7 @@ public abstract class Character implements MoveObjects {
 			}
 			break;
 		// NORTHEAST
-		case "northeast": // dest x > pos x, dest y < pos y
+		case NORTHEAST: // dest x > pos x, dest y < pos y
 			// Handling x
 			if (currentPos.getX() != destination.getX()) {
 				if (destination.getX() - currentPos.getX() < velocity) {
@@ -85,7 +85,7 @@ public abstract class Character implements MoveObjects {
 			}
 			break;
 		// NORTHWEST
-		case "northwest":
+		case NORTHWEST:
 			// Handling x
 			if (currentPos.getX() != destination.getX()) {
 				// Handling x
@@ -132,19 +132,19 @@ public abstract class Character implements MoveObjects {
 			// then we're moving generally south
 			if (currentPos.getX() < destination.getX()) {
 				// then we're moving southeast
-				direction = "southeast";
+				direction = Direction.SOUTHEAST;
 			} else if (currentPos.getX() > destination.getX()) {
 				// then we're moving southwest
-				direction = "southwest";
+				direction = Direction.SOUTHWEST;
 			}
 		} else if (currentPos.getY() > destination.getY()) {
 			// then we're moving generally north
 			if (currentPos.getX() > destination.getX()) {
 				// then we're moving northwest
-				direction = "northwest";
+				direction = Direction.NORTHWEST;
 			} else if (currentPos.getX() < destination.getX()) {
 				// then we're moving northeast
-				direction = "northeast";
+				direction = Direction.NORTHEAST;
 			}
 		}
 	}
