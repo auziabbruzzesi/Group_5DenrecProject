@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 
 import controller.Controller.button;
 import model.Player;
+import model.Wave;
 
 public class View extends JFrame {
 	public static final int viewHeight = 650;
@@ -27,9 +28,6 @@ public class View extends JFrame {
 
 	private ArrayList<button> waveBtns = new ArrayList<button>();
 
-	
-	
-	
 	Point playerPos = (new Point(0, 0));
 	Point playerDest = (new Point(200, 200));
 	private int playerDims;
@@ -43,7 +41,6 @@ public class View extends JFrame {
 	// Constructor
 	public View() {
 
-		
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP.setPreferredSize(new Dimension(viewWidth, viewHeight));
@@ -63,17 +60,31 @@ public class View extends JFrame {
 			g.fillRect((2 * viewWidth) / 3, 0, viewHeight, viewWidth);
 			g.setColor(Color.yellow);
 			g.fillRect(0, 0, (2 * viewWidth) / 3, viewHeight);
-			
-			int i=0;
-			for(button wB : waveBtns){
+		
+			for (int i = 0; i<waveBtns.size(); i++) {
 				add(waveBtns.get(i));
-				i++;
 			}
 		}
 	}
 
+	public void resetWaves() {
+		
+		// for (button b : v.getWaveBtns()) {
+		// // v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(false);
+		// }
 
-	
+		int i = 0;
+		for (button wB : waveBtns) {
+			Point a = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+			
+			setSingleWaveBtn(i, a);
+			i++;
+		}
+		// for (button b : v.getWaveBtns()) {
+		// // v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(true);
+		// }
+	}
+
 	// Setters & getters
 	public void setPlayerDims(int d) {
 		playerDims = d;
@@ -103,27 +114,22 @@ public class View extends JFrame {
 	public ArrayList<button> getWaveBtns() {
 		return waveBtns;
 	}
-	
+
 	public button getSingleWaveBtn(int i) {
 		return waveBtns.get(i);
 	}
 
 	public void setSingleWaveBtn(int i, Point nP) {
-		waveBtns.get(i).setLocation(nP);;
+		waveBtns.get(i).setLocation(nP);
+		
 	}
-	
+
 	public void setWaveBtns(ArrayList<button> waveBtns) {
 		this.waveBtns = waveBtns;
 	}
-	public void addToWaveBtns(button wB){
+
+	public void addToWaveBtns(button wB) {
 		this.waveBtns.add(wB);
 	}
 
 }// end View class
-
-// public class button extends JButton {
-// @Override
-// protected void paintComponent(Graphics g) {
-// this.setBounds(50, 50, 30, 30);
-// }
-// }

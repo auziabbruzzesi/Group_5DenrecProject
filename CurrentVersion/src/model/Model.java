@@ -28,6 +28,7 @@ public class Model {
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
+	private int numWaves = 6;
 
 	public Model() {
 		Random r = new Random();
@@ -43,7 +44,7 @@ public class Model {
 		}
 
 		// WAVES ARE CREATED HERE
-		for (int i = 0; i < 5; i++) {
+		for (int i = 0; i < numWaves; i++) {
 
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 			// System.out.println("wave at pt: " + p);
@@ -73,17 +74,6 @@ public class Model {
 					}
 				}
 			} while (!canPlace);
-
-		}
-		// WAVES CREATED HERE
-		for (int i = 0; i < 4; i++) {
-			// create point and check if they overlap
-			Point p = new Point(r.nextInt(Wave.waveSpawnSpacing), r.nextInt(Wave.waveSpawnSpacing));
-			if (checkBeachObjectOverlap(p) && checkBoxOverlap(p))
-				canPlace = true;
-			else {
-				canPlace = false;
-			}
 
 		}
 
@@ -340,13 +330,11 @@ public class Model {
 	}
 
 	public void resetWaves() {
-		for (int i = 0; i < 5; i++) {
+		int i=0;
+		for (Wave w : waves.values()) {
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			// System.out.println("wave at pt: " + p);
-			for(Wave w : waves.values()){
-				w.setCurrentPos(p);
-			}
+			w.setCurrentPos(p);
+			i++;
 		}
-		
 	}
 }

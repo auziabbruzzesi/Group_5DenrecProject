@@ -41,13 +41,12 @@ public class Controller implements MouseListener {
 	button b = new button();
 	button player = new button();
 	private int numWaves = 5;
-//	private ArrayList<button> waveBtns = new ArrayList<button>();
 	int i = 0;
 
 	// sprite-related variables
 	ImageIcon oystIcon;
 	ImageIcon concIcon;
-	// JButton button = new JButton(icon);
+
 	final int numSprites = 6;
 	final int startPSprites = 0;
 	final int oystSprite = 9;
@@ -58,35 +57,7 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			int i = 0;
-			for (Wave w : m.getWaves().values()) {
-
-//				Point P = new Point(w.getCurrentPos());
-				
-//				System.out.println("\n\nmodel: " + w.getCurrentPos());
-				
-				
-//				System.out.println("view: " + v.getSingleWaveBtn(i));
-
-//				System.out.println("getCompAt returns: " + v.getJPanel().getComponentAt(P));
-
-//				Point nP = new Point(w.getCurrentPos().x + w.getVelocity(), w.getCurrentPos().y);
-				
-				//move model's version of wave
-				w.setCurrentPos(w.getCurrentPos().getX() - (double)w.getVelocity(), w.getCurrentPos().getY());
-		
-//				System.out.println("getCompAt returns: " + v.getJPanel().getComponentAt(P));
-				
-				//move view's version of wave based on model
-				v.setSingleWaveBtn(i, w.getCurrentPos());
-//				System.out.println("getCompAt returns: " + v.getJPanel().getComponentAt(nP));
-				i++;
-				
-			//	w.move();
-
-				
-//				v.repaint();
-			}
+			moveWave();
 		}
 	});
 
@@ -95,7 +66,7 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
-			//player.setIcon(pics[m.getP().getDirection().getRank()]);
+			// player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
 			v.repaint();
@@ -143,30 +114,24 @@ public class Controller implements MouseListener {
 			k.setBackground(Color.pink);
 			// k.setIcon(defaultIcon);
 
-//			waveBtns.add(k);
-
 			v.addToWaveBtns(k);
-			
-			//v.getJPanel().add(k);
-			
-//			System.out.println("Added wave button at: " + k.getLocationOnScreen());
-		
-		//	System.out.println("waveBtn["+i+"] = " + this.waveBtns.get(i));
-			
+
 			i++;
 		}
-			// System.out.println("Wave at: " + w.getCurrentPos());
-//
-//			waveBtns[i].setMargin(new Insets(0, 0, 0, 0));
-//			waveBtns[i].setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
-//
-//			waveBtns[i].setBackground(Color.pink);
-//			// k.setIcon(defaultIcon);
-//
-//			v.getJPanel().add(waveBtns[i]);
-//			i++;
-//			 //System.out.println("Added wave button at: " + k.getLocationOnScreen());
-//		}
+		// System.out.println("Wave at: " + w.getCurrentPos());
+		//
+		// waveBtns[i].setMargin(new Insets(0, 0, 0, 0));
+		// waveBtns[i].setBounds(w.getCurrentPos().x, w.getCurrentPos().y,
+		// Wave.waveWidth, Wave.waveHeight);
+		//
+		// waveBtns[i].setBackground(Color.pink);
+		// // k.setIcon(defaultIcon);
+		//
+		// v.getJPanel().add(waveBtns[i]);
+		// i++;
+		// //System.out.println("Added wave button at: " +
+		// k.getLocationOnScreen());
+		// }
 		i = 0;
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
@@ -234,7 +199,8 @@ public class Controller implements MouseListener {
 				if (m.getP().pickUp(b.getHoldingType())) {
 
 					System.out.println("player holding type = " + m.getP().getH());
-					//System.out.println("componentat returns: " + v.getJPanel().getComponentAt(b.getLocation()));
+					// System.out.println("componentat returns: " +
+					// v.getJPanel().getComponentAt(b.getLocation()));
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
 				pickUpRequest = false;
@@ -317,6 +283,7 @@ public class Controller implements MouseListener {
 		pTimer.start();
 	}
 
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
@@ -341,6 +308,29 @@ public class Controller implements MouseListener {
 
 	}
 
+	public void moveWave() {
+		int i = 0;
+		for (Wave w : m.getWaves().values()) {
+
+			if (!(w.getCurrentPos().equals(w.getDestination()))) {
+				// move model's version of wave
+				w.move();
+//				System.out.println("in moveWave not reset");
+//				System.out.println("currPos = "+ w.getCurrentPos() + "\ndest = " + w.getDestination());
+
+				// move view's version of wave based on model
+				v.setSingleWaveBtn(i, w.getCurrentPos());
+			} else {
+				m.resetWaves();
+				v.resetWaves();
+				System.out.println("in moveWave reset");
+				System.out.println("currPos = "+ w.getCurrentPos() + "\ndest = " + w.getDestination());
+			}
+			i++;
+		}
+
+	}
+
 	public class button extends JButton {
 		private HoldingType h = HoldingType.EMPTY;
 
@@ -357,23 +347,6 @@ public class Controller implements MouseListener {
 		}
 	}
 
-//	public void resetWave(){
-//		
-//		for(button b : waveBtns){
-////			v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(false);			
-//		}
-//
-//		m.resetWaves();
-//		int i = 0;
-//		for(Wave w : m.getWaves().values()){
-//			waveBtns[i].setLocation(w.getCurrentPos());
-//			i++;
-//		}
-//		for(button b : waveBtns){
-////			v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(true);			
-//		}
-//	}
-
 	public void initSprites() {
 
 		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
@@ -386,7 +359,6 @@ public class Controller implements MouseListener {
 		}
 	}
 
-	
 	// Read image from file and return
 	private ImageIcon createImage(String n) {
 		ImageIcon imageIcon;
