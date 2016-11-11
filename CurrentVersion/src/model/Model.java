@@ -27,7 +27,8 @@ public class Model {
 	// ArrayList<BeachObject>();
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
-	private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
+	// private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
+	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
 
 	public Model() {
@@ -48,7 +49,7 @@ public class Model {
 
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 			// System.out.println("wave at pt: " + p);
-			this.waves.put(p, new Wave(p));
+			this.waves.add(new Wave(p));
 		}
 
 		// BEACH OBJECTS ARE CREATED HERE
@@ -213,6 +214,7 @@ public class Model {
 
 		return canCreate;
 	}
+
 	/**
 	 * A note: This operation would work better and be less costly if we used a
 	 * hashset instead of a hashmap for beachobjects. Did not change because
@@ -317,11 +319,11 @@ public class Model {
 		this.boxes = boxes;
 	}
 
-	public HashMap<Point, Wave> getWaves() {
+	public ArrayList<Wave> getWaves() {
 		return waves;
 	}
 
-	public void setWaves(HashMap<Point, Wave> waves) {
+	public void setWaves(ArrayList<Wave> waves) {
 		this.waves = waves;
 	}
 
@@ -329,13 +331,26 @@ public class Model {
 		this.p.setCurrentPos(updatedPos);
 	}
 
-	public void resetWaves() {
-		int i=0;
-		for (Wave w : waves.values()) {
-			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			w.setCurrentPos(p);
-			i++;
-		}
+	public void resetWave(int a) {
+		// get the wave with this position, and set its position to its initial
+		// position
 
+		// System.out.println("m.reset wave = " + waves.get(wP));
+		// System.out.println("here 00");
+		// waves.get(a).reset();
+		// System.out.println("m.reset initpos = " +
+		// waves.get(wP).getInitialPos());
+		// waves.get(wP).setCurrentPos(r);
+		int i = 0;
+		for (Wave w : waves) {
+			if (i == a) {
+				System.out.println("yo");
+				Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+				w.setCurrentPos(p);
+				w.resetVelocity();
+			}
+			i++;
+
+		}
 	}
 }

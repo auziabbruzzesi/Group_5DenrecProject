@@ -32,11 +32,8 @@ public class View extends JFrame {
 	Point playerDest = (new Point(200, 200));
 	private int playerDims;
 	String playerDir = "";
-	private int playerVelocity = 7;// may need this to be public-static-final at
-									// some point
+	private int playerVelocity = 7;
 	JPanel jP = new jpanel();
-
-	// jpanel j = new jpanel();
 
 	// Constructor
 	public View() {
@@ -70,19 +67,22 @@ public class View extends JFrame {
 		}
 	}
 
-	public void resetWaves() {
+	public void resetWave(int i, Point p) {
+		
+		waveBtns.get(i).setLocation(p);
+		
 		
 		// for (button b : v.getWaveBtns()) {
 		// // v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(false);
 		// }
 
-		int i = 0;
-		for (button wB : waveBtns) {
-			Point a = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			
-			setSingleWaveBtn(i, a);
-			i++;
-		}
+//		int i = 0;
+//		for (button wB : waveBtns) {
+//			Point a = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+//			
+//			setSingleWaveBtn(i, a);
+//			i++;
+//		}
 		// for (button b : v.getWaveBtns()) {
 		// // v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(true);
 		// }

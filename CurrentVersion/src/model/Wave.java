@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.util.Random;
 
 import javax.swing.text.View;
 
@@ -20,11 +21,17 @@ public class Wave extends Character {
 														// of the screen
 
 	private int shorelineX = 360;
+	private Point initialPos;
 
+	private Random randomGenerator = new Random();
+	
 	public Wave(Point p) {
 		this.setCurrentPos(p);
+		this.setInitialPos(p);
+		
+		int v = randomGenerator.nextInt(4) + 1;
 		//generate a random number within a specified range (1-4 for now) and set velocity to that number
-		this.setVelocity(4);
+		this.setVelocity(v);
 
 		Point d = new Point(this.getCurrentPos().x - shorelineX, this.getCurrentPos().y);
 
@@ -37,5 +44,17 @@ public class Wave extends Character {
 		this.setCurrentPos(getCurrentPos().getX() - getVelocity(), getCurrentPos().getY());
 	}
 
+	public Point getInitialPos() {
+		return initialPos;
+	}
+
+	public void setInitialPos(Point p) {
+		this.initialPos = p;
+	}
+
+	public void resetVelocity(){
+		int v = randomGenerator.nextInt(4) + 1;
+		this.setVelocity(v);
+	}
 	
 }

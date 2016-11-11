@@ -105,7 +105,7 @@ public class Controller implements MouseListener {
 
 		}
 
-		for (Wave w : m.getWaves().values()) {
+		for (Wave w : m.getWaves()) {
 
 			button k = new button();
 			k.setMargin(new Insets(0, 0, 0, 0));
@@ -310,8 +310,8 @@ public class Controller implements MouseListener {
 
 	public void moveWave() {
 		int i = 0;
-		for (Wave w : m.getWaves().values()) {
-
+		for (Wave w : m.getWaves()) {
+//System.out.println("c.movewave() initpos = " + w.getInitialPos());
 			if (!(w.getCurrentPos().equals(w.getDestination()))) {
 				// move model's version of wave
 				w.move();
@@ -321,10 +321,12 @@ public class Controller implements MouseListener {
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-				m.resetWaves();
-				v.resetWaves();
-				System.out.println("in moveWave reset");
-				System.out.println("currPos = "+ w.getCurrentPos() + "\ndest = " + w.getDestination());
+//				System.out.println("non-resetted wave pos: " + w.getCurrentPos());
+				m.resetWave(i);
+//				System.out.println("resetted wave pos: " + w.getCurrentPos());
+				v.resetWave(i, w.getCurrentPos());
+//				System.out.println("in moveWave reset");
+//				System.out.println("currPos = "+ w.getCurrentPos() + "\ndest = " + w.getDestination());
 			}
 			i++;
 		}
