@@ -54,7 +54,7 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 
-	Timer wTimer = new Timer(30, new ActionListener() {
+	Timer wTimer = new Timer(60, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moveWave();

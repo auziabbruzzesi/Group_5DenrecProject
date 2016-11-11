@@ -23,6 +23,7 @@ public class Wave extends Character {
 
 	public Wave(Point p) {
 		this.setCurrentPos(p);
+		//generate a random number within a specified range (1-4 for now) and set velocity to that number
 		this.setVelocity(4);
 
 		Point d = new Point(this.getCurrentPos().x - shorelineX, this.getCurrentPos().y);
@@ -33,9 +34,7 @@ public class Wave extends Character {
 	@Override
 	// note that direction is always west
 	public void move() {
-//		if (this.getCurrentPos().getX() != this.getDestination().getX()) {
-			this.setCurrentPos(getCurrentPos().getX() - getVelocity(), getCurrentPos().getY());
-//		}
+		this.setCurrentPos(getCurrentPos().getX() - getVelocity(), getCurrentPos().getY());
 	}
 
 	

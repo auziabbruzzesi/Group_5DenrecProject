@@ -59,11 +59,9 @@ public class View extends JFrame {
 			g.setColor(Color.BLUE);
 			g.fillRect((2 * viewWidth) / 3, 0, viewHeight, viewWidth);
 			// how to get water to move 
-		
-			//g.fillRect((2 * viewWidth / 3) - 300, 0, viewHeight, viewWidth);
 			
 			g.setColor(Color.yellow);
-			//g.fillRect(0, 0, ((2 * viewWidth) / 3) - 300, viewHeight);
+			//fill rect starting at 0,0 with width at 2/3 of the screen, and the entire height of the jpanel 
 			g.fillRect(0, 0, (2 * viewWidth) / 3, viewHeight);
 		
 			for (int i = 0; i<waveBtns.size(); i++) {
