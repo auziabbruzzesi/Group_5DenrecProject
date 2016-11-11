@@ -57,7 +57,7 @@ public class View extends JFrame {
 	// Inner classes
 	// if we have time, change this to a component, rather than a whole jpanel
 	public class jpanel extends JPanel {
-
+		@Override
 		protected void paintComponent(Graphics g) {
 			g.setColor(Color.BLUE);
 			g.fillRect((2 * viewWidth / 3) , 0, viewHeight, viewWidth);

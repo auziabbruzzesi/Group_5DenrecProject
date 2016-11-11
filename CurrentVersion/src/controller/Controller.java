@@ -42,7 +42,6 @@ public class Controller implements MouseListener {
 	private int numWaves = 5;
 	private button[] waveBtns = new button[numWaves];
 	int i = 0;
-
 	// sprite-related variables
 	ImageIcon oystIcon;
 	ImageIcon concIcon;
@@ -95,6 +94,7 @@ public class Controller implements MouseListener {
 		initSprites();
 		oystIcon = pics[oystSprite];
 		concIcon = pics[concSprite];
+		
 
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);

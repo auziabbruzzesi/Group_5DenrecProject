@@ -23,13 +23,72 @@ public abstract class Character implements MoveObjects {
 		switch (direction) {
 		// SOUTHEAST
 		case NORTH:
+			if (currentPos.getY() != destination.getY()) {
+
+				if (currentPos.getY() - destination.getY() < velocity) {
+					currentPos.translate(currentPos.y - destination.y, 0);
+				} else {
+					currentPos.translate(0, -velocity);
+				}
+			}
+			break;
+		case SOUTH:
+			if (currentPos.getY() != destination.getY()) {
+				if (currentPos.getY() + velocity > destination.getY()) {
+					// don't overshoot destination
+					currentPos.translate(0,  destination.y- currentPos.y);
+				} else {
+					currentPos.translate(0, velocity);
+				}
+			}
+			break;
+		
+		
+		
+		
+		case EAST: // dest x&y > pos x&y
+			//is x there yet?
+			if (currentPos.getX() != destination.getX()) {
+				//check if there is enough space for 1 tick
+				if (destination.getX() - currentPos.getX() < velocity) {
+					// don't overshoot destination
+					
+					currentPos.translate(destination.x- currentPos.x, 0);
+				} else {
+					currentPos.translate(velocity, 0);
+				}
+			}
+			break;
+		
+		case WEST: // dest x< pos x, dest y > pos y (Moving down and
+			// left)
+			// Handling x
+			if (currentPos.getX() != destination.getX()) {
+				if (currentPos.getX() - velocity < destination.getX()) {
+					// don't overshoot destination
+					setCurrentPos(destination.getX(), currentPos.getY());
+				} else {
+					currentPos.translate(-velocity, 0);
+				}
+			}
+			break;
+		
+		
+
+			
+			
+		
+			
 			
 			
 		case SOUTHEAST: // dest x&y > pos x&y
+			//is x there yet?
 			if (currentPos.getX() != destination.getX()) {
+				//check if there is enough space for 1 tick
 				if (destination.getX() - currentPos.getX() < velocity) {
 					// don't overshoot destination
-					currentPos.translate((int) (destination.getX()- currentPos.getX()), 0);
+					
+					currentPos.translate(destination.x- currentPos.x, 0);
 				} else {
 					currentPos.translate(velocity, 0);
 				}
@@ -37,7 +96,7 @@ public abstract class Character implements MoveObjects {
 			if (currentPos.getY() != destination.getY()) {
 				if (destination.getY() - currentPos.getY() < velocity) {
 					// don't overshoot destination
-					currentPos.translate(0, (int) (destination.getY() - currentPos.getY()));
+					currentPos.translate(0, destination.y - currentPos.y);
 				} else {
 					currentPos.translate(0, velocity);
 				}
@@ -45,7 +104,7 @@ public abstract class Character implements MoveObjects {
 			break;
 		// SOUTHWEST
 		case SOUTHWEST: // dest x< pos x, dest y > pos y (Moving down and
-							// left)
+						// left)
 			// Handling x
 			if (currentPos.getX() != destination.getX()) {
 				if (currentPos.getX() - velocity < destination.getX()) {
@@ -59,7 +118,7 @@ public abstract class Character implements MoveObjects {
 			if (currentPos.getY() != destination.getY()) {
 				if (currentPos.getY() + velocity > destination.getY()) {
 					// don't overshoot destination
-					currentPos.translate(0, (int) (destination.getY() - currentPos.getY()));
+					currentPos.translate(0, destination.y - currentPos.y);
 				} else {
 					currentPos.translate(0, velocity);
 				}
@@ -71,7 +130,7 @@ public abstract class Character implements MoveObjects {
 			if (currentPos.getX() != destination.getX()) {
 				if (destination.getX() - currentPos.getX() < velocity) {
 					// don't overshoot destination
-					currentPos.translate((int) (destination.getX() - currentPos.getX()), 0);
+					currentPos.translate(destination.x - currentPos.x, 0);
 				} else {
 					currentPos.translate(velocity, 0);
 				}
@@ -81,7 +140,7 @@ public abstract class Character implements MoveObjects {
 			if (currentPos.getY() != destination.getY()) {
 
 				if (currentPos.getY() - destination.getY() < velocity) {
-					currentPos.translate((int) (currentPos.getY() - destination.getY()), 0);
+					currentPos.translate(currentPos.y- destination.y, 0);
 				} else {
 					currentPos.translate(0, -velocity);
 				}
@@ -108,7 +167,7 @@ public abstract class Character implements MoveObjects {
 			if (currentPos.getY() != destination.getY()) {
 
 				if (currentPos.getY() - destination.getY() < velocity) {
-					currentPos.translate((int) (currentPos.getY() - destination.getY()), 0);
+					currentPos.translate(currentPos.y - destination.y, 0);
 				} else {
 					currentPos.translate(0, -velocity);
 				}
@@ -154,7 +213,26 @@ public abstract class Character implements MoveObjects {
 		
 	
 		//System.out.println("updateDirection");
-		if (currentPos.getY() < destination.getY()) {
+		//North
+		
+		if(currentPos.x == destination.x){
+			if(currentPos.y > destination.y){
+				direction = Direction.NORTH;
+			}else{
+				direction = Direction.SOUTH;
+			}
+		}
+		else if(currentPos.y == destination.y){
+			if(currentPos.x > destination.x){
+				direction = Direction.WEST;
+			}else{
+				direction = Direction.EAST;
+			}
+		}
+		
+		
+		
+		else if (currentPos.getY() < destination.getY()) {
 			// then we're moving generally south
 			if (currentPos.getX() < destination.getX()) {
 				// then we're moving southeast
