@@ -10,6 +10,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -17,13 +18,14 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import controller.Controller.button;
 import model.Player;
 
 public class View extends JFrame {
 	public static final int viewHeight = 650;
 	public static final int viewWidth = 1200;
 
-	
+	private ArrayList<button> waveBtns = new ArrayList<button>();
 
 	
 	
@@ -61,6 +63,12 @@ public class View extends JFrame {
 			g.fillRect((2 * viewWidth) / 3, 0, viewHeight, viewWidth);
 			g.setColor(Color.yellow);
 			g.fillRect(0, 0, (2 * viewWidth) / 3, viewHeight);
+			
+			int i=0;
+			for(button wB : waveBtns){
+				add(waveBtns.get(i));
+				i++;
+			}
 		}
 	}
 
@@ -90,6 +98,25 @@ public class View extends JFrame {
 	public JPanel getJPanel() {
 		// System.out.println("Returning JPanel");
 		return this.jP;
+	}
+
+	public ArrayList<button> getWaveBtns() {
+		return waveBtns;
+	}
+	
+	public button getSingleWaveBtn(int i) {
+		return waveBtns.get(i);
+	}
+
+	public void setSingleWaveBtn(int i, Point nP) {
+		waveBtns.get(i).setLocation(nP);;
+	}
+	
+	public void setWaveBtns(ArrayList<button> waveBtns) {
+		this.waveBtns = waveBtns;
+	}
+	public void addToWaveBtns(button wB){
+		this.waveBtns.add(wB);
 	}
 
 }// end View class

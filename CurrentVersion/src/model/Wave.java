@@ -18,7 +18,8 @@ public class Wave extends Character {
 		
 		this.setDestination(d);
 		
-		System.out.println("wave dest = " + getDestination());
+		System.out.println("wave pos = " + getCurrentPos());
+//		System.out.println("wave dest = " + getDestination());
 	}
 	public Wave(Point p, int speed){
 		this.setCurrentPos(p);
