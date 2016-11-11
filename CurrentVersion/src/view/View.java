@@ -54,11 +54,16 @@ public class View extends JFrame {
 	// Inner classes
 	// if we have time, change this to a component, rather than a whole jpanel
 	public class jpanel extends JPanel {
-
+		@Override
 		protected void paintComponent(Graphics g) {
 			g.setColor(Color.BLUE);
 			g.fillRect((2 * viewWidth) / 3, 0, viewHeight, viewWidth);
+			// how to get water to move 
+		
+			//g.fillRect((2 * viewWidth / 3) - 300, 0, viewHeight, viewWidth);
+			
 			g.setColor(Color.yellow);
+			//g.fillRect(0, 0, ((2 * viewWidth) / 3) - 300, viewHeight);
 			g.fillRect(0, 0, (2 * viewWidth) / 3, viewHeight);
 		
 			for (int i = 0; i<waveBtns.size(); i++) {

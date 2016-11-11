@@ -213,7 +213,7 @@ public class Model {
 
 		return canCreate;
 	}
-	/*
+	/**
 	 * A note: This operation would work better and be less costly if we used a
 	 * hashset instead of a hashmap for beachobjects. Did not change because
 	 * there's probably a reason we didn't do that.
@@ -336,5 +336,6 @@ public class Model {
 			w.setCurrentPos(p);
 			i++;
 		}
+
 	}
 }
