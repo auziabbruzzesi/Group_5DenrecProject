@@ -56,44 +56,6 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 
-	/*
-	 * NOTE: the comments below are the beginnings of game end logic. 
-	 * Waiting on a few things before we can actually implement.
-	 * Do not delete.
-	 */
-	
-//	private enumtype gameStatus = INPROGRESS;
-	
-	//use timer to check if game has ended
-//		if(gameStatus != INPROGRESS){
-//			wTimer.stop();
-//			pTimer.stop();
-//			if(gameStatus == enumtype.WIN){
-//				v.displayWin();
-//			}
-//			else{
-//				v.displayLose();
-//			}
-//			
-//			if(minigame == 2){
-//				resetGame();
-//			}
-//			else{
-//				move to minigame 2. might fire an event that main picks up on, so it can handle it by creating new controller/model/view instances
-//			}
-//		}
-		
-	
-	
-//	private boolean checkGameStatus(){
-//		if(playerHP <= 0 || estuaryHP <= 0){
-//			gameStatus = LOSE;
-//		}
-//		else if(all boxes are full and at least 50% of boxes are gabions){
-//			done = true;
-//			gameStatus = WIN;
-//		}
-//	}
 	
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
@@ -108,7 +70,7 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
-//			player.setIcon(pics[m.getP().getDirection().getRank()]);
+			player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
 			v.repaint();
@@ -209,12 +171,8 @@ public class Controller implements MouseListener {
 	 */
 	public void updatePlayerMV() {
 
-		// System.out.println("distance to dest: " +
-		// m.getP().getCurrentPos().distance(m.getP().getDestination()));
-
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			pTimer.stop();
-//			 System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
 				
@@ -270,17 +228,17 @@ public class Controller implements MouseListener {
 					m.getP().setH(HoldingType.EMPTY);
 
 				}
-				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
-						+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
-						+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
-						+ m.getBoxes().get(b.getLocation()).getCount());
+//				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
+//						+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
+//						+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
+//						+ m.getBoxes().get(b.getLocation()).getCount());
 			}
 		} else {
-			System.out.println("you can't put this type of object in this box");
-			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
-					+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
-					+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
-					+ m.getBoxes().get(b.getLocation()).getCount());
+//			System.out.println("you can't put this type of object in this box");
+//			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
+//					+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
+//					+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
+//					+ m.getBoxes().get(b.getLocation()).getCount());
 		}
 
 		type = m.getBoxes().get(b.getLocation()).getContains().name();
@@ -341,24 +299,20 @@ public class Controller implements MouseListener {
 
 			if ( !(w.getCurrentPos().equals(w.getDestination() ) ) ) {
 				// move model's version of wave
-//				System.out.println("here 00");
 				w.move();
 				
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-				System.out.println("here 01");
 				m.resetWave(i);//reset wave's position in model
 				
-				v.setWaveBoxCollision(true);//do this so shoreline can be updated in view
+				v.setWaveBoxCollision(true);//update variable so shoreline can be updated in view
 				
 				Point p = new Point(v.getShoreWidth(), w.getDestination().y);
 				w.setDestination(p);
 				
 				
-				v.resetWave(i, w.getCurrentPos());//reset wave's position in view
-				System.out.println("here 02");
-				
+				v.resetWave(i, w.getCurrentPos());//reset wave's position in view				
 			}
 			i++;
 		}
