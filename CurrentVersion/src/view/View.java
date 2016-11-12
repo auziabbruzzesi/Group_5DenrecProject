@@ -43,11 +43,17 @@ public class View extends JFrame {
 //	Point pointOfErosion = new Point(650, 0); // aka threshold
 //	private boolean hasReached = false; // has the xCoord reached 650?
 
+
+	// JPanel container = new jpanel();
+	// JPanel sand = new sandpanel();
+	// JPanel ocean = new oceanpanel();
+	private JPanel sand;
+	private JPanel ocean;
 	JPanel jP = new jpanel();
 
-//	private JPanel sand;
-//	private JPanel ocean;
-	private JPanel healthBar = new JPanel();
+
+	private HealthBar healthBar = new HealthBar();
+
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
 	private int shoreWidth = viewWidth - 360;//make this more generic later
@@ -58,12 +64,12 @@ public class View extends JFrame {
 
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
-
 		jP = new jpanel();
 		getContentPane().add(jP);
+		jP.add(healthBar);
+		repaint();
 
 		pack();
-
 		setVisible(true);
 	}
 
@@ -158,16 +164,59 @@ public class View extends JFrame {
 		this.waveBtns = waveBtns;
 	}
 
-	public JPanel getHealthBar() {
+	public HealthBar getHealthBar() {
 		return healthBar;
 	}
 
-	public void setHealthBar(JPanel healthBar) {
+
+
+	public void setHealthBar(HealthBar healthBar) {
+
 		this.healthBar = healthBar;
 	}
 
 	public void addToWaveBtns(button wB) {
 		this.waveBtns.add(wB);
+	}
+	
+	/**
+	 * 
+	 * @author Auzi
+	 *
+	 */
+	public class HealthBar extends JPanel{
+		public int overallHeight;
+		public int healthHeight;
+		private int xPos = 0;
+		private int yPos = 0;
+		
+		/**
+		 * Constructor
+		 * @param overallHeight
+		 * @param healthHeight
+		 */
+		public HealthBar(int overallHeight, int healthHeight){
+			this.overallHeight = overallHeight;
+			this.healthHeight = overallHeight;
+		}
+		
+		public HealthBar() {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void paintComponent(Graphics g){
+			g.setColor(Color.WHITE);
+			g.fillRect(this.xPos, this.yPos, this.getWidth(), this.getHeight());
+			g.setColor(Color.green);
+			g.fillRect(this.xPos, this.yPos - (overallHeight - healthHeight), this.getWidth(), this.getHeight());
+			
+		}
+		public void setHealthHeight(int h){
+			this.healthHeight = h;
+			repaint();
+		}
+		
 	}
 
 	public boolean getWaveBoxCollision() {

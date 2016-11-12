@@ -54,6 +54,7 @@ public class Controller implements MouseListener {
 	final int oystSprite = 9;
 	final int concSprite = 8;
 	int picNum = 0;
+	
 	ImageIcon[] pics;// holds all sprites for all characters
 
 	
@@ -62,6 +63,7 @@ public class Controller implements MouseListener {
 		public void actionPerformed(ActionEvent e) {
 			moveWave();
 			v.repaint();
+
 		}
 	});
 
@@ -91,11 +93,15 @@ public class Controller implements MouseListener {
 
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
-	
+		
 		
 		//Healthbar
+		
 		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
-		v.getJPanel().add(v.getHealthBar());
+		
+		
+		
+		
 		for (Box b : m.getBoxes().values()) {
 			button j = new button();
 			j.setMargin(new Insets(0, 0, 0, 0));
@@ -254,6 +260,9 @@ public class Controller implements MouseListener {
 		if (e.getComponent() instanceof button) {
 			b = (button) (e.getComponent());
 			m.getP().setDestination(b.getLocation());
+			//TODO: fix this -- Auzi;
+			v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight + 4);
+			
 
 			if (b.getHoldingType() == HoldingType.BOX) {
 				System.out.println("\nBox button clicked");
