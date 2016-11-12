@@ -40,7 +40,7 @@ public class Controller implements MouseListener {
 	private boolean putDownRequest = false;
 	button b = new button();
 	button player = new button();
-	private int numWaves = 5;
+	//private int numWaves = 5;
 	int i = 0;
 
 	// sprite-related variables
@@ -54,6 +54,45 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 
+	/*
+	 * NOTE: the comments below are the beginnings of game end logic. 
+	 * Waiting on a few things before we can actually implement.
+	 * Do not delete.
+	 */
+	
+//	private enumtype gameStatus = INPROGRESS;
+	
+	//use timer to check if game has ended
+//		if(gameStatus != INPROGRESS){
+//			wTimer.stop();
+//			pTimer.stop();
+//			if(gameStatus == enumtype.WIN){
+//				v.displayWin();
+//			}
+//			else{
+//				v.displayLose();
+//			}
+//			
+//			if(minigame == 2){
+//				resetGame();
+//			}
+//			else{
+//				move to minigame 2. might fire an event that main picks up on, so it can handle it by creating new controller/model/view instances
+//			}
+//		}
+		
+	
+	
+//	private boolean checkGameStatus(){
+//		if(playerHP <= 0 || estuaryHP <= 0){
+//			gameStatus = LOSE;
+//		}
+//		else if(all boxes are full and at least 50% of boxes are gabions){
+//			done = true;
+//			gameStatus = WIN;
+//		}
+//	}
+	
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -118,27 +157,12 @@ public class Controller implements MouseListener {
 
 			i++;
 		}
-		// System.out.println("Wave at: " + w.getCurrentPos());
-		//
-		// waveBtns[i].setMargin(new Insets(0, 0, 0, 0));
-		// waveBtns[i].setBounds(w.getCurrentPos().x, w.getCurrentPos().y,
-		// Wave.waveWidth, Wave.waveHeight);
-		//
-		// waveBtns[i].setBackground(Color.pink);
-		// // k.setIcon(defaultIcon);
-		//
-		// v.getJPanel().add(waveBtns[i]);
-		// i++;
-		// //System.out.println("Added wave button at: " +
-		// k.getLocationOnScreen());
-		// }
+
 		i = 0;
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
-			// The line of code below fixes the issue of displaying c/o text in
-			// windows
-			// note, if this starts giving trouble later, try:
-			// l.setBorder(null);
+			// The line of code below fixes the issue of displaying c/o text in windows
+			// note, if this starts giving trouble later, try: l.setBorder(null);
 			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
@@ -168,8 +192,6 @@ public class Controller implements MouseListener {
 		player.setBounds(Player.startPosition.x, Player.startPosition.y, Player.playerDimensions,
 				Player.playerDimensions);
 		v.getJPanel().add(player);
-
-		// wTimer.start();
 	}
 
 	/**
@@ -221,6 +243,10 @@ public class Controller implements MouseListener {
 		}
 	}
 
+	/**
+	 * 
+	 * @return String type
+	 */
 	public String putDown() {
 		String type = "";
 		// check player is holding something
@@ -311,22 +337,16 @@ public class Controller implements MouseListener {
 	public void moveWave() {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
-//System.out.println("c.movewave() initpos = " + w.getInitialPos());
+
 			if (!(w.getCurrentPos().equals(w.getDestination()))) {
 				// move model's version of wave
 				w.move();
-//				System.out.println("in moveWave not reset");
-//				System.out.println("currPos = "+ w.getCurrentPos() + "\ndest = " + w.getDestination());
-
+				
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-//				System.out.println("non-resetted wave pos: " + w.getCurrentPos());
 				m.resetWave(i);
-//				System.out.println("resetted wave pos: " + w.getCurrentPos());
 				v.resetWave(i, w.getCurrentPos());
-//				System.out.println("in moveWave reset");
-//				System.out.println("currPos = "+ w.getCurrentPos() + "\ndest = " + w.getDestination());
 			}
 			i++;
 		}
@@ -349,6 +369,7 @@ public class Controller implements MouseListener {
 		}
 	}
 
+	
 	public void initSprites() {
 
 		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
@@ -361,7 +382,11 @@ public class Controller implements MouseListener {
 		}
 	}
 
-	// Read image from file and return
+	/**
+	 * @param n
+	 * @return
+	 * Read image icon and return
+	 */
 	private ImageIcon createImage(String n) {
 		ImageIcon imageIcon;
 		try {

@@ -27,7 +27,7 @@ public class Model {
 	// ArrayList<BeachObject>();
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
-	// private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
+//	private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
 
@@ -48,7 +48,6 @@ public class Model {
 		for (int i = 0; i < numWaves; i++) {
 
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			// System.out.println("wave at pt: " + p);
 			this.waves.add(new Wave(p));
 		}
 
@@ -63,7 +62,6 @@ public class Model {
 				} else {
 					canPlace = false;
 				}
-				// System.out.println(canPlace);
 				if (canPlace) {
 
 					if (i % 2 == 0) {
@@ -87,7 +85,6 @@ public class Model {
 	}
 
 	public Boolean checkPlayerOverlap(Point toCreate) {
-		// System.out.println("In player overlap checking function");
 		Boolean canCreate = true;
 		double X1 = p.getCurrentPos().getX();
 		double Y1 = p.getCurrentPos().getY();
@@ -97,7 +94,6 @@ public class Model {
 
 		if (X1 == X2 && Y1 == Y2) {
 			return false;
-
 		}
 
 		// if the left side of the obj we want to create would overlap with the
@@ -112,12 +108,10 @@ public class Model {
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				// System.out.println("overlap from the top occurred");
 			}
 			// bottom of creating would overlap
 			else if (Y2 >= Y1 && Y2 <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				// System.out.println("overlap from the bottom occurred");
 			}
 
 		}
@@ -129,22 +123,16 @@ public class Model {
 			// okay. If they do, it's a true overlap.
 			// if the top of the obj we're creating would overlap with the
 			// existing object
-			// System.out.println("x overlap from the right occurred");
-
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				// System.out.println("overlap from the top occurred");
 			}
 			// bottom of creating would overlap
 			else if (Y2 >= Y1 && Y2 <= Y1 + Player.playerDimensions) {
 				canCreate = false;
-				// System.out.println("overlap from the bottom occurred");
 			}
 
 		}
-
-		// System.out.println("canCreate = " + canCreate);
 		return canCreate;
 	}
 
@@ -155,7 +143,6 @@ public class Model {
 	 * @return true = spot available false = not
 	 */
 	public Boolean checkBoxOverlap(Point toCreate) {
-		// System.out.println("In box overlap check function");
 		Boolean canCreate = true;
 
 		for (Box b : this.boxes.values()) {
@@ -179,14 +166,11 @@ public class Model {
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + Box.boxDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 3 occurred");
 				}
 				// bottom of creating would overlap
 				else if (Y2 >= Y1 && Y2 <= Y1 + Box.boxDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 4 occurred");
 				}
-				// System.out.println("x overlap from the left occurred");
 			}
 
 			// if the right side of the obj we want to create would overlap with
@@ -199,16 +183,11 @@ public class Model {
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + Box.boxDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 3 occurred");
 				}
 				// bottom of creating would overlap
 				else if (Y2 >= Y1 && Y2 <= Y1 + Box.boxDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 4 occurred");
 				}
-
-				// System.out.println("x overlap from the right occurred");
-
 			}
 		}
 
@@ -222,13 +201,9 @@ public class Model {
 	 */
 
 	public Boolean checkBeachObjectOverlap(Point toCreate) {
-		// System.out.println("In overlap check function");
 		Boolean canCreate = true;
 
 		// check if the position would cause overlap
-
-		// Set<Entry<Point, model.BeachObject>> BOs = BeachObject.entrySet();
-
 		for (BeachObject bo : beachObjHM.values()) {
 			Point existing = bo.getCurrentPos();
 			// if the element we want to create would overlap horizontally with
@@ -250,14 +225,11 @@ public class Model {
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + BeachObject.beachObjDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 3 occurred");
 				}
 				// bottom of creating would overlap
 				else if (Y2 >= Y1 && Y2 <= Y1 + BeachObject.beachObjDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 4 occurred");
 				}
-				// System.out.println("x overlap from the left occurred");
 			}
 
 			// if the right side of the obj we want to create would overlap with
@@ -270,20 +242,13 @@ public class Model {
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + BeachObject.beachObjDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 3 occurred");
 				}
 				// bottom of creating would overlap
 				else if (Y2 >= Y1 && Y2 <= Y1 + BeachObject.beachObjDimensions) {
 					canCreate = false;
-					// System.out.println("overlap op 4 occurred");
 				}
-
-				// System.out.println("x overlap from the right occurred");
-
 			}
-
 		}
-
 		return canCreate;
 	}
 
@@ -327,6 +292,12 @@ public class Model {
 		this.waves = waves;
 	}
 
+//	public HashMap<Point, Wave> getWaves(){
+//		return waves;
+//	}
+//	public void setWaves(HashMap<Point, Wave> w){
+//		this.waves = w;
+//	}
 	public void updatePlayerPosition(Point updatedPos) {
 		this.p.setCurrentPos(updatedPos);
 	}
@@ -335,12 +306,6 @@ public class Model {
 		// get the wave with this position, and set its position to its initial
 		// position
 
-		// System.out.println("m.reset wave = " + waves.get(wP));
-		// System.out.println("here 00");
-		// waves.get(a).reset();
-		// System.out.println("m.reset initpos = " +
-		// waves.get(wP).getInitialPos());
-		// waves.get(wP).setCurrentPos(r);
 		int i = 0;
 		for (Wave w : waves) {
 			if (i == a) {
