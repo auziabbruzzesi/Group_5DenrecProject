@@ -102,12 +102,12 @@ public class Controller implements MouseListener {
 		}
 	});
 
-	Timer pTimer = new Timer(10, new ActionListener() {
+	Timer pTimer = new Timer(60, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
-			player.setIcon(pics[m.getP().getDirection().getRank()]);
+//			player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
 			v.repaint();
@@ -213,22 +213,16 @@ public class Controller implements MouseListener {
 
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			pTimer.stop();
-			// System.out.println("we've reached our destination");
+//			 System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
-				// call pickup send b.type
-				// System.out.println("pickupreq after stopping timer = " +
-				// pickUpRequest);
-
-				// pickup representation in model: check if we can pickup, if
-				// yes: update holding type & return true
+				
 				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
 				System.out.println("beachobj holding type = " + b.getHoldingType());
 				if (m.getP().pickUp(b.getHoldingType())) {
 
 					System.out.println("player holding type = " + m.getP().getH());
-					// System.out.println("componentat returns: " +
-					// v.getJPanel().getComponentAt(b.getLocation()));
+					
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
 				pickUpRequest = false;
@@ -352,6 +346,7 @@ public class Controller implements MouseListener {
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
 				m.resetWave(i);
+				v.setWaveBoxCollision(true);
 				v.resetWave(i, w.getCurrentPos());
 			}
 			i++;

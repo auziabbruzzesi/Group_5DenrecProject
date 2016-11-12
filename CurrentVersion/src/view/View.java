@@ -44,16 +44,15 @@ public class View extends JFrame {
 	private boolean hasReached = false; // has the xCoord reached 650?
 	
 	JPanel jP = new jpanel();
-	
 
-	// JPanel container = new jpanel();
-	// JPanel sand = new sandpanel();
-	// JPanel ocean = new oceanpanel();
 	private JPanel sand;
 	private JPanel ocean;
 	private JPanel healthBar = new JPanel();
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
+	private int shoreWidth = (2*viewWidth)/3;
+	private boolean waveBoxCollision = false;
+	
 	// Constructor
 	public View() {
 
@@ -77,31 +76,39 @@ public class View extends JFrame {
 			setLayout(null);
 			setPreferredSize(frameDimensions);
 		}
+		// erosion point is (650, 0);
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			// erosion point is (650, 0);
 			
-			int oceanPos = ((2 * viewWidth) / 3); // oceans current x coord
-			int sandPos = ((2 * viewWidth) / 3); // sands current x coord
-
-			if (!hasReached) {
-				for (int i = 0; i < erosion; i++) {
+			if(!waveBoxCollision){
+			
 					g.setColor(Color.BLUE);
-					g.fillRect(oceanPos - i, 0, viewHeight, viewWidth);
+					g.fillRect((2*viewWidth)/3, 0, viewHeight, viewWidth);
 					
 					g.setColor(Color.yellow);
-					g.fillRect(0, 0, sandPos - i, viewHeight);
+					g.fillRect(0, 0, shoreWidth, viewHeight);
 
-					if (oceanPos == pointOfErosion.getX() && sandPos == pointOfErosion.getX()) {
-						hasReached = true;
-					}
-				}
-
+			}
+			//if there was a collision:
+			else{
+				shoreWidth -= 10;
+				
+				g.setColor(Color.BLUE);
+				g.fillRect((2*viewWidth)/3, 0, viewHeight, viewWidth);
+				
+				g.setColor(Color.yellow);
+				g.fillRect(0, 0, shoreWidth, viewHeight);
+				
+				waveBoxCollision = false;
 				for (int i = 0; i < waveBtns.size(); i++) {
 					add(waveBtns.get(i));
 				}
 			}
+
+				
+//				System.out.println("weird thing is a: " + this.getComponentAt(0,0));
+//			}
 		}
 	}
 
@@ -177,6 +184,16 @@ public class View extends JFrame {
 
 	public void addToWaveBtns(button wB) {
 		this.waveBtns.add(wB);
+	}
+
+
+	public boolean getWaveBoxCollision() {
+		return waveBoxCollision;
+	}
+
+
+	public void setWaveBoxCollision(boolean wBC) {
+		this.waveBoxCollision = wBC;
 	}
 
 }// end View class
