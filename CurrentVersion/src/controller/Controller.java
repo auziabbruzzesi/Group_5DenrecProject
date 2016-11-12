@@ -100,18 +100,17 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moveWave();
-			
-			//Auzi test for healthbar
-			//v.getHealthBar().setHealthHeight(m.getHB().getInnerHeight());
+			v.repaint();
+
 		}
 	});
 
-	Timer pTimer = new Timer(10, new ActionListener() {
+	Timer pTimer = new Timer(60, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
-			player.setIcon(pics[m.getP().getDirection().getRank()]);
+//			player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
 			v.repaint();
@@ -221,22 +220,16 @@ public class Controller implements MouseListener {
 
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			pTimer.stop();
-			// System.out.println("we've reached our destination");
+//			 System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
-				// call pickup send b.type
-				// System.out.println("pickupreq after stopping timer = " +
-				// pickUpRequest);
-
-				// pickup representation in model: check if we can pickup, if
-				// yes: update holding type & return true
+				
 				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
 				System.out.println("beachobj holding type = " + b.getHoldingType());
 				if (m.getP().pickUp(b.getHoldingType())) {
 
 					System.out.println("player holding type = " + m.getP().getH());
-					// System.out.println("componentat returns: " +
-					// v.getJPanel().getComponentAt(b.getLocation()));
+					
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
 				pickUpRequest = false;
@@ -355,15 +348,26 @@ public class Controller implements MouseListener {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
 
-			if (!(w.getCurrentPos().equals(w.getDestination()))) {
+			if ( !(w.getCurrentPos().equals(w.getDestination() ) ) ) {
 				// move model's version of wave
+//				System.out.println("here 00");
 				w.move();
 				
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-				m.resetWave(i);
-				v.resetWave(i, w.getCurrentPos());
+				System.out.println("here 01");
+				m.resetWave(i);//reset wave's position in model
+				
+				v.setWaveBoxCollision(true);//do this so shoreline can be updated in view
+				
+				Point p = new Point(v.getShoreWidth(), w.getDestination().y);
+				w.setDestination(p);
+				
+				
+				v.resetWave(i, w.getCurrentPos());//reset wave's position in view
+				System.out.println("here 02");
+				
 			}
 			i++;
 		}

@@ -12,7 +12,7 @@ public class Player extends Character {
 	//Constructors (2)
 	public Player(Point p){
 		this.setCurrentPos(p);
-		this.setVelocity(7);
+		this.setVelocity(30);
 	}
 	public Player(Point p, int health){
 		this.setCurrentPos(p);

@@ -38,21 +38,26 @@ public class View extends JFrame {
 
 	private int playerVelocity = 7;
 
-	// SHORELINE VARS
-	private int erosion = 150; // may only need this locally in paint component.
-	Point pointOfErosion = new Point(650, 0); // aka threshold
-	private boolean hasReached = false; // has the xCoord reached 650?
-	
-	JPanel jP = new jpanel();
-	
+//	// SHORELINE VARS
+//	private int erosion = 150; // may only need this locally in paint component.
+//	Point pointOfErosion = new Point(650, 0); // aka threshold
+//	private boolean hasReached = false; // has the xCoord reached 650?
+
 
 	// JPanel container = new jpanel();
 	// JPanel sand = new sandpanel();
 	// JPanel ocean = new oceanpanel();
 	private JPanel sand;
 	private JPanel ocean;
+	JPanel jP = new jpanel();
+
+
 	private HealthBar healthBar = new HealthBar();
+
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
+
+	private int shoreWidth = viewWidth - 360;//make this more generic later
+	private boolean waveBoxCollision = false;
 
 	// Constructor
 	public View() {
@@ -63,6 +68,7 @@ public class View extends JFrame {
 		getContentPane().add(jP);
 		jP.add(healthBar);
 		repaint();
+
 		pack();
 		setVisible(true);
 	}
@@ -75,51 +81,46 @@ public class View extends JFrame {
 			setLayout(null);
 			setPreferredSize(frameDimensions);
 		}
+		// erosion point is (650, 0);
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			// erosion point is (650, 0);
 			
-			int oceanPos = ((2 * viewWidth) / 3); // oceans current x coord
-			int sandPos = ((2 * viewWidth) / 3); // sands current x coord
+			if (!waveBoxCollision) {
 
-			if (!hasReached) {
-				for (int i = 0; i < erosion; i++) {
-					g.setColor(Color.BLUE);
-					g.fillRect(oceanPos - i, 0, viewHeight, viewWidth);
-					
-					g.setColor(Color.yellow);
-					g.fillRect(0, 0, sandPos - i, viewHeight);
+				g.setColor(Color.BLUE);
+				g.fillRect(shoreWidth, 0, viewHeight, viewWidth);
 
-					if (oceanPos == pointOfErosion.getX() && sandPos == pointOfErosion.getX()) {
-						hasReached = true;
-					}
-				}
+				g.setColor(Color.yellow);
+				g.fillRect(0, 0, shoreWidth, viewHeight);
 
-				for (int i = 0; i < waveBtns.size(); i++) {
-					add(waveBtns.get(i));
-				}
 			}
+			// if there was a collision:
+			else {
+				shoreWidth -= 10;
+
+				g.setColor(Color.BLUE);
+				g.fillRect(shoreWidth, 0, viewHeight, viewWidth);
+
+				g.setColor(Color.yellow);
+				g.fillRect(0, 0, shoreWidth, viewHeight);
+
+				waveBoxCollision = false;
+			}
+			
+			for (int i = 0; i < waveBtns.size(); i++) {
+				add(waveBtns.get(i));
+			}
+			// System.out.println("weird thing is a: " +
+			// this.getComponentAt(0,0));
+			// }
 		}
 	}
 
 	public void resetWave(int i, Point p) {
-		
 		waveBtns.get(i).setLocation(p);
-
-//		int i = 0;
-//		for (button wB : waveBtns) {
-//			Point a = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-//			
-//			setSingleWaveBtn(i, a);
-//			i++;
-//		}
-		// for (button b : v.getWaveBtns()) {
-		// // v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(true);
-		// }
 	}
 
-	
 	// Setters & getters
 	public void setPlayerDims(int d) {
 		playerDims = d;
@@ -168,10 +169,11 @@ public class View extends JFrame {
 	}
 
 
+
 	public void setHealthBar(HealthBar healthBar) {
+
 		this.healthBar = healthBar;
 	}
-
 
 	public void addToWaveBtns(button wB) {
 		this.waveBtns.add(wB);
@@ -215,6 +217,20 @@ public class View extends JFrame {
 			repaint();
 		}
 		
+	}
+
+	public boolean getWaveBoxCollision() {
+		return waveBoxCollision;
+	}
+
+	public void setWaveBoxCollision(boolean wBC) {
+		this.waveBoxCollision = wBC;
+	}
+	public int getShoreWidth(){
+		return shoreWidth;
+	}
+	public void setShoreWidth(int x){
+		shoreWidth = x;
 	}
 
 }// end View class
