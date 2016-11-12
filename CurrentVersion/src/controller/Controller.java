@@ -99,6 +99,7 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moveWave();
+			v.repaint();
 		}
 	});
 
@@ -338,16 +339,26 @@ public class Controller implements MouseListener {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
 
-			if (!(w.getCurrentPos().equals(w.getDestination()))) {
+			if ( !(w.getCurrentPos().equals(w.getDestination() ) ) ) {
 				// move model's version of wave
+//				System.out.println("here 00");
 				w.move();
 				
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-				m.resetWave(i);
-				v.setWaveBoxCollision(true);
-				v.resetWave(i, w.getCurrentPos());
+				System.out.println("here 01");
+				m.resetWave(i);//reset wave's position in model
+				
+				v.setWaveBoxCollision(true);//do this so shoreline can be updated in view
+				
+				Point p = new Point(v.getShoreWidth(), w.getDestination().y);
+				w.setDestination(p);
+				
+				
+				v.resetWave(i, w.getCurrentPos());//reset wave's position in view
+				System.out.println("here 02");
+				
 			}
 			i++;
 		}

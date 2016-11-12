@@ -30,7 +30,7 @@ public class Model {
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
 	private HealthBar HB = new HealthBar(100);
-	
+	private int shorelineX = 800; 	
 
 	public Model() {
 		Random r = new Random();
@@ -318,7 +318,6 @@ public class Model {
 		int i = 0;
 		for (Wave w : waves) {
 			if (i == a) {
-				System.out.println("yo");
 				Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 				w.setCurrentPos(p);
 				w.resetVelocity();

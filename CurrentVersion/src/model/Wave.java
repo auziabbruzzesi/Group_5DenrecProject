@@ -41,7 +41,12 @@ public class Wave extends Character {
 	@Override
 	// note that direction is always west
 	public void move() {
+		if(getCurrentPos().x - getVelocity() < getDestination().x){
+			this.setCurrentPos(getDestination().getX(), getCurrentPos().getY());
+		}
+		else{
 			this.setCurrentPos(getCurrentPos().getX() - getVelocity(), getCurrentPos().getY());
+		}
 	}
 
 	public Point getInitialPos() {
