@@ -4,16 +4,12 @@ package controller;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -25,7 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import controller.Controller.button;
 import model.BeachObject;
 import model.Box;
 import model.HoldingType;
@@ -42,7 +37,6 @@ public class Controller implements MouseListener {
 	private boolean putDownRequest = false;
 	button b = new button();
 	button player = new button();
-	//private int numWaves = 5;
 	int i = 0;
 
 	// sprite-related variables
@@ -134,10 +128,10 @@ public class Controller implements MouseListener {
 		}
 
 		i = 0;
+		
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
 			// The line of code below fixes the issue of displaying c/o text in windows
-			// note, if this starts giving trouble later, try: l.setBorder(null);
 			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
@@ -171,9 +165,7 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author EAviles
-	 * 
-	 *         decides whether or not we've reached our destination TODO: make
-	 *         this work with pickup and putdown functionality
+	 *         decides whether or not we've reached our destination
 	 */
 	public void updatePlayerMV() {
 
@@ -182,34 +174,31 @@ public class Controller implements MouseListener {
 
 			if (pickUpRequest) {
 				
-				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
-				System.out.println("beachobj holding type = " + b.getHoldingType());
+//				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
+//				System.out.println("beachobj holding type = " + b.getHoldingType());
+				
 				if (m.getP().pickUp(b.getHoldingType())) {
-
-					System.out.println("player holding type = " + m.getP().getH());
-					
+//					System.out.println("player holding type = " + m.getP().getH());
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
 				pickUpRequest = false;
-			} // end if(pickup)
+			}
 
 			else if (putDownRequest) {
-				System.out.println("\nin putdown request:");
-				System.out.println("player holding type = " + m.getP().getH());
-				System.out.println("box holding type = " + b.getHoldingType());
+//				System.out.println("\nin putdown request:");
+//				System.out.println("player holding type = " + m.getP().getH());
+//				System.out.println("box holding type = " + b.getHoldingType());
 
 				b.setText(putDown());
 				putDownRequest = false;
 			}
-		} // end if(pickup)
-			// else if we're still moving toward destination
+		}
 		else {
 			player.setLocation(m.getP().getCurrentPos());
 		}
 	}
 
-	/**
-	 * 
+	/** 
 	 * @return String type
 	 */
 	public String putDown() {
@@ -226,7 +215,6 @@ public class Controller implements MouseListener {
 
 					// set box type if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						// in model
 						m.getBoxes().get(b.getLocation()).setContains(m.getP().getH());
 					}
 
@@ -306,7 +294,7 @@ public class Controller implements MouseListener {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
 
-			if ( !(w.getCurrentPos().equals(w.getDestination() ) ) ) {
+			if ( !(w.getCurrentPos().equals(w.getDestination()) ) ) {
 				// move model's version of wave
 				w.move();
 				
@@ -317,9 +305,9 @@ public class Controller implements MouseListener {
 				
 				v.setWaveBoxCollision(true);//update variable so shoreline can be updated in view
 				
+				//here is model need
 				Point p = new Point(v.getShoreWidth(), w.getDestination().y);
-				w.setDestination(p);
-				
+				w.setDestination(p);				
 				
 				v.resetWave(i, w.getCurrentPos());//reset wave's position in view				
 			}

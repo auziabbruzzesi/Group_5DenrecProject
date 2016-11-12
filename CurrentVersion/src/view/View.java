@@ -38,17 +38,6 @@ public class View extends JFrame {
 
 	private int playerVelocity = 7;
 
-//	// SHORELINE VARS
-//	private int erosion = 150; // may only need this locally in paint component.
-//	Point pointOfErosion = new Point(650, 0); // aka threshold
-//	private boolean hasReached = false; // has the xCoord reached 650?
-
-
-	// JPanel container = new jpanel();
-	// JPanel sand = new sandpanel();
-	// JPanel ocean = new oceanpanel();
-	private JPanel sand;
-	private JPanel ocean;
 	JPanel jP = new jpanel();
 
 
@@ -74,14 +63,13 @@ public class View extends JFrame {
 	}
 
 	// Inner classes
-	// if we have time, change this to a component, rather than a whole jpanel
 	public class jpanel extends JPanel {
 
 		public jpanel() {
 			setLayout(null);
 			setPreferredSize(frameDimensions);
 		}
-		// erosion point is (650, 0);
+
 
 		@Override
 		protected void paintComponent(Graphics g) {
@@ -97,7 +85,9 @@ public class View extends JFrame {
 			}
 			// if there was a collision:
 			else {
-				shoreWidth -= 10;
+				if(shoreWidth > 800){
+					shoreWidth -= 10;
+				}
 
 				g.setColor(Color.BLUE);
 				g.fillRect(shoreWidth, 0, viewHeight, viewWidth);
@@ -111,9 +101,6 @@ public class View extends JFrame {
 			for (int i = 0; i < waveBtns.size(); i++) {
 				add(waveBtns.get(i));
 			}
-			// System.out.println("weird thing is a: " +
-			// this.getComponentAt(0,0));
-			// }
 		}
 	}
 
@@ -143,7 +130,6 @@ public class View extends JFrame {
 	}
 
 	public JPanel getJPanel() {
-		// System.out.println("Returning JPanel");
 		return this.jP;
 	}
 
@@ -233,4 +219,4 @@ public class View extends JFrame {
 		shoreWidth = x;
 	}
 
-}// end View class
+}
