@@ -1,6 +1,14 @@
 package test;
 
+import org.junit.Test;
+
 public class HealthBarTest {
+	
+	
+	@Test
+	public static void testHealthBar(){
+		
+	}
 	
 	
 	

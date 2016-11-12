@@ -5,6 +5,7 @@ package controller;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -21,6 +22,7 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import controller.Controller.button;
@@ -126,7 +128,11 @@ public class Controller implements MouseListener {
 
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
-
+	
+		
+		//Healthbar
+		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
+		v.getJPanel().add(v.getHealthBar());
 		for (Box b : m.getBoxes().values()) {
 			button j = new button();
 			j.setMargin(new Insets(0, 0, 0, 0));

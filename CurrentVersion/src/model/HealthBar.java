@@ -5,13 +5,14 @@ package model;
  *
  */
 public class HealthBar {
-	private int initialHealth = 100;
-	private int height;
-	private int width;
+	private int health = 100;
+	private int height = 100;
+	private int width = 25;
+	private int innerHeight = height;
 	
 	//Constructor
-	public HealthBar(int initialHealth){
-		this.initialHealth = initialHealth;
+	public HealthBar(int health){
+		this.health = health;
 	}
 	
 	
@@ -23,8 +24,8 @@ public class HealthBar {
 	 * 	has the healthbar
 	 */
 	public void decreaseHealth(int damage){
-		
-		
+		this.health -= damage;
+		this.innerHeight = ((this.health/100) * this.height);
 	}
 	
 	/**
@@ -35,12 +36,12 @@ public class HealthBar {
 		
 	}
 
-	public int getInitialHealth() {
-		return initialHealth;
+	public int gethealth() {
+		return health;
 	}
 
-	public void setInitialHealth(int initialHealth) {
-		this.initialHealth = initialHealth;
+	public void sethealth(int health) {
+		this.health = health;
 	}
 
 	public int getHeight() {
@@ -57,6 +58,14 @@ public class HealthBar {
 
 	public void setWidth(int width) {
 		this.width = width;
+	}
+	
+	public void setInnerHeight(int height){
+		this.innerHeight = height;
+	}
+	
+	public int getInnerHeight(){
+		return this.innerHeight;
 	}
 	
 	

@@ -20,16 +20,17 @@ import view.View;
 import controller.Controller.button;
 
 public class Model {
+	
+	//TODO: Tidy up these attribute declarations!
 
 	private int score = 0;
 	private Player p = new Player(new Point(Player.startPosition));
-	// private Collection<BeachObject> beachObjHM = new
-	// ArrayList<BeachObject>();
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
-//	private HashMap<Point, Wave> waves = new HashMap<Point, Wave>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
+	private HealthBar HB = new HealthBar(100);
+	
 
 	public Model() {
 		Random r = new Random();
@@ -282,6 +283,14 @@ public class Model {
 
 	public void setBoxes(HashMap<Point, Box> boxes) {
 		this.boxes = boxes;
+	}
+
+	public HealthBar getHB() {
+		return HB;
+	}
+
+	public void setHB(HealthBar hB) {
+		HB = hB;
 	}
 
 	public ArrayList<Wave> getWaves() {

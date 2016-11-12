@@ -44,12 +44,14 @@ public class View extends JFrame {
 	private boolean hasReached = false; // has the xCoord reached 650?
 	
 	JPanel jP = new jpanel();
+	
 
 	// JPanel container = new jpanel();
 	// JPanel sand = new sandpanel();
 	// JPanel ocean = new oceanpanel();
 	private JPanel sand;
 	private JPanel ocean;
+	private JPanel healthBar = new JPanel();
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
 	// Constructor
@@ -60,6 +62,7 @@ public class View extends JFrame {
 
 		jP = new jpanel();
 		getContentPane().add(jP);
+		
 
 		pack();
 
@@ -161,6 +164,16 @@ public class View extends JFrame {
 	public void setWaveBtns(ArrayList<button> waveBtns) {
 		this.waveBtns = waveBtns;
 	}
+
+	public JPanel getHealthBar() {
+		return healthBar;
+	}
+
+
+	public void setHealthBar(JPanel healthBar) {
+		this.healthBar = healthBar;
+	}
+
 
 	public void addToWaveBtns(button wB) {
 		this.waveBtns.add(wB);
