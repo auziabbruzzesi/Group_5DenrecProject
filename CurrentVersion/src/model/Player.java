@@ -3,10 +3,9 @@ package model;
 import java.awt.Point;
 
 public class Player extends Character {
-
-	private int health = 100;
 	public static final Point startPosition = new Point(100,100);
 	public static final int playerDimensions = 40;
+	private int health = 100;
 	
 		
 	//Constructors (2)
