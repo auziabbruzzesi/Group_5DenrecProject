@@ -43,7 +43,7 @@ public class View extends JFrame {
 	private JPanel healthBar = new JPanel();
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
-	private int shoreWidth = viewWidth - 360;// TODO: make this more generic
+	private int shoreLine = viewWidth - 360;// TODO: make this more generic
 												// later
 	private boolean waveBoxCollision = false;
 
@@ -71,10 +71,10 @@ public class View extends JFrame {
 		protected void paintComponent(Graphics g) {
 
 			g.setColor(Color.BLUE);
-			g.fillRect(shoreWidth, 0, viewHeight, viewWidth);
+			g.fillRect(shoreLine, 0, viewHeight, viewWidth);
 
 			g.setColor(Color.yellow);
-			g.fillRect(0, 0, shoreWidth, viewHeight);
+			g.fillRect(0, 0, shoreLine, viewHeight);
 
 			for (int i = 0; i < waveBtns.size(); i++) {
 				add(waveBtns.get(i));
@@ -83,27 +83,14 @@ public class View extends JFrame {
 		}
 	}
 
-	public void updateShoreline() {
-		if (shoreWidth > 800) {
-			shoreWidth -= 10;
+	public void updateShoreline(int damage) {
+		if (shoreLine > 800) {
+			shoreLine -= damage;
 		}
 	}
 
 	public void resetWave(int i, Point p) {
-
 		waveBtns.get(i).setLocation(p);
-
-		// int i = 0;
-		// for (button wB : waveBtns) {
-		// Point a = new Point(View.viewWidth - Wave.waveWidth, i *
-		// Wave.waveSpawnSpacing);
-		//
-		// setSingleWaveBtn(i, a);
-		// i++;
-		// }
-		// for (button b : v.getWaveBtns()) {
-		// // v.getJPanel().getComponentAt(w.getCurrentPos()).setVisible(true);
-		// }
 	}
 
 	// Setters & getters
@@ -163,6 +150,9 @@ public class View extends JFrame {
 
 	public void setWaveBoxCollision(boolean b) {
 		waveBoxCollision = b;
+	}
+	public int getShoreLine(){
+		return shoreLine;
 	}
 
 }// end View class

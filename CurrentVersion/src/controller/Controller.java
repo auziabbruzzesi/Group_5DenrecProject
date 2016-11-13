@@ -56,8 +56,6 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 
-	
-	
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -91,12 +89,11 @@ public class Controller implements MouseListener {
 
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
-	
-		
-		//Healthbar
+
+		// Healthbar
 		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
 		v.getJPanel().add(v.getHealthBar());
-		
+
 		for (Box b : m.getBoxes().values()) {
 			button j = new button();
 			j.setMargin(new Insets(0, 0, 0, 0));
@@ -129,11 +126,9 @@ public class Controller implements MouseListener {
 		}
 
 		i = 0;
-		
+
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
-			// The line of code below fixes the issue of displaying c/o text in windows
-			// note, if this starts giving trouble later, try: l.setBorder(null);
 			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
@@ -173,37 +168,19 @@ public class Controller implements MouseListener {
 	 */
 	public void updatePlayerMV() {
 
-		// System.out.println("distance to dest: " +
-		// m.getP().getCurrentPos().distance(m.getP().getDestination()));
-
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			pTimer.stop();
 			// System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
-				// call pickup send b.type
-				// System.out.println("pickupreq after stopping timer = " +
-				// pickUpRequest);
 
-				// pickup representation in model: check if we can pickup, if
-				// yes: update holding type & return true
-				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
-				System.out.println("beachobj holding type = " + b.getHoldingType());
 				if (m.getP().pickUp(b.getHoldingType())) {
-
-					System.out.println("player holding type = " + m.getP().getH());
-					// System.out.println("componentat returns: " +
-					// v.getJPanel().getComponentAt(b.getLocation()));
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
 				pickUpRequest = false;
 			} // end if(pickup)
 
 			else if (putDownRequest) {
-				System.out.println("\nin putdown request:");
-				System.out.println("player holding type = " + m.getP().getH());
-				System.out.println("box holding type = " + b.getHoldingType());
-
 				b.setText(putDown());
 				putDownRequest = false;
 			}
@@ -230,30 +207,21 @@ public class Controller implements MouseListener {
 				// check box not full
 				if (!(m.getBoxes().get(b.getLocation()).isfull())) {
 
-					// set box type if this is 1st item placed in box
+					// set box type in model if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						// in model
 						m.getBoxes().get(b.getLocation()).setContains(m.getP().getH());
 					}
 
 					m.getBoxes().get(b.getLocation()).incrementCount();
 					m.getP().setH(HoldingType.EMPTY);
-
 				}
-				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
-						+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
-						+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
-						+ m.getBoxes().get(b.getLocation()).getCount());
 			}
-		} else {
-			System.out.println("you can't put this type of object in this box");
-			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
-					+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
-					+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
-					+ m.getBoxes().get(b.getLocation()).getCount());
+		} 
+		else {
+			System.out.println("can't put that down in this box");
 		}
 
-		type = m.getBoxes().get(b.getLocation()).getContains().name();
+		type = m.getBoxes().get(b.getLocation()).getContains().name() + " " + m.getBoxes().get(b.getLocation()).getCount();
 		return type;
 	}
 
@@ -267,23 +235,25 @@ public class Controller implements MouseListener {
 			b = (button) (e.getComponent());
 			m.getP().setDestination(b.getLocation());
 
-
-			//TODO: fix this -- Auzi;
-//			v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight + 4);
+			// TODO: fix this -- Auzi;
+			// v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight +
+			// 4);
 			
+			//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
+			if(pickUpRequest){
+				pickUpRequest = false;
+			}
+			
+			//if pickup = true, and btn was clicked, then pickup = false.
 			if (b.getHoldingType() == HoldingType.BOX) {
-				System.out.println("\nBox button clicked");
 				putDownRequest = true;
-				// System.out.println(this);
 			} else {
 				pickUpRequest = true;
-				// System.out.println("pickuprequest = " + pickUpRequest);
 			}
 
 		}
 		pTimer.start();
 	}
-
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -316,18 +286,53 @@ public class Controller implements MouseListener {
 			if (!(w.getCurrentPos().equals(w.getDestination()))) {
 				// move model's version of wave
 				w.move();
-				
+
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
+				int damage = determineDamage(w, i);
 				m.resetWave(i);
-				//v.setWaveBoxCollision(true);
-				v.updateShoreline();
+				m.updateShoreLine(damage);
+				v.updateShoreline(damage);
 				v.resetWave(i, w.getCurrentPos());
+				// System.out.println("model shoreline = "+ m.getShoreLine() +
+				// "\nview shoreline = " + v.getShoreLine());
 			}
 			i++;
 		}
 
+	}
+
+	private int determineDamage(Wave w, int i) {
+		int decrement = 0;
+		Box b;
+		Point p;
+
+		if (i < m.getBoxes().size()) {
+			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
+		} else {
+//			System.out.println("in else");
+			p = new Point(Box.boxX, (m.getNumBoxes() - 1) * Box.boxToBoxInterval + 20);
+		}
+		b = m.getBoxes().get(p);
+//		System.out.println(b);
+
+		switch (b.getContains()) {
+		case EMPTY:
+			decrement = 10;
+			break;
+		case OYSTER:
+			decrement = 4;
+			break;
+		case CONCRETE:
+			decrement = 6;
+			break;
+		default:
+			System.out.println("Error: Contains = " + b.getContains());
+			break;
+		}
+//		System.out.println("decrement = " + decrement);
+		return decrement;
 	}
 
 	public class button extends JButton {
@@ -346,7 +351,6 @@ public class Controller implements MouseListener {
 		}
 	}
 
-	
 	public void initSprites() {
 
 		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
@@ -361,8 +365,7 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @param n
-	 * @return
-	 * Read image icon and return
+	 * @return Read image icon and return
 	 */
 	private ImageIcon createImage(String n) {
 		ImageIcon imageIcon;

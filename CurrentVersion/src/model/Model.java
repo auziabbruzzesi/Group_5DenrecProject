@@ -22,7 +22,7 @@ import controller.Controller.button;
 public class Model {
 	
 	//TODO: Tidy up these attribute declarations!
-
+	private int numBoxes = 4;
 	private int score = 0;
 	private Player p = new Player(new Point(Player.startPosition));
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
@@ -30,16 +30,15 @@ public class Model {
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
 	private HealthBar HB = new HealthBar(100);
-	
+	private int shoreLine = 840;
 
 	public Model() {
 		Random r = new Random();
 		Boolean canPlace;
 
 		// BOXES ARE CREATED HERE
-		for (int i = 0; i < 4; i++) {
-			Point p = new Point((2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
-					i * Box.boxToBoxInterval + 20);// Auzi did this. this is
+		for (int i = 0; i < numBoxes; i++) {
+			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);// Auzi did this. this is
 													// bad. please fix it when
 													// the time comes.
 			this.boxes.put(p, new Box(p));
@@ -101,11 +100,7 @@ public class Model {
 		// existing object
 		if ((X2 + BeachObject.beachObjDimensions >= X1)
 				&& (X2 + BeachObject.beachObjDimensions <= X1 + Player.playerDimensions)) {
-			// We know X's overlap, so check if Y's do, too. If they don't, it's
-			// okay. If they do, it's a true overlap.
-			// System.out.println("x overlap from the left occurred");
-			// if the top of the obj we're creating would overlap with the
-			// existing object
+
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
@@ -120,8 +115,7 @@ public class Model {
 		// if the right side of the obj we want to create would overlap with the
 		// existing object
 		else if ((X2 >= X1) && (X2 <= X1 + Player.playerDimensions)) {
-			// We know X's overlap, so check if Y's do, too. If they don't, it's
-			// okay. If they do, it's a true overlap.
+
 			// if the top of the obj we're creating would overlap with the
 			// existing object
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
@@ -159,8 +153,6 @@ public class Model {
 			// the existing object
 			if ((X2 + BeachObject.beachObjDimensions >= X1)
 					&& (X2 + BeachObject.beachObjDimensions <= X1 + Box.boxDimensions)) {
-				// We know X's overlap, so check if Y's do, too. If they don't,
-				// it's okay. If they do, it's a true overlap.
 
 				// if the top of the obj we're creating would overlap with the
 				// existing object
@@ -177,10 +169,7 @@ public class Model {
 			// if the right side of the obj we want to create would overlap with
 			// the existing object
 			else if ((X2 >= X1) && (X2 <= X1 + Box.boxDimensions)) {
-				// We know X's overlap, so check if Y's do, too. If they don't,
-				// it's okay. If they do, it's a true overlap.
-				// if the top of the obj we're creating would overlap with the
-				// existing object
+
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + Box.boxDimensions) {
 					canCreate = false;
@@ -209,7 +198,6 @@ public class Model {
 			Point existing = bo.getCurrentPos();
 			// if the element we want to create would overlap horizontally with
 			// the element already created
-			// cast it.next() to a point (which is what it is) and then getX()
 			double X1 = existing.getX();
 			double Y1 = existing.getY();
 			double X2 = toCreate.getX();
@@ -219,12 +207,10 @@ public class Model {
 			// the existing object
 			if ((X2 + BeachObject.beachObjDimensions >= X1)
 					&& (X2 + BeachObject.beachObjDimensions <= X1 + BeachObject.beachObjDimensions)) {
-				// We know X's overlap, so check if Y's do, too. If they don't,
-				// it's okay. If they do, it's a true overlap.
-				// if the top of the obj we're creating would overlap with the
-				// existing object
+				
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + BeachObject.beachObjDimensions) {
+					
 					canCreate = false;
 				}
 				// bottom of creating would overlap
@@ -236,12 +222,10 @@ public class Model {
 			// if the right side of the obj we want to create would overlap with
 			// the existing object
 			else if ((X2 >= X1) && (X2 <= X1 + BeachObject.beachObjDimensions)) {
-				// We know X's overlap, so check if Y's do, too. If they don't,
-				// it's okay. If they do, it's a true overlap.
-				// if the top of the obj we're creating would overlap with the
-				// existing object
+				
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + BeachObject.beachObjDimensions) {
+					
 					canCreate = false;
 				}
 				// bottom of creating would overlap
@@ -301,12 +285,6 @@ public class Model {
 		this.waves = waves;
 	}
 
-//	public HashMap<Point, Wave> getWaves(){
-//		return waves;
-//	}
-//	public void setWaves(HashMap<Point, Wave> w){
-//		this.waves = w;
-//	}
 	public void updatePlayerPosition(Point updatedPos) {
 		this.p.setCurrentPos(updatedPos);
 	}
@@ -326,4 +304,27 @@ public class Model {
 
 		}
 	}
+
+	public void updateShoreLine(int damage){
+		if(shoreLine > 800){
+			shoreLine-=damage;
+		}
+	}
+	
+	public int getShoreLine() {
+		return shoreLine;
+	}
+
+	public void setShoreLine(int shoreLine) {
+		this.shoreLine = shoreLine;
+	}
+
+	public int getNumBoxes() {
+		return numBoxes;
+	}
+
+	public void setNumBoxes(int numBoxes) {
+		this.numBoxes = numBoxes;
+	}
+	
 }
