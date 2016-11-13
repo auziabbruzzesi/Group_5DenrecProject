@@ -24,8 +24,8 @@ public class HealthBar {
 	 * 	has the healthbar
 	 */
 	public void decreaseHealth(int damage){
-		innerHeight -= damage;
-		
+		this.health -= damage;
+		this.innerHeight = ((this.health/100) * this.height);
 	}
 	
 	/**

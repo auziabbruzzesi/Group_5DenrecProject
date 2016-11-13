@@ -24,14 +24,12 @@ public class Model {
 	//TODO: Tidy up these attribute declarations!
 
 	private int score = 0;
-	private int shorelineX = 800; 	
-	private int numWaves = 6;
 	private Player p = new Player(new Point(Player.startPosition));
-	private HealthBar HB = new HealthBar(100);
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
-	
+	private int numWaves = 6;
+	private HealthBar HB = new HealthBar(100);
 	
 
 	public Model() {
@@ -40,9 +38,10 @@ public class Model {
 
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < 4; i++) {
-			//TODO: fix this -- Auzi
 			Point p = new Point((2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing,
-					i * Box.boxToBoxInterval + 20);
+					i * Box.boxToBoxInterval + 20);// Auzi did this. this is
+													// bad. please fix it when
+													// the time comes.
 			this.boxes.put(p, new Box(p));
 		}
 
@@ -77,7 +76,7 @@ public class Model {
 			} while (!canPlace);
 
 		}
-		//TODO: comment out print statements
+
 		System.out.println("Instantiating new game");
 		System.out.println("Player Position: " + this.p.getCurrentPos());
 		System.out.println(this.boxes.size() + " Boxes.");
@@ -85,37 +84,7 @@ public class Model {
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
 
 	}
-	/**
-	 * @author Eaviles
-	 * @param updatedPos
-	 */
-	public void updatePlayerPosition(Point updatedPos) {
-		this.p.setCurrentPos(updatedPos);
-	}
-	/**
-	 * @author Eaviles
-	 * @param a
-	 */
-	public void resetWave(int a) {
-		// get the wave with this position, and set its position to its initial
-		// position
 
-		int i = 0;
-		for (Wave w : waves) {
-			if (i == a) {
-				Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-				w.setCurrentPos(p);
-				w.resetVelocity();
-			}
-			i++;
-
-		}
-	}	
-	/**
-	 * @author Eaviles
-	 * @param point we want to create an object out
-	 * @return whether or not the player overlaps that point
-	 */
 	public Boolean checkPlayerOverlap(Point toCreate) {
 		Boolean canCreate = true;
 		double X1 = p.getCurrentPos().getX();
@@ -169,7 +138,7 @@ public class Model {
 	}
 
 	/**
-	 * @author Eaviles
+	 * 
 	 * @param toCreate
 	 *            : proposed point of creation
 	 * @return true = spot available false = not
@@ -332,5 +301,29 @@ public class Model {
 		this.waves = waves;
 	}
 
+//	public HashMap<Point, Wave> getWaves(){
+//		return waves;
+//	}
+//	public void setWaves(HashMap<Point, Wave> w){
+//		this.waves = w;
+//	}
+	public void updatePlayerPosition(Point updatedPos) {
+		this.p.setCurrentPos(updatedPos);
+	}
 
+	public void resetWave(int a) {
+		// get the wave with this position, and set its position to its initial
+		// position
+
+		int i = 0;
+		for (Wave w : waves) {
+			if (i == a) {
+				Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+				w.setCurrentPos(p);
+				w.resetVelocity();
+			}
+			i++;
+
+		}
+	}
 }

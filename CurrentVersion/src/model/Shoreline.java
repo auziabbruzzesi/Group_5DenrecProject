@@ -1,16 +1,35 @@
-package model;
-
-import java.awt.Point;
-
-public class Shoreline {
-	private int oysterDecInterval;
-	private int concreteDecInterval;
+//package model;
+//
+//import java.awt.Point;
+//
+//public class Shoreline {
+//
+//	private int oysterDecInterval;
+//	private int concreteDecInterval;
 //	private EstuaryHP HP;
-	private final int decrementInterval = 2;
-	private boolean isPassed = false; // has the line passed the threshold?
-
-
-
+//	private final int decrementInterval = 2;
+//	private boolean isPassed = false; // has the line passed the threshold?
+//
+//	public int getDecrementInterval() {
+//		return decrementInterval;
+//	}
+//
+//	public int getOysterDecInterval() {
+//		return oysterDecInterval;
+//	}
+//
+//	public void setOysterDecInterval(int oysterDecInterval) {
+//		this.oysterDecInterval = oysterDecInterval;
+//	}
+//
+//	public int getConcreteDecInterval() {
+//		return concreteDecInterval;
+//	}
+//
+//	public void setConcreteDecInterval(int concreteDecInterval) {
+//		this.concreteDecInterval = concreteDecInterval;
+//	}
+//
 //	public EstuaryHP getHP() {
 //		return HP;
 //	}
@@ -18,14 +37,14 @@ public class Shoreline {
 //	public void setHP(EstuaryHP hP) {
 //		HP = hP;
 //	}
-
-	// no need for constructor
-	/*
-	 * Erode: moves the shoreline west(toward boxes) - once the shoreline passes
-	 * the gabians and/or concrete walls game over. HP decrement interval
-	 * depends on the box a wave hits
-	 * 
-	 */
+//
+//	// no need for constructor
+//	/**
+//	 * Erode: moves the shoreline west(toward boxes) - once the shoreline passes
+//	 * the gabians and/or concrete walls game over. HP decrement interval
+//	 * depends on the box a wave hits
+//	 * 
+//	 */
 //	public void erode() {
 //
 //		Model model = new Model();
@@ -76,24 +95,5 @@ public class Shoreline {
 //
 //		}
 //	}
-
-	public int getDecrementInterval() {
-		return decrementInterval;
-	}
-
-	public int getOysterDecInterval() {
-		return oysterDecInterval;
-	}
-
-	public void setOysterDecInterval(int oysterDecInterval) {
-		this.oysterDecInterval = oysterDecInterval;
-	}
-
-	public int getConcreteDecInterval() {
-		return concreteDecInterval;
-	}
-
-	public void setConcreteDecInterval(int concreteDecInterval) {
-		this.concreteDecInterval = concreteDecInterval;
-	}
-}
+//
+//}

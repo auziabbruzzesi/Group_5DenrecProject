@@ -3,17 +3,18 @@ package model;
 import java.awt.Point;
 
 public class Box {
+	private Point position;
+	private int capacity = 10;
+	private int count;
+	private HoldingType h = HoldingType.BOX;
+	private HoldingType contains = HoldingType.EMPTY;
+	private boolean isfull = false;
 	public static final int boxDimensions = 100;//box dimensions (boxes are square, so don't need individual width/height)
 	public static final int boxSpawnSpacing = 50; //minimum distance spawned objects should be from boxes upon creation 
 	public static final int boxToBoxInterval = 150;//distance between created boxes
 	public static final int boxToViewEdgeSpacing = 40;//distance boxes are from the right edge of the screen
-	private int capacity = 10;
-	private int count;
-	private boolean isfull = false;
-	private Point position;
-	private HoldingType h = HoldingType.BOX;
-	private HoldingType contains = HoldingType.EMPTY;
-
+	
+	
 	public Box(Point p){
 		this.position = p;
 	}
@@ -23,12 +24,8 @@ public class Box {
 	}
 
 	public Box() {
-		
+		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
 	//Setters and Getters
 	public Point getPosition() {
 		return position;

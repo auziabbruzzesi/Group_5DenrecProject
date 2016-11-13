@@ -4,12 +4,16 @@ package controller;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -21,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import controller.Controller.button;
 import model.BeachObject;
 import model.Box;
 import model.HoldingType;
@@ -37,6 +42,7 @@ public class Controller implements MouseListener {
 	private boolean putDownRequest = false;
 	button b = new button();
 	button player = new button();
+
 	int i = 0;
 
 	// sprite-related variables
@@ -48,25 +54,22 @@ public class Controller implements MouseListener {
 	final int oystSprite = 9;
 	final int concSprite = 8;
 	int picNum = 0;
-	
 	ImageIcon[] pics;// holds all sprites for all characters
 
+	
 	
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moveWave();
-			v.repaint();
-
 		}
 	});
 
-	Timer pTimer = new Timer(60, new ActionListener() {
+	Timer pTimer = new Timer(10, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
-
 			player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
@@ -88,14 +91,11 @@ public class Controller implements MouseListener {
 
 		v.setPlayerPos(m.getP().getCurrentPos());
 		v.setPlayerDims(Player.playerDimensions);
-		
+	
 		
 		//Healthbar
-		
 		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
-		
-		
-		
+		v.getJPanel().add(v.getHealthBar());
 		
 		for (Box b : m.getBoxes().values()) {
 			button j = new button();
@@ -133,6 +133,7 @@ public class Controller implements MouseListener {
 		for (BeachObject bo : m.getBeachObject().values()) {
 			button s = new button();
 			// The line of code below fixes the issue of displaying c/o text in windows
+			// note, if this starts giving trouble later, try: l.setBorder(null);
 			s.setMargin(new Insets(0, 0, 0, 0));
 
 			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
@@ -166,40 +167,55 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author EAviles
-	 *         decides whether or not we've reached our destination
+	 * 
+	 *         decides whether or not we've reached our destination TODO: make
+	 *         this work with pickup and putdown functionality
 	 */
 	public void updatePlayerMV() {
 
+		// System.out.println("distance to dest: " +
+		// m.getP().getCurrentPos().distance(m.getP().getDestination()));
+
 		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
 			pTimer.stop();
+			// System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
-				
-//				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
-//				System.out.println("beachobj holding type = " + b.getHoldingType());
-				
+				// call pickup send b.type
+				// System.out.println("pickupreq after stopping timer = " +
+				// pickUpRequest);
+
+				// pickup representation in model: check if we can pickup, if
+				// yes: update holding type & return true
+				System.out.println("\nIn pickup request: \nplayer holding type = " + m.getP().getH());
+				System.out.println("beachobj holding type = " + b.getHoldingType());
 				if (m.getP().pickUp(b.getHoldingType())) {
-//					System.out.println("player holding type = " + m.getP().getH());
+
+					System.out.println("player holding type = " + m.getP().getH());
+					// System.out.println("componentat returns: " +
+					// v.getJPanel().getComponentAt(b.getLocation()));
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
 				pickUpRequest = false;
-			}
+			} // end if(pickup)
 
 			else if (putDownRequest) {
-//				System.out.println("\nin putdown request:");
-//				System.out.println("player holding type = " + m.getP().getH());
-//				System.out.println("box holding type = " + b.getHoldingType());
+				System.out.println("\nin putdown request:");
+				System.out.println("player holding type = " + m.getP().getH());
+				System.out.println("box holding type = " + b.getHoldingType());
 
 				b.setText(putDown());
 				putDownRequest = false;
 			}
-		}
+		} // end if(pickup)
+			// else if we're still moving toward destination
 		else {
 			player.setLocation(m.getP().getCurrentPos());
 		}
 	}
 
-	/** 
+	/**
+	 * 
 	 * @return String type
 	 */
 	public String putDown() {
@@ -216,6 +232,7 @@ public class Controller implements MouseListener {
 
 					// set box type if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
+						// in model
 						m.getBoxes().get(b.getLocation()).setContains(m.getP().getH());
 					}
 
@@ -223,17 +240,17 @@ public class Controller implements MouseListener {
 					m.getP().setH(HoldingType.EMPTY);
 
 				}
-//				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
-//						+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
-//						+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
-//						+ m.getBoxes().get(b.getLocation()).getCount());
+				System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
+						+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
+						+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
+						+ m.getBoxes().get(b.getLocation()).getCount());
 			}
 		} else {
-//			System.out.println("you can't put this type of object in this box");
-//			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
-//					+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
-//					+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
-//					+ m.getBoxes().get(b.getLocation()).getCount());
+			System.out.println("you can't put this type of object in this box");
+			System.out.println("putDown was executed: \nPlayer holding type = " + m.getP().getH()
+					+ "\nBox holding type = " + m.getBoxes().get(b.getLocation()).getH() + "\nBox contains = "
+					+ m.getBoxes().get(b.getLocation()).getContains() + "\nBox count = "
+					+ m.getBoxes().get(b.getLocation()).getCount());
 		}
 
 		type = m.getBoxes().get(b.getLocation()).getContains().name();
@@ -249,9 +266,6 @@ public class Controller implements MouseListener {
 		if (e.getComponent() instanceof button) {
 			b = (button) (e.getComponent());
 			m.getP().setDestination(b.getLocation());
-			//TODO: fix this -- Auzi;
-			v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight + 4);
-			
 
 			if (b.getHoldingType() == HoldingType.BOX) {
 				System.out.println("\nBox button clicked");
@@ -295,25 +309,17 @@ public class Controller implements MouseListener {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
 
-			if ( !(w.getCurrentPos().equals(w.getDestination()) ) ) {
+			if (!(w.getCurrentPos().equals(w.getDestination()))) {
 				// move model's version of wave
 				w.move();
 				
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-
-				m.resetWave(i);//reset wave's position in model
-				
-				v.setWaveBoxCollision(true);//update variable so shoreline can be updated in view
-				
-				//here is model need
-				Point p = new Point(v.getShoreWidth(), w.getDestination().y);
-				w.setDestination(p);				
-				
-
-				v.resetWave(i, w.getCurrentPos());//reset wave's position in view				
-
+				m.resetWave(i);
+				//v.setWaveBoxCollision(true);
+				v.updateShoreline();
+				v.resetWave(i, w.getCurrentPos());
 			}
 			i++;
 		}
