@@ -267,6 +267,10 @@ public class Controller implements MouseListener {
 			b = (button) (e.getComponent());
 			m.getP().setDestination(b.getLocation());
 
+
+			//TODO: fix this -- Auzi;
+//			v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight + 4);
+			
 			if (b.getHoldingType() == HoldingType.BOX) {
 				System.out.println("\nBox button clicked");
 				putDownRequest = true;
