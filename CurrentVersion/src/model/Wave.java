@@ -19,8 +19,8 @@ public class Wave extends Character {
 	public static final int waveToViewEdgeSpacing = 20;// distance boxes are
 														// from the right edge
 														// of the screen
-
-	private int shorelineX = 360;
+	
+	private int shorelineX = 360;//TODO:
 	private Point initialPos;
 
 	private Random randomGenerator = new Random();

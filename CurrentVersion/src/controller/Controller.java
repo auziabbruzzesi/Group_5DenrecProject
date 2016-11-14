@@ -319,22 +319,22 @@ public class Controller implements MouseListener {
 
 		switch (b.getContains()) {
 		case EMPTY:
-			decrement = 10;
+			decrement = 5;
 			break;
 		case OYSTER:
 			if(b.isfull()){
-				decrement = 2;
+				decrement = 1;
 			}
 			else{
-				decrement = 4;
+				decrement = 3;
 			}
 			break;
 		case CONCRETE:
 			if(b.isfull()){
-				decrement = 4;
+				decrement = 3;
 			}
 			else{
-				decrement = 6;
+				decrement = 4;
 			}
 			break;
 		default:
