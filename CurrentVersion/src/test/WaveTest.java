@@ -17,17 +17,7 @@ public class WaveTest {
 	
 	Point destination = new Point(5, 10); // moving west
 	
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
+	
 
 	@Test
 	public void moveTest() {
