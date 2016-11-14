@@ -227,6 +227,12 @@ public class Controller implements MouseListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
+		
+		//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
+		if(pickUpRequest){
+			pickUpRequest = false;
+		}
+		
 		v.setPlayerDest(e.getComponent().getLocation());
 		m.getP().setDestination(e.getPoint());
 
@@ -238,11 +244,6 @@ public class Controller implements MouseListener {
 			// TODO: fix this -- Auzi;
 			// v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight +
 			// 4);
-			
-			//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
-			if(pickUpRequest){
-				pickUpRequest = false;
-			}
 			
 			//if pickup = true, and btn was clicked, then pickup = false.
 			if (b.getHoldingType() == HoldingType.BOX) {
