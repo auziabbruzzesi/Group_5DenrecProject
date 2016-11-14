@@ -29,7 +29,7 @@ public class Model {
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
-	private HealthBar HB = new HealthBar(100);
+	private HealthBar HB = new HealthBar(50,200);
 	private int shoreLine = 840;
 
 	public Model() {
