@@ -40,12 +40,11 @@ public class View extends JFrame {
 
 	JPanel jP = new jpanel();
 
-
-	private HealthBar healthBar = new HealthBar();
-
+	private JPanel healthBar = new JPanel();
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
-	private int shoreWidth = viewWidth - 360;//make this more generic later
+	private int shoreLine = viewWidth - 360;// TODO: make this more generic
+												// later
 	private boolean waveBoxCollision = false;
 
 	// Constructor
@@ -55,14 +54,12 @@ public class View extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
 		getContentPane().add(jP);
-		jP.add(healthBar);
-		repaint();
-
 		pack();
 		setVisible(true);
 	}
 
 	// Inner classes
+	// if we have time, change this to a component, rather than a whole jpanel
 	public class jpanel extends JPanel {
 
 		public jpanel() {
@@ -70,37 +67,25 @@ public class View extends JFrame {
 			setPreferredSize(frameDimensions);
 		}
 
-
 		@Override
 		protected void paintComponent(Graphics g) {
-			
-			if (!waveBoxCollision) {
 
-				g.setColor(Color.BLUE);
-				g.fillRect(shoreWidth, 0, viewHeight, viewWidth);
+			g.setColor(Color.BLUE);
+			g.fillRect(shoreLine, 0, viewHeight, viewWidth);
 
-				g.setColor(Color.yellow);
-				g.fillRect(0, 0, shoreWidth, viewHeight);
+			g.setColor(Color.yellow);
+			g.fillRect(0, 0, shoreLine, viewHeight);
 
-			}
-			// if there was a collision:
-			else {
-				if(shoreWidth > 800){
-					shoreWidth -= 10;
-				}
-
-				g.setColor(Color.BLUE);
-				g.fillRect(shoreWidth, 0, viewHeight, viewWidth);
-
-				g.setColor(Color.yellow);
-				g.fillRect(0, 0, shoreWidth, viewHeight);
-
-				waveBoxCollision = false;
-			}
-			
 			for (int i = 0; i < waveBtns.size(); i++) {
 				add(waveBtns.get(i));
 			}
+
+		}
+	}
+
+	public void updateShoreline(int damage) {
+		if (shoreLine > 800) {
+			shoreLine -= damage;
 		}
 	}
 
@@ -130,6 +115,7 @@ public class View extends JFrame {
 	}
 
 	public JPanel getJPanel() {
+		// System.out.println("Returning JPanel");
 		return this.jP;
 	}
 
@@ -150,73 +136,23 @@ public class View extends JFrame {
 		this.waveBtns = waveBtns;
 	}
 
-	public HealthBar getHealthBar() {
+	public JPanel getHealthBar() {
 		return healthBar;
 	}
 
-
-
-	public void setHealthBar(HealthBar healthBar) {
-
+	public void setHealthBar(JPanel healthBar) {
 		this.healthBar = healthBar;
 	}
 
 	public void addToWaveBtns(button wB) {
 		this.waveBtns.add(wB);
 	}
-	
-	/**
-	 * 
-	 * @author Auzi
-	 *
-	 */
-	public class HealthBar extends JPanel{
-		public int overallHeight;
-		public int healthHeight;
-		private int xPos = 0;
-		private int yPos = 0;
-		
-		/**
-		 * Constructor
-		 * @param overallHeight
-		 * @param healthHeight
-		 */
-		public HealthBar(int overallHeight, int healthHeight){
-			this.overallHeight = overallHeight;
-			this.healthHeight = overallHeight;
-		}
-		
-		public HealthBar() {
-			// TODO Auto-generated constructor stub
-		}
 
-		@Override
-		protected void paintComponent(Graphics g){
-			g.setColor(Color.WHITE);
-			g.fillRect(this.xPos, this.yPos, this.getWidth(), this.getHeight());
-			g.setColor(Color.green);
-			g.fillRect(this.xPos, this.yPos - (overallHeight - healthHeight), this.getWidth(), this.getHeight());
-			
-		}
-		public void setHealthHeight(int h){
-			this.healthHeight = h;
-			repaint();
-		}
-		
+	public void setWaveBoxCollision(boolean b) {
+		waveBoxCollision = b;
+	}
+	public int getShoreLine(){
+		return shoreLine;
 	}
 
-	public boolean getWaveBoxCollision() {
-		return waveBoxCollision;
-	}
-
-	public void setWaveBoxCollision(boolean wBC) {
-		this.waveBoxCollision = wBC;
-	}
-	public int getShoreWidth(){
-		return shoreWidth;
-	}
-	public void setShoreWidth(int x){
-		shoreWidth = x;
-	}
-
-}
+}// end View class

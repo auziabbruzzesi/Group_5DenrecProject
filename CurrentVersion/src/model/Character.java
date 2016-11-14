@@ -3,9 +3,9 @@ package model;
 import java.awt.Point;
 
 public abstract class Character implements MoveObjects {
-	private int velocity;
 	private Point currentPos;
 	private Point destination = currentPos;
+	private int velocity;
 	private HoldingType h = HoldingType.EMPTY;
 	Direction direction = Direction.EAST;//default
 
@@ -189,13 +189,40 @@ public abstract class Character implements MoveObjects {
 	 * make directions Enums (enum class already made)
 	 */
 	public void updateDirection() {
+	//moving North
+//		if((getAngle() > 60) && (getAngle() <= 120)){
+//			direction = Direction.NORTH;
+//		//moving south
+//		}else if((getAngle() > 240) && (getAngle() <= 300)){
+//			direction = Direction.SOUTH;
+//		}else if((getAngle() > 300) && (getAngle() <= 30)){
+//			direction = Direction.EAST;
+//		}else if((getAngle() > 150) && (getAngle() <= 210)){
+//			direction = Direction.WEST;
+//		}else if((getAngle() > 30) && (getAngle() <= 60)){
+//			direction = Direction.NORTHEAST;
+//			
+//		}else if((getAngle() > 120) && (getAngle() <= 150)){
+//			direction = Direction.NORTHWEST;
+//		}else if((getAngle() > 300) && (getAngle() <= 330)){
+//			direction = Direction.SOUTHEAST;
+//		}else{
+//			direction = Direction.SOUTHWEST;
+//		}
+//		System.out.println(direction);
+		
+	
+		//System.out.println("updateDirection");
+		//North
+		
 		if(currentPos.x == destination.x){
 			if(currentPos.y > destination.y){
 				direction = Direction.NORTH;
 			}else{
 				direction = Direction.SOUTH;
 			}
-		}else if(currentPos.y == destination.y){
+		}
+		else if(currentPos.y == destination.y){
 			if(currentPos.x > destination.x){
 				direction = Direction.WEST;
 			}else{
@@ -229,8 +256,21 @@ public abstract class Character implements MoveObjects {
 	
 	
 	
+	/**
+	 * 
+	 * @param location:currentPos
+	 * @param target:destination
+	 * @return angle for use in finding directions
+	 */
+	public float getAngle() {
+	    float angle = (float) Math.toDegrees(Math.atan2(destination.y - currentPos.y, destination.x - currentPos.x));
 
+	    if(angle < 0){
+	        angle += 360;
+	    }
 
+	    return angle;
+	}
 /**
  * @author Auzi
  * 
