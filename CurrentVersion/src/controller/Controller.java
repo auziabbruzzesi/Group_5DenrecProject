@@ -36,6 +36,8 @@ import view.View;
 
 public class Controller implements MouseListener {
 
+	private status gameStatus = status.IN_PROGRESS;
+	
 	private static Model m;
 	private static View v;
 	private boolean pickUpRequest = false;
@@ -296,6 +298,7 @@ public class Controller implements MouseListener {
 				m.resetWave(i);
 				m.updateShoreLine(damage);
 				v.updateShoreline(damage);
+				checkGameStatus();
 				v.resetWave(i, w.getCurrentPos());
 				// System.out.println("model shoreline = "+ m.getShoreLine() +
 				// "\nview shoreline = " + v.getShoreLine());
@@ -303,6 +306,19 @@ public class Controller implements MouseListener {
 			i++;
 		}
 
+	}
+
+	private void checkGameStatus() {
+		if(m.getShoreLine() < m.getminShoreLine()){
+			gameStatus = status.LOSE;
+		}
+		else if(m.getP().getHealth() < 0){
+			gameStatus = status.LOSE;
+		}
+		else if( m.allBoxesFull() && m.boxesCorrect() ){
+			gameStatus = status.WIN;
+		}
+		
 	}
 
 	private int determineDamage(Wave w, int i) {
@@ -388,5 +404,13 @@ public class Controller implements MouseListener {
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public status getGameStatus() {
+		return gameStatus;
+	}
+
+	public void setGameStatus(status gameStatus) {
+		this.gameStatus = gameStatus;
 	}
 }

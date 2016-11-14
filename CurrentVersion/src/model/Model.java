@@ -20,8 +20,8 @@ import view.View;
 import controller.Controller.button;
 
 public class Model {
-	
-	//TODO: Tidy up these attribute declarations!
+
+	// TODO: Tidy up these attribute declarations!
 	private int numBoxes = 4;
 	private int score = 0;
 	private Player p = new Player(new Point(Player.startPosition));
@@ -31,6 +31,8 @@ public class Model {
 	private int numWaves = 6;
 	private HealthBar HB = new HealthBar(100);
 	private int shoreLine = 840;
+	private int minShoreLine = 800; // TODO: have C init m's & v's minshores to
+									// ensure they're in-sync
 
 	public Model() {
 		Random r = new Random();
@@ -38,9 +40,13 @@ public class Model {
 
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < numBoxes; i++) {
-			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);// Auzi did this. this is
-													// bad. please fix it when
-													// the time comes.
+			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);// Auzi
+																			// did
+																			// this.
+																			// this
+																			// is
+			// bad. please fix it when
+			// the time comes.
 			this.boxes.put(p, new Box(p));
 		}
 
@@ -207,10 +213,10 @@ public class Model {
 			// the existing object
 			if ((X2 + BeachObject.beachObjDimensions >= X1)
 					&& (X2 + BeachObject.beachObjDimensions <= X1 + BeachObject.beachObjDimensions)) {
-				
+
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + BeachObject.beachObjDimensions) {
-					
+
 					canCreate = false;
 				}
 				// bottom of creating would overlap
@@ -222,10 +228,10 @@ public class Model {
 			// if the right side of the obj we want to create would overlap with
 			// the existing object
 			else if ((X2 >= X1) && (X2 <= X1 + BeachObject.beachObjDimensions)) {
-				
+
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + BeachObject.beachObjDimensions) {
-					
+
 					canCreate = false;
 				}
 				// bottom of creating would overlap
@@ -305,12 +311,12 @@ public class Model {
 		}
 	}
 
-	public void updateShoreLine(int damage){
-		if(shoreLine > 800){
-			shoreLine-=damage;
+	public void updateShoreLine(int damage) {
+		if (shoreLine > minShoreLine) {
+			shoreLine -= damage;
 		}
 	}
-	
+
 	public int getShoreLine() {
 		return shoreLine;
 	}
@@ -325,6 +331,41 @@ public class Model {
 
 	public void setNumBoxes(int numBoxes) {
 		this.numBoxes = numBoxes;
+	}
+
+	public int getminShoreLine() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public boolean allBoxesFull() {
+		boolean allFull = true;
+
+		for (Box b : boxes.values()) {
+			if (!(b.isfull())) {
+				allFull = false;
+			}
+		}
+
+		return allFull;
+	}
+
+	public boolean boxesCorrect() {
+		boolean correct;
+		int oyst = 0;
+		int conc = 0;
+		if(allBoxesFull()){
+			for(Box b : boxes.values()){
+				
+			}
+		}
+		else{
+			System.out.println("All boxes not yet full");
+			correct = false;
+		}
+		
+		
+		return false;
 	}
 	
 }
