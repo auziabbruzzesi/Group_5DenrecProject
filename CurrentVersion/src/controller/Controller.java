@@ -213,6 +213,7 @@ public class Controller implements MouseListener {
 					}
 
 					m.getBoxes().get(b.getLocation()).incrementCount();
+//					System.out.println("\n\nbox count = " + m.getBoxes().get(b.getLocation()).getCount() + " isfull = "+ m.getBoxes().get(b.getLocation()).isfull());
 					m.getP().setH(HoldingType.EMPTY);
 				}
 			}
@@ -312,27 +313,35 @@ public class Controller implements MouseListener {
 		if (i < m.getBoxes().size()) {
 			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
 		} else {
-//			System.out.println("in else");
 			p = new Point(Box.boxX, (m.getNumBoxes() - 1) * Box.boxToBoxInterval + 20);
 		}
 		b = m.getBoxes().get(p);
-//		System.out.println(b);
 
 		switch (b.getContains()) {
 		case EMPTY:
 			decrement = 10;
 			break;
 		case OYSTER:
-			decrement = 4;
+			if(b.isfull()){
+				decrement = 2;
+			}
+			else{
+				decrement = 4;
+			}
 			break;
 		case CONCRETE:
-			decrement = 6;
+			if(b.isfull()){
+				decrement = 4;
+			}
+			else{
+				decrement = 6;
+			}
 			break;
 		default:
-			System.out.println("Error: Contains = " + b.getContains());
+			System.out.println("Error: Box contains = " + b.getContains());
 			break;
 		}
-//		System.out.println("decrement = " + decrement);
+//		System.out.println("\nbox contains " + b.getContains() + "\nfull = " + b.isfull() + "\ndecrement = " + decrement);
 		return decrement;
 	}
 
