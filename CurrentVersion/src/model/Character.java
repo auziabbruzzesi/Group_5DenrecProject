@@ -260,7 +260,7 @@ public abstract class Character implements MoveObjects {
 	 * 
 	 * @param location:currentPos
 	 * @param target:destination
-	 * @return angle for use in finding direction
+	 * @return angle for use in finding directions
 	 */
 	public float getAngle() {
 	    float angle = (float) Math.toDegrees(Math.atan2(destination.y - currentPos.y, destination.x - currentPos.x));
