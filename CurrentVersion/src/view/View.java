@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 import controller.Controller.button;
 import model.Player;
 import model.Wave;
+import view.View.HealthBar;
 
 public class View extends JFrame {
 	public static final int viewHeight = 650;
@@ -40,7 +41,7 @@ public class View extends JFrame {
 
 	JPanel jP = new jpanel();
 
-	private JPanel healthBar = new JPanel();
+	private HealthBar healthBar = new HealthBar();
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
 	private int shoreLine = viewWidth - 360;// TODO: make this more generic
@@ -54,6 +55,7 @@ public class View extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
 		getContentPane().add(jP);
+		jP.add(healthBar);
 		pack();
 		setVisible(true);
 	}
@@ -81,6 +83,44 @@ public class View extends JFrame {
 			}
 
 		}
+	}
+	public class HealthBar extends JPanel{
+		public int overallHeight;
+		public double healthHeight;
+		public double startingY;
+		
+		private int xPos = 0;
+		private int yPos = 0;
+		
+		/**
+		 * Constructor
+		 * @param overallHeight
+		 * @param healthHeight
+		 */
+		public HealthBar(int overallHeight, int healthHeight){
+			this.overallHeight = 400;
+			this.healthHeight = 400;
+			this.startingY = 0;
+		}
+		
+		public HealthBar() {
+			// TODO Auto-generated constructor stub
+		}
+
+		@Override
+		protected void paintComponent(Graphics g){
+			g.setColor(Color.WHITE);
+			g.fillRect(this.xPos, this.yPos, this.getWidth(), this.getHeight());
+			g.setColor(Color.green);
+			//System.out.println("here: " + this.overallHeight);
+			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(),(int)healthHeight);
+			
+		}
+		public void setHealthHeight(double d){
+			this.healthHeight = d;
+			repaint();
+		}
+		
 	}
 
 	public void updateShoreline(int damage) {
@@ -136,11 +176,11 @@ public class View extends JFrame {
 		this.waveBtns = waveBtns;
 	}
 
-	public JPanel getHealthBar() {
+	public HealthBar getHealthBar() {
 		return healthBar;
 	}
 
-	public void setHealthBar(JPanel healthBar) {
+	public void setHealthBar(HealthBar healthBar) {
 		this.healthBar = healthBar;
 	}
 

@@ -5,73 +5,49 @@ package model;
  *
  */
 public class HealthBar {
-	private int health = 100;
-	private int height = 100;
-	private int width = 25;
-	private int innerHeight = height;
+	//%
+	private int health = 100; //default
+	private int width = 100;
+	private int height = 400;
+	private double insideHeight = height;
+	private double startingY = 0;
+
 	
-	//Constructor
-	public HealthBar(int health){
-		this.health = health;
+	
+	public HealthBar(int width, int height){
+		this.width = width;
+		this.height = height;
+	
+				
 	}
-	
-	
-	
-	
-	/**
-	 * 
-	 * @param the amount of damage done to whatever
-	 * 	has the healthbar
-	 */
-	public void decreaseHealth(int damage){
-		innerHeight -= damage;
+	public void damage(int damage){
+		double decDamage = (double)damage/100;
+		System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
+		this.startingY =  (startingY + (decDamage * height));
+		this.insideHeight =  (insideHeight - (decDamage * height));
 		
 	}
 	
-	/**
-	 * 
-	 * @param the amount adding to the health bar
-	 */
-	public void increaseHealth(int increase){
-		
-	}
-
-	public int gethealth() {
-		return health;
-	}
-
-	public void sethealth(int health) {
-		this.health = health;
-	}
-
-	public int getHeight() {
-		return height;
-	}
-
-	public void setHeight(int height) {
+	public void setHeight(int height){
 		this.height = height;
 	}
-
-	public int getWidth() {
-		return width;
+	public int getHeight(){
+		return this.height;
 	}
-
-	public void setWidth(int width) {
+	
+	public void setWidth(int width){
 		this.width = width;
 	}
-	
-	public void setInnerHeight(int height){
-		this.innerHeight = height;
+	public int getWidth(){
+		return this.width;
 	}
-	
-	public int getInnerHeight(){
-		return this.innerHeight;
+	public double getStartingY() {
+		return startingY;
 	}
-	
-	
-	
-	
-	
-	
-
+	public int getHealth(){
+		return this.health;
+	}
+	public double getInsideHeight(){
+		return this.insideHeight;
+	}
 }

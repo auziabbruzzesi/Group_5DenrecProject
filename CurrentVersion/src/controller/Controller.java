@@ -94,7 +94,8 @@ public class Controller implements MouseListener {
 
 		// Healthbar
 		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
-		v.getJPanel().add(v.getHealthBar());
+		v.getHealthBar().healthHeight = m.getHB().getInsideHeight();
+		v.getHealthBar().startingY = m.getHB().getStartingY();
 
 		for (Box b : m.getBoxes().values()) {
 			button j = new button();
