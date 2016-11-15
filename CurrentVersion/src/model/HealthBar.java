@@ -14,13 +14,14 @@ public class HealthBar {
 
 	
 	
-	public HealthBar(int width, int height){
+	public HealthBar(int width, int health){
 		this.width = width;
 		this.height = height;
 	
 				
 	}
 	public void damage(int damage){
+		health = health - damage;
 		double decDamage = (double)damage/100;
 		System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
 		this.startingY =  (startingY + (decDamage * height));
@@ -49,5 +50,8 @@ public class HealthBar {
 	}
 	public double getInsideHeight(){
 		return this.insideHeight;
+	}
+	public void setInsideHeight(double insideHeight){
+		this.insideHeight = insideHeight;
 	}
 }
