@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
@@ -108,8 +109,10 @@ public class Controller implements MouseListener {
 			v.getJPanel().setLayout(null);
 
 			// BOXES ARE ADDED TO JPANEL HERE (but created in model)
+			j.setBorder(BorderFactory.createEmptyBorder());
+			j.setIcon(pics[10]);
 			v.getJPanel().add(j);
-
+			
 			j.addMouseListener(this);
 
 		}
@@ -122,7 +125,9 @@ public class Controller implements MouseListener {
 
 			k.setBackground(Color.pink);
 			// k.setIcon(defaultIcon);
+			k.setBorder(BorderFactory.createEmptyBorder());
 
+			k.setIcon(pics[11]);
 			v.addToWaveBtns(k);
 
 			i++;
@@ -146,9 +151,10 @@ public class Controller implements MouseListener {
 				s.setIcon(concIcon);
 			} else if (bo.getH() == HoldingType.OYSTER) {
 				s.setHoldingType(HoldingType.OYSTER);
-				s.setText("o");
+				//s.setText("o");
 				s.setBackground(Color.blue);
 				s.addMouseListener(this);
+				s.setBorder(BorderFactory.createEmptyBorder());
 				s.setIcon(oystIcon);
 			}
 
@@ -381,7 +387,7 @@ public class Controller implements MouseListener {
 	public void initSprites() {
 
 		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
-				"pSOUTHEAST.png", "pSOUTHWEST.png", "concrete.png", "oyster.png" };
+				"pSOUTHEAST.png", "pSOUTHWEST.png", "concrete.png", "oyster1.png","box.png", "wave.png"};
 		pics = new ImageIcon[myNames.length];
 		int i = 0;
 		for (String s : myNames) {
