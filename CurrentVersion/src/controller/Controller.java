@@ -145,9 +145,11 @@ public class Controller implements MouseListener {
 
 			if (bo.getH() == HoldingType.CONCRETE) {
 				s.setHoldingType(HoldingType.CONCRETE);
-				s.setText("c");
+				//s.setText("c");
 				s.setBackground(Color.gray);
 				s.addMouseListener(this);
+				s.setBorder(BorderFactory.createEmptyBorder());
+
 				s.setIcon(concIcon);
 			} else if (bo.getH() == HoldingType.OYSTER) {
 				s.setHoldingType(HoldingType.OYSTER);
@@ -190,7 +192,7 @@ public class Controller implements MouseListener {
 			} // end if(pickup)
 
 			else if (putDownRequest) {
-				b.setText(putDown());
+				putDown();
 				putDownRequest = false;
 			}
 		} // end if(pickup)
@@ -387,7 +389,7 @@ public class Controller implements MouseListener {
 	public void initSprites() {
 
 		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
-				"pSOUTHEAST.png", "pSOUTHWEST.png", "concrete.png", "oyster1.png","box.png", "wave.png"};
+				"pSOUTHEAST.png", "pSOUTHWEST.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
 		pics = new ImageIcon[myNames.length];
 		int i = 0;
 		for (String s : myNames) {
