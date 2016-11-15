@@ -111,6 +111,7 @@ public class Controller implements MouseListener {
 
 			// BOXES ARE ADDED TO JPANEL HERE (but created in model)
 			j.setBorder(BorderFactory.createEmptyBorder());
+			j.setContentAreaFilled(false);
 			j.setIcon(pics[10]);
 			v.getJPanel().add(j);
 			
@@ -126,6 +127,7 @@ public class Controller implements MouseListener {
 
 //			k.setBackground(Color.pink);
 			k.setBorder(BorderFactory.createEmptyBorder());
+			k.setContentAreaFilled(false);
 
 			k.setIcon(pics[11]);
 			v.addToWaveBtns(k);
@@ -148,7 +150,9 @@ public class Controller implements MouseListener {
 				//s.setText("c");
 //				s.setBackground(Color.gray);
 				s.addMouseListener(this);
+				
 				s.setBorder(BorderFactory.createEmptyBorder());
+				s.setContentAreaFilled(false);
 
 				s.setIcon(concIcon);
 			} else if (bo.getH() == HoldingType.OYSTER) {
@@ -157,6 +161,7 @@ public class Controller implements MouseListener {
 //				s.setBackground(Color.blue);
 				s.addMouseListener(this);
 				s.setBorder(BorderFactory.createEmptyBorder());
+				s.setContentAreaFilled(false);
 				s.setIcon(oystIcon);
 			}
 
