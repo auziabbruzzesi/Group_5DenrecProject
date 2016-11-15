@@ -29,9 +29,9 @@ public class Model {
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
-	private HealthBar HB = new HealthBar(50,200);
+	private HealthBar HB = new HealthBar(50, 200);
 	private int shoreLine = 840;
-	private int minShoreLine = 800; // TODO: have C init m's & v's minshores to
+	private int minShoreLine = 750; // TODO: have C init m's & v's minshores to
 									// ensure they're in-sync
 
 	public Model() {
@@ -88,6 +88,7 @@ public class Model {
 		System.out.println(this.waves.size() + " Waves.");
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
 
+		System.out.println("Shoreline = " + getShoreLine());
 	}
 
 	public Boolean checkPlayerOverlap(Point toCreate) {
@@ -312,9 +313,7 @@ public class Model {
 	}
 
 	public void updateShoreLine(int damage) {
-		if (shoreLine > minShoreLine) {
-			shoreLine -= damage;
-		}
+		shoreLine -= damage;
 	}
 
 	public int getShoreLine() {
@@ -335,7 +334,7 @@ public class Model {
 
 	public int getminShoreLine() {
 		// TODO Auto-generated method stub
-		return 0;
+		return minShoreLine;
 	}
 
 	public boolean allBoxesFull() {
@@ -351,21 +350,38 @@ public class Model {
 	}
 
 	public boolean boxesCorrect() {
-		boolean correct;
-		int oyst = 0;
-		int conc = 0;
-		if(allBoxesFull()){
-			for(Box b : boxes.values()){
-				
+		boolean correct = false;
+		double oyst = 0;
+		double conc = 0;
+		if (allBoxesFull()) {
+			for (Box b : boxes.values()) {
+				switch (b.getContains()) {
+				case OYSTER:
+					oyst++;
+					break;
+				case CONCRETE:
+					conc++;
+					break;
+				default:
+					System.out.println("Problem in model->boxesCorrect: box contains " + b.getContains());
+					break;
+				}
 			}
-		}
-		else{
+			double percentageOyst = (oyst / (oyst + conc)) * 100;
+			if (percentageOyst < 50) {
+				// System.out.println("Not enough gabions to win. Percentage = "
+				// + percentageOyst);
+				correct = false;
+			} else {
+				correct = true;
+				// System.out.println("you win!");
+			}
+		} else {
 			System.out.println("All boxes not yet full");
 			correct = false;
 		}
-		
-		
-		return false;
+
+		return correct;
 	}
-	
+
 }

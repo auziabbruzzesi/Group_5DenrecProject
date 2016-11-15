@@ -19,9 +19,11 @@ import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import controller.Controller.button;
+import controller.status;
 import model.Player;
 import model.Wave;
 import view.View.HealthBar;
@@ -193,6 +195,26 @@ public class View extends JFrame {
 	}
 	public int getShoreLine(){
 		return shoreLine;
+	}
+
+	public void gameEnd(status gameStatus) {		
+		//display dialogue
+		String message = "";
+		switch(gameStatus){
+		case LOSE_PLAYER:
+			message = "You Lose :( \nPlayer health reached zero";
+		break;
+		case LOSE_SHORE:
+			message = "You Lose :( \n Too much of the Estuary eroded away";
+		break;
+		case WIN:
+			message = "You Win! :D";
+		break;
+		}
+		
+		
+		JOptionPane.showMessageDialog(null, "Game ended.");
+		
 	}
 
 }// end View class

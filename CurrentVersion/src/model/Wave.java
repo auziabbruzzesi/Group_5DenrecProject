@@ -29,7 +29,7 @@ public class Wave extends Character {
 		this.setCurrentPos(p);
 		this.setInitialPos(p);
 		
-		int v = randomGenerator.nextInt(2) + 1;
+		int v = randomGenerator.nextInt(1) + 1;
 		//generate a random number within a specified range (1-4 for now) and set velocity to that number
 		this.setVelocity(v);
 

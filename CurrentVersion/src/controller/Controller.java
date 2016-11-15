@@ -62,6 +62,7 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moveWave();
+			//checkGameStatus();
 		}
 	});
 
@@ -299,7 +300,8 @@ public class Controller implements MouseListener {
 				m.resetWave(i);
 				m.updateShoreLine(damage);
 				v.updateShoreline(damage);
-				checkGameStatus();
+				System.out.println("\nShoreline5 = "+ m.getShoreLine() + " min shoreline = "+ m.getminShoreLine());
+				checkGameStatus();//we call this here bc shoreline was updated (above)
 				v.resetWave(i, w.getCurrentPos());
 				// System.out.println("model shoreline = "+ m.getShoreLine() +
 				// "\nview shoreline = " + v.getShoreLine());
@@ -310,14 +312,24 @@ public class Controller implements MouseListener {
 	}
 
 	private void checkGameStatus() {
-		if(m.getShoreLine() < m.getminShoreLine()){
-			gameStatus = status.LOSE;
+		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
+		if(m.getShoreLine() <= m.getminShoreLine()){
+			gameStatus = status.LOSE_SHORE;
+			System.out.println("lose - shoreline receeded");
 		}
 		else if(m.getP().getHealth() < 0){
-			gameStatus = status.LOSE;
+			gameStatus = status.LOSE_PLAYER;
+			System.out.println("lose - player health at zero");
 		}
 		else if( m.allBoxesFull() && m.boxesCorrect() ){
 			gameStatus = status.WIN;
+			System.out.println("win! filled the boxes in time, with at least 50% Gabions");
+		}
+		
+		if(gameStatus != status.IN_PROGRESS){
+			wTimer.stop();
+			pTimer.stop();
+			v.gameEnd(gameStatus);
 		}
 		
 	}
@@ -327,6 +339,7 @@ public class Controller implements MouseListener {
 		Box b;
 		Point p;
 
+		//figure out which box wave crashed on
 		if (i < m.getBoxes().size()) {
 			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
 		} else {
@@ -334,6 +347,7 @@ public class Controller implements MouseListener {
 		}
 		b = m.getBoxes().get(p);
 
+		//set decrement based box contents
 		switch (b.getContains()) {
 		case EMPTY:
 			decrement = 5;
