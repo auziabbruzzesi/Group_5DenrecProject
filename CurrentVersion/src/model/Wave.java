@@ -11,14 +11,9 @@ public class Wave extends Character {
 
 	public static final int waveWidth = 50;// wave width
 	public static final int waveHeight = 50; // wave height
-	public static final int waveSpawnSpacing = 150; // minimum distance spawned
-													// objects should be from
-													// waves upon creation
-	public static final int waveToWaveInterval = 100;// distance between created
-														// waves
-	public static final int waveToViewEdgeSpacing = 20;// distance boxes are
-														// from the right edge
-														// of the screen
+	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
+	public static final int waveToWaveInterval = 100;// distance between created waves
+	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen
 	
 	private int shorelineX = 360;//TODO:
 	private Point initialPos;
@@ -29,7 +24,7 @@ public class Wave extends Character {
 		this.setCurrentPos(p);
 		this.setInitialPos(p);
 		
-		int v = randomGenerator.nextInt(1) + 1;
+		int v = randomGenerator.nextInt(2) + 1;
 		//generate a random number within a specified range (1-4 for now) and set velocity to that number
 		this.setVelocity(v);
 

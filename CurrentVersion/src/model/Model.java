@@ -303,8 +303,11 @@ public class Model {
 		int i = 0;
 		for (Wave w : waves) {
 			if (i == a) {
-				Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-				w.setCurrentPos(p);
+				Point startPos = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+				Point newDest = new Point(getShoreLine(), w.getDestination().y);
+				System.out.println("new dest ="+newDest);
+				w.setCurrentPos(startPos);
+				w.setDestination(newDest);
 				w.resetVelocity();
 			}
 			i++;

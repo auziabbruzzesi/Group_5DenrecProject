@@ -307,7 +307,7 @@ public class Controller implements MouseListener {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
 
-			if (!(w.getCurrentPos().equals(w.getDestination()))) {
+			if ( w.getCurrentPos().x > w.getDestination().x ) {
 				// move model's version of wave
 				w.move();
 
@@ -316,14 +316,14 @@ public class Controller implements MouseListener {
 			} else {
 				int shoreDamage = determineDamage(w, i);
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.
-				m.resetWave(i);
+				
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
 				m.getHB().damage(healthDamage);
 				
-//				System.out.println("\nShoreline5 = "+ m.getShoreLine() + " min shoreline = "+ m.getminShoreLine());
-//				System.out.println("HB bar height = " + m.getHB().getHealth() + "%");
+				m.resetWave(i);
 				v.resetWave(i, w.getCurrentPos());
+
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 				// System.out.println("model shoreline = "+ m.getShoreLine() +
 				// "\nview shoreline = " + v.getShoreLine());

@@ -23,7 +23,7 @@ public class HealthBar {
 	public void damage(int damage){
 		health = health - damage;
 		double decDamage = (double)damage/100;
-		System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
+//		System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
 		this.startingY =  (startingY + (decDamage * height));
 		this.insideHeight =  (insideHeight - (decDamage * height));
 		

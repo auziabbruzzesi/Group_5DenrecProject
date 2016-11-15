@@ -139,9 +139,11 @@ public class View extends JFrame {
 	}
 
 	public void updateShoreline(int damage) {
-		System.out.println("View: shoreline = " + shoreLine + " shoremin = " + shoreMin);
+//		System.out.println("View: shoreline = " + shoreLine + " shoremin = " + shoreMin);
 		if (shoreLine > shoreMin) {
 			shoreLine -= damage;
+//			System.out.println("updating shoreLine to "+shoreLine);
+			repaint();
 		}
 	}
 
