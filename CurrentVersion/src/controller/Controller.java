@@ -124,8 +124,7 @@ public class Controller implements MouseListener {
 			k.setMargin(new Insets(0, 0, 0, 0));
 			k.setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
 
-			k.setBackground(Color.pink);
-			// k.setIcon(defaultIcon);
+//			k.setBackground(Color.pink);
 			k.setBorder(BorderFactory.createEmptyBorder());
 
 			k.setIcon(pics[11]);
@@ -147,7 +146,7 @@ public class Controller implements MouseListener {
 			if (bo.getH() == HoldingType.CONCRETE) {
 				s.setHoldingType(HoldingType.CONCRETE);
 				//s.setText("c");
-				s.setBackground(Color.gray);
+//				s.setBackground(Color.gray);
 				s.addMouseListener(this);
 				s.setBorder(BorderFactory.createEmptyBorder());
 
@@ -155,7 +154,7 @@ public class Controller implements MouseListener {
 			} else if (bo.getH() == HoldingType.OYSTER) {
 				s.setHoldingType(HoldingType.OYSTER);
 				//s.setText("o");
-				s.setBackground(Color.blue);
+//				s.setBackground(Color.blue);
 				s.addMouseListener(this);
 				s.setBorder(BorderFactory.createEmptyBorder());
 				s.setIcon(oystIcon);
@@ -304,10 +303,13 @@ public class Controller implements MouseListener {
 				// move view's version of wave based on model
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
-				int damage = determineDamage(w, i);
+				int shoreDamage = determineDamage(w, i);
+//				int HP damage = ;
 				m.resetWave(i);
-				m.updateShoreLine(damage);
-				v.updateShoreline(damage);
+				m.updateShoreLine(shoreDamage);
+				v.updateShoreline(shoreDamage);
+				m.getHB().damage(shoreDamage);
+				
 				System.out.println("\nShoreline5 = "+ m.getShoreLine() + " min shoreline = "+ m.getminShoreLine());
 				v.resetWave(i, w.getCurrentPos());
 				checkGameStatus();//we call this here bc shoreline was updated (above)
