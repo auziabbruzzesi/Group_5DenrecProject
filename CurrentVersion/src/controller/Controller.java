@@ -309,13 +309,14 @@ public class Controller implements MouseListener {
 				v.setSingleWaveBtn(i, w.getCurrentPos());
 			} else {
 				int shoreDamage = determineDamage(w, i);
-//				int HP damage = ;
+				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.
 				m.resetWave(i);
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
-				m.getHB().damage(shoreDamage);
+				m.getHB().damage(healthDamage);
 				
-				System.out.println("\nShoreline5 = "+ m.getShoreLine() + " min shoreline = "+ m.getminShoreLine());
+//				System.out.println("\nShoreline5 = "+ m.getShoreLine() + " min shoreline = "+ m.getminShoreLine());
+//				System.out.println("HB bar height = " + m.getHB().getHealth() + "%");
 				v.resetWave(i, w.getCurrentPos());
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 				// System.out.println("model shoreline = "+ m.getShoreLine() +
@@ -327,19 +328,19 @@ public class Controller implements MouseListener {
 	}
 
 	private void checkGameStatus() {
-		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
+//		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
 		if(m.getShoreLine() <= m.getminShoreLine()){
 			gameStatus = status.LOSE_SHORE;
-			System.out.println("lose - shoreline receeded");
+//			System.out.println("lose - shoreline receeded");
 		}
 		else if(m.getP().getHealth() < 0){
 			gameStatus = status.LOSE_PLAYER;
-			System.out.println("lose - player health at zero");
+//			System.out.println("lose - player health at zero");
 		}
 		else if( m.allBoxesFull() ){
 			if( m.boxesCorrect() ){
 				gameStatus = status.WIN;
-				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
+//				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
 			}
 			else{
 				gameStatus = status.LOSE_BOXES;

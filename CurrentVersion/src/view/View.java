@@ -26,7 +26,7 @@ import controller.Controller.button;
 import controller.status;
 import model.Player;
 import model.Wave;
-import view.View.HealthBar;
+import view.View.HealthPanel;
 
 public class View extends JFrame {
 	public static final int viewHeight = 650;
@@ -43,16 +43,19 @@ public class View extends JFrame {
 
 	JPanel jP = new jpanel();
 
-	private HealthBar healthBar = new HealthBar();
+	private HealthPanel healthBar = new HealthPanel(200, 200);
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
-	private int shoreLine = viewWidth - 360;// TODO: make this more generic
-												// later
+	private int shoreLine = (2*viewWidth)/3;
+	private int shoreMin;
+			
 	private boolean waveBoxCollision = false;
 
 	// Constructor
 	public View() {
-
+		
+		shoreMin = shoreLine - this.healthBar.overallHeight;
+		System.out.println("View start: shoreline = "+shoreLine+" shoremin = " + shoreMin);
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
@@ -75,6 +78,7 @@ public class View extends JFrame {
 		protected void paintComponent(Graphics g) {
 
 			g.setColor(Color.BLUE);
+//			System.out.println("painting. shoreline = " + shoreLine);
 			g.fillRect(shoreLine, 0, viewHeight, viewWidth);
 
 			g.setColor(Color.yellow);
@@ -86,7 +90,7 @@ public class View extends JFrame {
 
 		}
 	}
-	public class HealthBar extends JPanel{
+	public class HealthPanel extends JPanel{
 		public int overallHeight;
 		public double healthHeight;
 		public double startingY;
@@ -99,16 +103,25 @@ public class View extends JFrame {
 		 * @param overallHeight
 		 * @param healthHeight
 		 */
-		public HealthBar(int overallHeight, int healthHeight){
-			this.overallHeight = 400;
-			this.healthHeight = 400;
+		public HealthPanel(int overallHeight, int healthHeight){
+			this.overallHeight = overallHeight;
+			this.healthHeight = healthHeight;
 			this.startingY = 0;
+			System.out.println("view's HB overall height = "+overallHeight);
 		}
 		
-		public HealthBar() {
+		public HealthPanel() {
 			// TODO Auto-generated constructor stub
+			this.overallHeight = 200;
+			this.healthHeight = 200;
+			this.startingY = 0;
+			System.out.println("view's HB overall height = "+overallHeight);
 		}
 
+		public int getOverallHeight(){
+			return overallHeight;
+		}
+		
 		@Override
 		protected void paintComponent(Graphics g){
 			g.setColor(Color.WHITE);
@@ -126,7 +139,8 @@ public class View extends JFrame {
 	}
 
 	public void updateShoreline(int damage) {
-		if (shoreLine > 800) {
+		System.out.println("View: shoreline = " + shoreLine + " shoremin = " + shoreMin);
+		if (shoreLine > shoreMin) {
 			shoreLine -= damage;
 		}
 	}
@@ -178,11 +192,11 @@ public class View extends JFrame {
 		this.waveBtns = waveBtns;
 	}
 
-	public HealthBar getHealthBar() {
+	public HealthPanel getHealthBar() {
 		return healthBar;
 	}
 
-	public void setHealthBar(HealthBar healthBar) {
+	public void setHealthBar(HealthPanel healthBar) {
 		this.healthBar = healthBar;
 	}
 

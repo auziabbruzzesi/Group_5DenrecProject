@@ -8,7 +8,7 @@ public class HealthBar {
 	//%
 	private int health = 100; //default
 	private int width = 100;
-	private int height = 400;
+	private int height = 200;
 	private double insideHeight = height;
 	private double startingY = 0;
 

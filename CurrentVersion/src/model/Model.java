@@ -30,10 +30,10 @@ public class Model {
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private int numWaves = 6;
 	private HealthBar HB = new HealthBar(50, 200);
-	private int shoreLine = 840;
-	private int minShoreLine = 750; // TODO: have C init m's & v's minshores to
-									// ensure they're in-sync
+	private int shoreLine = (2*view.View.viewWidth)/3;
+	private int minShoreLine = shoreLine - HB.getHeight(); // TODO: have C init m's & v's minshores to ensure they're in-sync
 
+	
 	public Model() {
 		Random r = new Random();
 		Boolean canPlace;
