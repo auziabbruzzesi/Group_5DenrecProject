@@ -309,8 +309,8 @@ public class Controller implements MouseListener {
 				m.updateShoreLine(damage);
 				v.updateShoreline(damage);
 				System.out.println("\nShoreline5 = "+ m.getShoreLine() + " min shoreline = "+ m.getminShoreLine());
-				checkGameStatus();//we call this here bc shoreline was updated (above)
 				v.resetWave(i, w.getCurrentPos());
+				checkGameStatus();//we call this here bc shoreline was updated (above)
 				// System.out.println("model shoreline = "+ m.getShoreLine() +
 				// "\nview shoreline = " + v.getShoreLine());
 			}
@@ -329,9 +329,14 @@ public class Controller implements MouseListener {
 			gameStatus = status.LOSE_PLAYER;
 			System.out.println("lose - player health at zero");
 		}
-		else if( m.allBoxesFull() && m.boxesCorrect() ){
-			gameStatus = status.WIN;
-			System.out.println("win! filled the boxes in time, with at least 50% Gabions");
+		else if( m.allBoxesFull() ){
+			if( m.boxesCorrect() ){
+				gameStatus = status.WIN;
+				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
+			}
+			else{
+				gameStatus = status.LOSE_BOXES;
+			}
 		}
 		
 		if(gameStatus != status.IN_PROGRESS){

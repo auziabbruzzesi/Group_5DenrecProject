@@ -207,13 +207,17 @@ public class View extends JFrame {
 		case LOSE_SHORE:
 			message = "You Lose :( \n Too much of the Estuary eroded away";
 		break;
+		case LOSE_BOXES:
+			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
+		break;
 		case WIN:
 			message = "You Win! :D";
 		break;
-		}
+		}		
 		
+		JOptionPane.showMessageDialog(null, message);
+		System.exit(0);
 		
-		JOptionPane.showMessageDialog(null, "Game ended.");
 		
 	}
 
