@@ -58,6 +58,7 @@ public class Controller implements MouseListener {
 	final int concSprite = 8;
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
+	ImageIcon[] oysterBoxes;
 
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
@@ -72,6 +73,8 @@ public class Controller implements MouseListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
+			player.setBorder(BorderFactory.createEmptyBorder());
+
 			player.setIcon(pics[m.getP().getDirection().getRank()]);
 			m.getP().move();
 			updatePlayerMV();
@@ -199,6 +202,7 @@ public class Controller implements MouseListener {
 
 			else if (putDownRequest) {
 				putDown();
+				
 				putDownRequest = false;
 			}
 		} // end if(pickup)
@@ -230,6 +234,8 @@ public class Controller implements MouseListener {
 					}
 
 					m.getBoxes().get(b.getLocation()).incrementCount();
+					//b.setIcon();
+					
 //					System.out.println("\n\nbox count = " + m.getBoxes().get(b.getLocation()).getCount() + " isfull = "+ m.getBoxes().get(b.getLocation()).isfull());
 					m.getP().setH(HoldingType.EMPTY);
 				}
@@ -412,12 +418,19 @@ public class Controller implements MouseListener {
 
 	public void initSprites() {
 
-		String[] myNames = { "pNORTH.png", "pSOUTH.png", "pEAST.png", "pWEST.png", "pNORTHEAST.png", "pNORTHWEST.png",
-				"pSOUTHEAST.png", "pSOUTHWEST.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
+		String[] myNames = { "north.png", "south.png", "east.png", "west.png", "northEast.png", "northWest.png",
+				"southEast.png", "southWest.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
+		String[] boxImages = {"box1.png","box2.png","box3.png","box4.png","box5.png"};
 		pics = new ImageIcon[myNames.length];
+		oysterBoxes = new ImageIcon[boxImages.length];
 		int i = 0;
 		for (String s : myNames) {
 			pics[i] = createImage(s);
+			i++;
+		}
+		i = 0;
+		for(String s : boxImages){
+			oysterBoxes[i] = createImage(s);
 			i++;
 		}
 	}
