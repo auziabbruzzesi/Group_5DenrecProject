@@ -21,14 +21,16 @@ import controller.Controller.button;
 
 public class Model {
 
-	// TODO: Tidy up these attribute declarations!
+	//vars related to initialization
 	private int numBoxes = 4;
 	private int score = 0;
+	private int numWaves = 6;
+	
+	//General vars
 	private Player p = new Player(new Point(Player.startPosition));
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
-	private int numWaves = 6;
 	private HealthBar HB = new HealthBar(50, 200);
 	private int shoreLine = (2*view.View.viewWidth)/3;
 	private int minShoreLine = shoreLine - HB.getHeight(); // TODO: have C init m's & v's minshores to ensure they're in-sync
@@ -40,13 +42,7 @@ public class Model {
 
 		// BOXES ARE CREATED HERE
 		for (int i = 0; i < numBoxes; i++) {
-			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);// Auzi
-																			// did
-																			// this.
-																			// this
-																			// is
-			// bad. please fix it when
-			// the time comes.
+			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
 			this.boxes.put(p, new Box(p));
 		}
 
@@ -193,8 +189,8 @@ public class Model {
 
 	/**
 	 * A note: This operation would work better and be less costly if we used a
-	 * hashset instead of a hashmap for beachobjects. Did not change because
-	 * there's probably a reason we didn't do that.
+	 * hashset instead of a hashmap for beachobjects. Will explore changing it, 
+	 * but for now it works and we don't want to mess it up the day before beta.
 	 */
 
 	public Boolean checkBeachObjectOverlap(Point toCreate) {
@@ -305,7 +301,7 @@ public class Model {
 			if (i == a) {
 				Point startPos = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 				Point newDest = new Point(getShoreLine(), w.getDestination().y);
-				System.out.println("new dest ="+newDest);
+//				System.out.println("new dest ="+newDest);
 				w.setCurrentPos(startPos);
 				w.setDestination(newDest);
 				w.resetVelocity();
@@ -317,6 +313,14 @@ public class Model {
 
 	public void updateShoreLine(int damage) {
 		shoreLine -= damage;
+	}
+
+	public void updateWavesDestinations() {
+		for(Wave w: waves){
+			Point newDest = new Point(getShoreLine(), w.getDestination().y);
+			w.setDestination(newDest);
+		}
+		
 	}
 
 	public int getShoreLine() {

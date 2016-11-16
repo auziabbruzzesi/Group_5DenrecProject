@@ -175,10 +175,12 @@ public class Controller implements MouseListener {
 		}
 
 		player.setMargin(new Insets(0, 0, 0, 0));
-		player.setBackground(Color.black);
+		player.setBorder(BorderFactory.createEmptyBorder());
+		player.setContentAreaFilled(false);
 		player.setBounds(Player.startPosition.x, Player.startPosition.y, Player.playerDimensions,
 				Player.playerDimensions);
 		v.getJPanel().add(player);
+		v.repaint();
 	}
 
 	/**
@@ -306,33 +308,44 @@ public class Controller implements MouseListener {
 
 	}
 
+	int wavesUpdated=1;//FOR DEBUGGING
+	
 	public void moveWave() {
 		int i = 0;
 		for (Wave w : m.getWaves()) {
 
+			//if we haven't reached destination
 			if ( w.getCurrentPos().x > w.getDestination().x ) {
-				// move model's version of wave
-				w.move();
-
-				// move view's version of wave based on model
-				v.setSingleWaveBtn(i, w.getCurrentPos());
-			} else {
-				int shoreDamage = determineDamage(w, i);
-				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.
+				w.move(); // move model's version of wave
+				v.setSingleWaveBtn(i, w.getCurrentPos()); // move view's version of wave based on model's new value
 				
+			} else {
+												
+				System.out.println("\n["+wavesUpdated+"] Wave" + i + "currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
+				
+				int shoreDamage = determineDamage(w, i);
+				
+				System.out.println(""+shoreDamage+" determined.");
+				
+				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.				
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
-				m.getHB().damage(healthDamage);
 				
+				System.out.println(shoreDamage+" receeded.");
+
+				m.getHB().damage(healthDamage);	
+				v.getHealthBar().damage(healthDamage);
 				m.resetWave(i);
 				v.resetWave(i, w.getCurrentPos());
-
+				
+				wavesUpdated++;
+				
 				checkGameStatus();//we call this here bc shoreline was updated (above)
-				// System.out.println("model shoreline = "+ m.getShoreLine() +
-				// "\nview shoreline = " + v.getShoreLine());
+
 			}
 			i++;
 		}
+		m.updateWavesDestinations();
 
 	}
 
