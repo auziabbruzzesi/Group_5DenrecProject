@@ -55,7 +55,7 @@ public class View extends JFrame {
 	public View() {
 		
 		shoreMin = shoreLine - this.healthBar.overallHeight;
-		System.out.println("View start: shoreline = "+shoreLine+" shoremin = " + shoreMin);
+		System.out.println("View start: shoreline = "+shoreLine+" shoremin = " + shoreMin + "\n\n");
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
@@ -107,14 +107,14 @@ public class View extends JFrame {
 			this.overallHeight = overallHeight;
 			this.healthHeight = healthHeight;
 			this.startingY = 0;
-			System.out.println("view's HB overall height = "+overallHeight);
+//			System.out.println("view's HB overall height = "+overallHeight);
 		}
 		
 		public HealthPanel() {
 			this.overallHeight = 200;
 			this.healthHeight = 200;
 			this.startingY = 0;
-			System.out.println("view's HB overall height = "+overallHeight);
+//			System.out.println("view's HB overall height = "+overallHeight);
 		}
 
 		public int getOverallHeight(){
@@ -156,6 +156,7 @@ public class View extends JFrame {
 
 	public void resetWave(int i, Point p) {
 		waveBtns.get(i).setLocation(p);
+		System.out.println("Wave reset in view");
 	}
 
 	// Setters & getters

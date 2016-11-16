@@ -24,7 +24,7 @@ public class Model {
 	//vars related to initialization
 	private int numBoxes = 4;
 	private int score = 0;
-	private int numWaves = 6;
+	private int numWaves = 5;
 	
 	//General vars
 	private Player p = new Player(new Point(Player.startPosition));
@@ -83,7 +83,6 @@ public class Model {
 		System.out.println(this.boxes.size() + " Boxes.");
 		System.out.println(this.waves.size() + " Waves.");
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
-
 		System.out.println("Shoreline = " + getShoreLine());
 	}
 
@@ -295,24 +294,21 @@ public class Model {
 	public void resetWave(int a) {
 		// get the wave with this position, and set its position to its initial
 		// position
-
-		int i = 0;
-		for (Wave w : waves) {
-			if (i == a) {
-				Point startPos = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-				Point newDest = new Point(getShoreLine(), w.getDestination().y);
-//				System.out.println("new dest ="+newDest);
-				w.setCurrentPos(startPos);
-				w.setDestination(newDest);
-				w.resetVelocity();
-			}
-			i++;
-
-		}
+			Wave w = waves.get(a);
+		
+			Point startPos = new Point(View.viewWidth - Wave.waveWidth, a * Wave.waveSpawnSpacing);
+			Point newDest = new Point(getShoreLine(), w.getDestination().y);
+//			System.out.println("new dest ="+newDest);
+			w.setCurrentPos(startPos);
+			w.setDestination(newDest);
+			w.resetVelocity();
+		
+		System.out.println("Wave reset in model");
 	}
 
 	public void updateShoreLine(int damage) {
 		shoreLine -= damage;
+		System.out.println("shoreline updated");
 	}
 
 	public void updateWavesDestinations() {

@@ -205,6 +205,7 @@ public class Controller implements MouseListener {
 			} // end if(pickup)
 
 			else if (putDownRequest) {
+				System.out.println("putdown = "+putDownRequest);
 				putDown();
 				
 				putDownRequest = false;
@@ -221,6 +222,7 @@ public class Controller implements MouseListener {
 	 * @return String type
 	 */
 	public String putDown() {
+		System.out.println("in putdown()");
 		String type = "";
 		// check player is holding something
 		if (m.getP().getH() != HoldingType.EMPTY) {
@@ -238,9 +240,8 @@ public class Controller implements MouseListener {
 					}
 
 					m.getBoxes().get(b.getLocation()).incrementCount();
-					//b.setIcon();
 					
-//					System.out.println("\n\nbox count = " + m.getBoxes().get(b.getLocation()).getCount() + " isfull = "+ m.getBoxes().get(b.getLocation()).isfull());
+					System.out.println("\n\nbox count = " + m.getBoxes().get(b.getLocation()).getCount() + " isfull = "+ m.getBoxes().get(b.getLocation()).isfull());
 					m.getP().setH(HoldingType.EMPTY);
 				}
 			}
@@ -316,17 +317,18 @@ public class Controller implements MouseListener {
 
 			//if we haven't reached destination
 			if ( w.getCurrentPos().x > w.getDestination().x ) {
+				System.out.println(i+": This Wave's currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
 				w.move(); // move model's version of wave
 				v.setSingleWaveBtn(i, w.getCurrentPos()); // move view's version of wave based on model's new value
 				
 			} else {
 												
-				//System.out.println("\n["+wavesUpdated+"] Wave" + i + "currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
+				System.out.println("\n\n["+wavesUpdated+"] Waves updated. This Wave's currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
 				
 				int shoreDamage = determineDamage(w, i);
 				
-				//System.out.println(""+shoreDamage+" determined.");
-				//System.out.println("%health: " + m.getHB().getHealth() );
+				System.out.println(""+shoreDamage+" determined.");
+//				System.out.println("%health: " + m.getHB().getHealth() );
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.				
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
@@ -337,7 +339,9 @@ public class Controller implements MouseListener {
 				//v.getHealthBar().damage(healthDamage);
 				v.getHealthBar().setHealthHeight(m.getHB().getInsideHeight());
 				v.getHealthBar().startingY = m.getHB().getStartingY();
+				
 				m.resetWave(i);
+				
 				v.resetWave(i, w.getCurrentPos());
 				
 				wavesUpdated++;

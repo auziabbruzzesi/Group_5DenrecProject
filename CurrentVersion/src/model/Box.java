@@ -6,7 +6,7 @@ import view.View;
 
 public class Box {
 	private Point position;
-	private int capacity = 1;
+	private int capacity = 2;
 	private int count;
 	private HoldingType h = HoldingType.BOX;
 	private HoldingType contains = HoldingType.EMPTY;
