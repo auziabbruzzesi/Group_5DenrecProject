@@ -6,7 +6,7 @@ public class Player extends Character {
 
 	private int health = 100;
 	public static final Point startPosition = new Point(100,100);
-	public static final int playerDimensions = 80;
+	public static final int playerDimensions = 60;
 	
 		
 	//Constructors (2)

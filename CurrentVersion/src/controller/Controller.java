@@ -59,6 +59,7 @@ public class Controller implements MouseListener {
 	int picNum = 0;
 	ImageIcon[] pics;// holds all sprites for all characters
 	ImageIcon[] oysterBoxes;
+	ImageIcon[] crabPics;
 
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
@@ -74,8 +75,9 @@ public class Controller implements MouseListener {
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
 			player.setBorder(BorderFactory.createEmptyBorder());
-
-			player.setIcon(pics[m.getP().getDirection().getRank()]);
+			
+			player.setIcon(crabPics[m.getP().findIndex()]);
+			
 			m.getP().move();
 			updatePlayerMV();
 			v.repaint();
@@ -196,6 +198,7 @@ public class Controller implements MouseListener {
 				if (m.getP().pickUp(b.getHoldingType())) {
 					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
 				}
+				player.setIcon(crabPics[m.getP().findIndex()]);
 				pickUpRequest = false;
 			} // end if(pickup)
 
@@ -421,11 +424,16 @@ public class Controller implements MouseListener {
 
 	public void initSprites() {
 
-		String[] myNames = { "north.png", "south.png", "east.png", "west.png", "northEast.png", "northWest.png",
-				"southEast.png", "southWest.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
+		String[] myNames = { "crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
+				"crabSE.png","crabSW.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
 		String[] boxImages = {"box1.png","box2.png","box3.png","box4.png","box5.png"};
+		String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
+								"crabSE.png","crabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
+								"OystercrabSE.png","OystercrabSW.png"};
 		pics = new ImageIcon[myNames.length];
 		oysterBoxes = new ImageIcon[boxImages.length];
+		crabPics = new ImageIcon[crabFiles.length];
+		
 		int i = 0;
 		for (String s : myNames) {
 			pics[i] = createImage(s);
@@ -434,6 +442,11 @@ public class Controller implements MouseListener {
 		i = 0;
 		for(String s : boxImages){
 			oysterBoxes[i] = createImage(s);
+			i++;
+		}
+		i=0;
+		for(String s : crabFiles){
+			crabPics[i] = createImage(s);
 			i++;
 		}
 	}

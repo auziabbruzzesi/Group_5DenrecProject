@@ -285,7 +285,16 @@ public abstract class Character implements MoveObjects {
 			return false;
 		}
 	}
-
+	
+	/**
+	 * finds the proper index for the image
+	 * based on direction and holdingType
+	 * @return
+	 */
+	public int findIndex(){
+		return direction.getRank()+ (h.getRank() * 8);
+		
+	}
 	
 	
 	// Setters and Getters
