@@ -136,7 +136,8 @@ public class View extends JFrame {
 		}
 
 		public void damage(int healthDamage) {
-				healthHeight = healthHeight - healthDamage;			
+				
+				healthHeight = healthHeight + healthDamage;			
 //				System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
 				repaint();
 			

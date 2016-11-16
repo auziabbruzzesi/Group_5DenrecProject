@@ -321,20 +321,22 @@ public class Controller implements MouseListener {
 				
 			} else {
 												
-				System.out.println("\n["+wavesUpdated+"] Wave" + i + "currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
+				//System.out.println("\n["+wavesUpdated+"] Wave" + i + "currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
 				
 				int shoreDamage = determineDamage(w, i);
 				
-				System.out.println(""+shoreDamage+" determined.");
-				
+				//System.out.println(""+shoreDamage+" determined.");
+				//System.out.println("%health: " + m.getHB().getHealth() );
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.				
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
 				
-				System.out.println(shoreDamage+" receeded.");
+				//System.out.println(shoreDamage+" receeded.");
 
 				m.getHB().damage(healthDamage);	
-				v.getHealthBar().damage(healthDamage);
+				//v.getHealthBar().damage(healthDamage);
+				v.getHealthBar().setHealthHeight(m.getHB().getInsideHeight());
+				v.getHealthBar().startingY = m.getHB().getStartingY();
 				m.resetWave(i);
 				v.resetWave(i, w.getCurrentPos());
 				
