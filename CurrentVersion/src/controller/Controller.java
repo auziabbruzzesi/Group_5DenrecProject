@@ -443,7 +443,8 @@ public class Controller implements MouseListener {
 				"crabSE.png","crabSW.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
 		String[] boxImages = {"box1.png","box2.png","box3.png","box4.png","box5.png"};
 		String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
-								"crabSE.png","crabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
+								"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
+								"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
 								"OystercrabSE.png","OystercrabSW.png"};
 		pics = new ImageIcon[myNames.length];
 		oysterBoxes = new ImageIcon[boxImages.length];
