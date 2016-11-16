@@ -111,7 +111,6 @@ public class View extends JFrame {
 		}
 		
 		public HealthPanel() {
-			// TODO Auto-generated constructor stub
 			this.overallHeight = 200;
 			this.healthHeight = 200;
 			this.startingY = 0;
@@ -134,6 +133,13 @@ public class View extends JFrame {
 		public void setHealthHeight(double d){
 			this.healthHeight = d;
 			repaint();
+		}
+
+		public void damage(int healthDamage) {
+				healthHeight = healthHeight - healthDamage;			
+//				System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
+				repaint();
+			
 		}
 		
 	}
@@ -227,7 +233,10 @@ public class View extends JFrame {
 			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
 		break;
 		case WIN:
-			message = "You Win! :D";
+			message = "You Win! :D \n You created enough protection for the Estuary.";
+		break;
+		default:
+			System.out.println("Error in determining gameEndStatus to display. Status = "+gameStatus);
 		break;
 		}		
 		

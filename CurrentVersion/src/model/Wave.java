@@ -31,6 +31,7 @@ public class Wave extends Character {
 		Point d = new Point(this.getCurrentPos().x - shorelineX, this.getCurrentPos().y);
 
 		this.setDestination(d);
+		System.out.println("m.wave velocity = "+getVelocity());
 	}
 
 	@Override
