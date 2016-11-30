@@ -22,11 +22,10 @@ import controller.Controller.button;
 public class Model {	
 	
 	//vars related to initialization
-	private static int numBoxes = 4;
+	public static final int numBoxes = 4;
+	public static final int numWaves = 5;
+	public static final int numBOS = 20;
 	private static int score = 0;
-	private static int numWaves = 5;
-	private static int numBOS = 20;
-	
 	
 	//pointer array. 1 player, 1 shoreLine Integer, numBoxes boxes, numWaves waves, numBOS beachObjects. Size = sum of these.
 	public static final int objArrSize = 1 + 1 + numBoxes + numWaves + numBOS;
@@ -142,7 +141,7 @@ public class Model {
 	
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
-			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
+			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);//TODO: get rid of 20, make it a variable
 			this.boxes.put(p, new Box(p));
 		}
 	}
@@ -398,10 +397,6 @@ public class Model {
 
 	public int getNumBoxes() {
 		return numBoxes;
-	}
-
-	public void setNumBoxes(int numBoxes) {
-		this.numBoxes = numBoxes;
 	}
 
 	public int getminShoreLine() {

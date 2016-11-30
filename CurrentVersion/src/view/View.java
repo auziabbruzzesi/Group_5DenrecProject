@@ -42,7 +42,7 @@ public class View extends JFrame {
 	 * - will track by index or position - index would be easier but position is safer. 
 	 *   Index should be fine if we're careful, and given the deadline, I vote for this.
 	 */
-	private ArrayList<button> gameObjBtns = new ArrayList<button>();
+	private ArrayList<JButton> gameObjBtns = new ArrayList<JButton>();
 	
 	Point playerPos = (new Point(0, 0));
 	Point playerDest = (new Point(200, 200));
@@ -119,7 +119,6 @@ public class View extends JFrame {
  * Functions required for View initialization
  */
 	public void initView(){
-		//initialize our gameObjBtns array
 		
 //		drawViewObjs(); //call getGameObjs and add buttons and panels with proper sprites based on that
 		
@@ -136,6 +135,13 @@ public class View extends JFrame {
 	public void initGameObjBtns(){
 		//for each element in model's gameobjs array, create a button with the position
 		//TODO: to make this easier, standardize "get posision" functions for all objs, so they're named the same
+
+		for(int i = 0; i<Model.objArrSize; i++){
+//		add button to array and set its location based on corresponding element in obj array
+
+			gameObjBtns.add(new JButton());
+			
+		}
 	}
 	
 /*
