@@ -20,15 +20,17 @@ import view.View;
 import controller.Controller.button;
 
 public class Model {	
+	
 	//vars related to initialization
-	private int numBoxes = 4;
-	private int score = 0;
-	private int numWaves = 5;
-	private int numBOS = 20;
+	private static int numBoxes = 4;
+	private static int score = 0;
+	private static int numWaves = 5;
+	private static int numBOS = 20;
 	
 	
 	//pointer array. 1 player, 1 shoreLine Integer, numBoxes boxes, numWaves waves, numBOS beachObjects. Size = sum of these.
-	Object[] gameObjs = new Object[1 + 1 + numBoxes + numWaves + numBOS];
+	public static final int objArrSize = 1 + 1 + numBoxes + numWaves + numBOS;
+	private static Object[] gameObjs = new Object[objArrSize];
 	
 	//General vars
 	private Player p = new Player(new Point(Player.startPosition));
@@ -404,5 +406,9 @@ public class Model {
 
 	public int getminShoreLine() {
 		return minShoreLine;
+	}
+	
+	public static Object[] getGameObjs(){
+		return gameObjs;
 	}
 }

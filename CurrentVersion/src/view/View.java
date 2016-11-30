@@ -24,6 +24,7 @@ import javax.swing.JPanel;
 
 import controller.Controller.button;
 import controller.status;
+import model.Model;
 import model.Player;
 import model.Wave;
 import view.View.HealthPanel;
@@ -34,6 +35,15 @@ public class View extends JFrame {
 
 	private ArrayList<button> waveBtns = new ArrayList<button>();
 
+	/*
+	 * Notes on the arraylist gameObjBtns (from eaviles):
+	 * - waveBtns will be merged into this later (probably tomorrow, 11.30)
+	 * - each button will correspond to a gameObjs array object (see model)
+	 * - will track by index or position - index would be easier but position is safer. 
+	 *   Index should be fine if we're careful, and given the deadline, I vote for this.
+	 */
+	private ArrayList<button> gameObjBtns = new ArrayList<button>();
+	
 	Point playerPos = (new Point(0, 0));
 	Point playerDest = (new Point(200, 200));
 	private int playerDims;
@@ -46,16 +56,74 @@ public class View extends JFrame {
 	private HealthPanel healthBar = new HealthPanel(200, 200);
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
-	private int shoreLine = (2*viewWidth)/3;
+	private int shoreLine = (2 * viewWidth) / 3;
 	private int shoreMin;
-			
+
 	private boolean waveBoxCollision = false;
 
-	// Constructor
+/*
+ * View Constructor 
+ */
 	public View() {
+		initView();	
+	}
+	
+/*
+ * General functions
+ */
+	public void drawViewObjs() {
+		// call get() on Model's array of pointers
+		// for each item in the Model array, look at the type (may do this in 1 of 2 ways)
+		// look at the item's current position in Model, and update the View button's position to match
+		// repaint();
+	}
+
+	public void gameEnd(status gameStatus) {
+		// display dialogue
+		String message = "";
+		switch (gameStatus) {
+		case LOSE_PLAYER:
+			message = "You Lose :( \nPlayer health reached zero";
+			break;
+		case LOSE_SHORE:
+			message = "You Lose :( \n Too much of the Estuary eroded away";
+			break;
+		case LOSE_BOXES:
+			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
+			break;
+		case WIN:
+			message = "You Win! :D \n You created enough protection for the Estuary.";
+			break;
+		default:
+			System.out.println("Error in determining gameEndStatus to display. Status = " + gameStatus);
+			break;
+		}
+
+		JOptionPane.showMessageDialog(null, message);
+		System.exit(0);
+
+	}
+
+	public void updateShoreline(int damage) {
+		if (shoreLine > shoreMin) {
+			shoreLine -= damage;
+			repaint();
+		}
+	}
+
+	public void resetWave(int i, Point p) {
+		waveBtns.get(i).setLocation(p);
+	}
+	
+/*
+ * Functions required for View initialization
+ */
+	public void initView(){
+		//initialize our gameObjBtns array
+		
+//		drawViewObjs(); //call getGameObjs and add buttons and panels with proper sprites based on that
 		
 		shoreMin = shoreLine - this.healthBar.overallHeight;
-		System.out.println("View start: shoreline = "+shoreLine+" shoremin = " + shoreMin + "\n\n");
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
@@ -65,7 +133,14 @@ public class View extends JFrame {
 		setVisible(true);
 	}
 
-	// Inner classes
+	public void initGameObjBtns(){
+		//for each element in model's gameobjs array, create a button with the position
+		//TODO: to make this easier, standardize "get posision" functions for all objs, so they're named the same
+	}
+	
+/*
+ * Inner Classes
+ */
 	public class jpanel extends JPanel {
 
 		public jpanel() {
@@ -88,106 +163,64 @@ public class View extends JFrame {
 
 		}
 	}
-	public class HealthPanel extends JPanel{
+
+	public class HealthPanel extends JPanel {
 		public int overallHeight;
 		public double healthHeight;
 		public double startingY;
-		
+
 		private int xPos = 0;
 		private int yPos = 0;
-		
+
 		/**
 		 * Constructor
+		 * 
 		 * @param overallHeight
 		 * @param healthHeight
 		 */
-		public HealthPanel(int overallHeight, int healthHeight){
+		public HealthPanel(int overallHeight, int healthHeight) {
 			this.overallHeight = overallHeight;
 			this.healthHeight = healthHeight;
 			this.startingY = 0;
-//			System.out.println("view's HB overall height = "+overallHeight);
+			// System.out.println("view's HB overall height = "+overallHeight);
 		}
-		
+
 		public HealthPanel() {
 			this.overallHeight = 200;
 			this.healthHeight = 200;
 			this.startingY = 0;
-//			System.out.println("view's HB overall height = "+overallHeight);
+			// System.out.println("view's HB overall height = "+overallHeight);
 		}
 
-		public int getOverallHeight(){
+		public int getOverallHeight() {
 			return overallHeight;
 		}
-		
+
 		@Override
-		protected void paintComponent(Graphics g){
+		protected void paintComponent(Graphics g) {
 			g.setColor(Color.WHITE);
 			g.fillRect(this.xPos, this.yPos, this.getWidth(), this.getHeight());
 			g.setColor(Color.green);
-			//System.out.println("here: " + this.overallHeight);
-			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(),(int)healthHeight);
-			
+			// System.out.println("here: " + this.overallHeight);
+			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(), (int) healthHeight);
+
 		}
-		public void setHealthHeight(double d){
+
+		public void setHealthHeight(double d) {
 			this.healthHeight = d;
 			repaint();
 		}
 
 		public void damage(int healthDamage) {
-				healthHeight = healthHeight + healthDamage;			
-				repaint();			
-		}
-		
-	}//end healthPanel class
-	
-	//begin view class functions
-	public void updateView(){
-		//call get() on Model's array of pointers
-		//for each item in the Model array, look at its previousPosition value to find the corresponding button in View
-			//look at the item's current position in Model, and update the View button's position to match
-		//repaint();
-	}
-	
-	public void gameEnd(status gameStatus) {		
-		//display dialogue
-		String message = "";
-		switch(gameStatus){
-		case LOSE_PLAYER:
-			message = "You Lose :( \nPlayer health reached zero";
-		break;
-		case LOSE_SHORE:
-			message = "You Lose :( \n Too much of the Estuary eroded away";
-		break;
-		case LOSE_BOXES:
-			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
-		break;
-		case WIN:
-			message = "You Win! :D \n You created enough protection for the Estuary.";
-		break;
-		default:
-			System.out.println("Error in determining gameEndStatus to display. Status = "+gameStatus);
-		break;
-		}		
-		
-		JOptionPane.showMessageDialog(null, message);
-		System.exit(0);
-		
-		
-	}
-
-	public void updateShoreline(int damage) {
-		if (shoreLine > shoreMin) {
-			shoreLine -= damage;
+			healthHeight = healthHeight + healthDamage;
 			repaint();
 		}
-	}
 
-	public void resetWave(int i, Point p) {
-		waveBtns.get(i).setLocation(p);
-		System.out.println("Wave reset in view");
-	}
+	}// end healthPanel class
 
-	// Setters & getters
+/*
+ * Setters & getters
+ */
 	public void setPlayerDims(int d) {
 		playerDims = d;
 	}
@@ -209,7 +242,6 @@ public class View extends JFrame {
 	}
 
 	public JPanel getJPanel() {
-		// System.out.println("Returning JPanel");
 		return this.jP;
 	}
 
@@ -245,7 +277,8 @@ public class View extends JFrame {
 	public void setWaveBoxCollision(boolean b) {
 		waveBoxCollision = b;
 	}
-	public int getShoreLine(){
+
+	public int getShoreLine() {
 		return shoreLine;
 	}
 }// end View class

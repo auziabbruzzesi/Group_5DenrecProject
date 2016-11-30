@@ -88,10 +88,10 @@ public class Controller implements MouseListener {
 	 * Constructor
 	 */
 
-	//TODO: change constructor s.t. it just calls initModel and initView
+
 	public Controller(Model m, View v) {
-		this.m = m;
-		this.v = v;
+		this.m = m; //initialization occurs in model's constructor
+		this.v = v; //init occurs in view's constructor
 
 		initSprites();
 		oystIcon = pics[oystSprite];
