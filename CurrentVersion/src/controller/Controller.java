@@ -60,6 +60,7 @@ public class Controller implements MouseListener {
 	ImageIcon[] pics;// holds all sprites for all characters
 	ImageIcon[] oysterBoxes;
 	ImageIcon[] crabPics;
+	BufferedImage[] scenery = new BufferedImage[2];
 
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
@@ -94,6 +95,8 @@ public class Controller implements MouseListener {
 		this.v = v; //init occurs in view's constructor
 
 		initSprites();
+		
+		v.setScenery(scenery);
 		oystIcon = pics[oystSprite];
 		concIcon = pics[concSprite];
 
@@ -318,6 +321,7 @@ public class Controller implements MouseListener {
 
 			//if we haven't reached destination
 			if ( w.getCurrentPos().x > w.getDestination().x ) {
+
 				w.move(); // move model's version of wave
 				v.setSingleWaveBtn(i, w.getCurrentPos()); // move view's version of wave based on model's new value
 				
@@ -382,7 +386,7 @@ public class Controller implements MouseListener {
 		int decrement = 0;
 		Box b;
 		Point p;
-
+		//TODO: this is repeated code with what is in model
 		//figure out which box wave crashed on
 		if (i < m.getBoxes().size()) {
 			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
@@ -445,9 +449,13 @@ public class Controller implements MouseListener {
 								"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
 								"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
 								"OystercrabSE.png","OystercrabSW.png"};
+		
+		String[] sceneryFiles = {"shore.png", "sky.png"};
 		pics = new ImageIcon[myNames.length];
 		oysterBoxes = new ImageIcon[boxImages.length];
 		crabPics = new ImageIcon[crabFiles.length];
+		scenery = new BufferedImage[sceneryFiles.length];
+		
 		
 		int i = 0;
 		for (String s : myNames) {
@@ -464,6 +472,12 @@ public class Controller implements MouseListener {
 			crabPics[i] = createImage(s);
 			i++;
 		}
+		i = 0;
+		scenery[0] = (BufferedImage) createImage("sky.png").getImage();
+		scenery[1] = (BufferedImage) createImage("shore.png").getImage();
+		
+	
+		
 	}
 
 	/**

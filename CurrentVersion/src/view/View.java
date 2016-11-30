@@ -32,8 +32,8 @@ import view.View.HealthPanel;
 public class View extends JFrame {
 	public static final int viewHeight = 650;
 	public static final int viewWidth = 1200;
-
 	private ArrayList<button> waveBtns = new ArrayList<button>();
+
 
 	/*
 	 * Notes on the arraylist gameObjBtns (from eaviles):
@@ -44,22 +44,23 @@ public class View extends JFrame {
 	 */
 	private ArrayList<JButton> gameObjBtns = new ArrayList<JButton>();
 	
+
 	Point playerPos = (new Point(0, 0));
-	Point playerDest = (new Point(200, 200));
+	Point playerDest = (new Point(200, 200));	
 	private int playerDims;
 	String playerDir = "";
-
 	private int playerVelocity = 7;
-
 	JPanel jP = new jpanel();
-
 	private HealthPanel healthBar = new HealthPanel(200, 200);
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
+
 	private int shoreLine = (2 * viewWidth) / 3;
+
 	private int shoreMin;
 
 	private boolean waveBoxCollision = false;
+	private BufferedImage[] scenery = new BufferedImage[2];
 
 /*
  * View Constructor 
@@ -156,12 +157,18 @@ public class View extends JFrame {
 
 		@Override
 		protected void paintComponent(Graphics g) {
+			g.drawImage(scenery[0], 0, 0, this);
+			g.drawImage(scenery[1], 0, 0, this);
 
-			g.setColor(Color.BLUE);
-			g.fillRect(shoreLine, 0, viewHeight, viewWidth);
+//			g.setColor(Color.BLUE);
+////			System.out.println("painting. shoreline = " + shoreLine);
+//			g.fillRect(shoreLine, 0, viewHeight, viewWidth);
+//
+//			g.setColor(Color.yellow);
+//			g.fillRect(0, 0, shoreLine, viewHeight);
+			g.setColor(Color.red);
+			g.drawLine(shoreLine,0, shoreLine, viewHeight);
 
-			g.setColor(Color.yellow);
-			g.fillRect(0, 0, shoreLine, viewHeight);
 
 			for (int i = 0; i < waveBtns.size(); i++) {
 				add(waveBtns.get(i));
@@ -274,6 +281,10 @@ public class View extends JFrame {
 
 	public void setHealthBar(HealthPanel healthBar) {
 		this.healthBar = healthBar;
+	}
+
+	public void setScenery(BufferedImage[] scenery) {
+		this.scenery = scenery;
 	}
 
 	public void addToWaveBtns(button wB) {
