@@ -89,9 +89,10 @@ public class Controller implements MouseListener {
 	 * Constructor
 	 */
 
+
 	public Controller(Model m, View v) {
-		this.m = m;
-		this.v = v;
+		this.m = m; //initialization occurs in model's constructor
+		this.v = v; //init occurs in view's constructor
 
 		initSprites();
 		
@@ -320,23 +321,18 @@ public class Controller implements MouseListener {
 
 			//if we haven't reached destination
 			if ( w.getCurrentPos().x > w.getDestination().x ) {
-				//System.out.println(i+": This Wave's currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
+
 				w.move(); // move model's version of wave
 				v.setSingleWaveBtn(i, w.getCurrentPos()); // move view's version of wave based on model's new value
 				
 			} else {
-												
-				System.out.println("\n\n["+wavesUpdated+"] Waves updated. This Wave's currentpos = "+w.getCurrentPos()+" dest = "+w.getDestination());
-				
+															
 				int shoreDamage = determineDamage(w, i);
 				
 				System.out.println(""+shoreDamage+" determined.");
-//				System.out.println("%health: " + m.getHB().getHealth() );
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.				
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
-				
-				//System.out.println(shoreDamage+" receeded.");
 
 				m.getHB().damage(healthDamage);	
 				//v.getHealthBar().damage(healthDamage);

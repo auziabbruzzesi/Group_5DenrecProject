@@ -19,12 +19,18 @@ import model.BeachObject;
 import view.View;
 import controller.Controller.button;
 
-public class Model {
-
+public class Model {	
+	
 	//vars related to initialization
-	private int numBoxes = 4;
-	private int score = 0;
-	private int numWaves = 5;
+	private static int numBoxes = 4;
+	private static int score = 0;
+	private static int numWaves = 5;
+	private static int numBOS = 20;
+	
+	
+	//pointer array. 1 player, 1 shoreLine Integer, numBoxes boxes, numWaves waves, numBOS beachObjects. Size = sum of these.
+	public static final int objArrSize = 1 + 1 + numBoxes + numWaves + numBOS;
+	private static Object[] gameObjs = new Object[objArrSize];
 	
 	//General vars
 	private Player p = new Player(new Point(Player.startPosition));
@@ -35,26 +41,123 @@ public class Model {
 	private int shoreLine = (2*view.View.viewWidth)/3;
 	private int minShoreLine = shoreLine - HB.getHeight(); // TODO: have C init m's & v's minshores to ensure they're in-sync
 
-	
+/*
+ * Model Constructor
+ */
 	public Model() {
-		Random r = new Random();
-		Boolean canPlace;
+		
+		initBoxes();
 
-		// BOXES ARE CREATED HERE
+		initWaves();
+
+		initBeachObjs();
+
+		System.out.println("Instantiating new game");
+		System.out.println("Player Position: " + this.p.getCurrentPos());
+		System.out.println(this.boxes.size() + " Boxes.");
+		System.out.println(this.waves.size() + " Waves.");
+		System.out.println(this.beachObjHM.size() + " Beach Objects.");
+		System.out.println("Shoreline = " + getShoreLine());
+	}
+
+	
+/*
+ * General Functions
+ */
+	public void resetWave(int a) {
+		// get the wave with this position, and set its position to its initial
+		// position
+			Wave w = waves.get(a);
+		
+			Point startPos = new Point(View.viewWidth - Wave.waveWidth, a * Wave.waveSpawnSpacing);
+			Point newDest = new Point(getShoreLine(), w.getDestination().y);
+			w.setCurrentPos(startPos);
+			w.setDestination(newDest);
+			w.resetVelocity();
+	}
+
+	public void updateWavesDestinations() {
+		for(Wave w: waves){
+			Point newDest = new Point(getShoreLine(), w.getDestination().y);
+			w.setDestination(newDest);
+		}
+		
+	}
+
+	public void updatePlayerPosition(Point updatedPos) {
+		this.p.setCurrentPos(updatedPos);
+	}
+
+	public void updateShoreLine(int damage) {
+		shoreLine -= damage;
+	}
+	
+	public boolean allBoxesFull() {
+		boolean allFull = true;
+
+		for (Box b : boxes.values()) {
+			if (!(b.isfull())) {
+				allFull = false;
+			}
+		}
+
+		return allFull;
+	}
+
+	public boolean boxesCorrect() {
+		boolean correct = false;
+		double oyst = 0;
+		double conc = 0;
+		if (allBoxesFull()) {
+			for (Box b : boxes.values()) {
+				switch (b.getContains()) {
+				case OYSTER:
+					oyst++;
+					break;
+				case CONCRETE:
+					conc++;
+					break;
+				default:
+					System.out.println("Problem in model->boxesCorrect: box contains " + b.getContains());
+					break;
+				}
+			}
+			double percentageOyst = (oyst / (oyst + conc)) * 100;
+			if (percentageOyst < 50) {
+				correct = false;
+			} else {
+				correct = true;
+			}
+		} else {
+			System.out.println("All boxes not yet full");
+			correct = false;
+		}
+
+		return correct;
+	}
+	
+/*
+ * Functions required for Model initialization
+ */
+	
+	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
 			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
 			this.boxes.put(p, new Box(p));
 		}
-
-		// WAVES ARE CREATED HERE
+	}
+	private void initWaves(){
 		for (int i = 0; i < numWaves; i++) {
 
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 			this.waves.add(new Wave(p));
 		}
-
-		// BEACH OBJECTS ARE CREATED HERE
-		for (int i = 0; i < 20; i++) {
+	}
+	private void initBeachObjs(){
+		Random r = new Random();
+		Boolean canPlace;
+		
+		for (int i = 0; i < numBOS; i++) {
 			do {
 				// create a point and check that it won't overlap
 				Point p = new Point(r.nextInt(BeachObject.spawnZoneWidth), r.nextInt(BeachObject.spawnZoneHeight));
@@ -77,14 +180,8 @@ public class Model {
 			} while (!canPlace);
 
 		}
-
-		System.out.println("Instantiating new game");
-		System.out.println("Player Position: " + this.p.getCurrentPos());
-		System.out.println(this.boxes.size() + " Boxes.");
-		System.out.println(this.waves.size() + " Waves.");
-		System.out.println(this.beachObjHM.size() + " Beach Objects.");
-		System.out.println("Shoreline = " + getShoreLine());
 	}
+
 
 	public Boolean checkPlayerOverlap(Point toCreate) {
 		Boolean canCreate = true;
@@ -103,28 +200,27 @@ public class Model {
 		if ((X2 + BeachObject.beachObjDimensions >= X1)
 				&& (X2 + BeachObject.beachObjDimensions <= X1 + Player.playerDimensions)) {
 
+			//top of object to be created would overlap
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
 			}
-			// bottom of creating would overlap
+			// bottom of obj to be created would overlap
 			else if (Y2 >= Y1 && Y2 <= Y1 + Player.playerDimensions) {
 				canCreate = false;
 			}
-
 		}
 
 		// if the right side of the obj we want to create would overlap with the
 		// existing object
 		else if ((X2 >= X1) && (X2 <= X1 + Player.playerDimensions)) {
 
-			// if the top of the obj we're creating would overlap with the
-			// existing object
+			//top of object to be created would overlap
 			if (Y2 + BeachObject.beachObjDimensions >= Y1
 					&& Y2 + BeachObject.beachObjDimensions <= Y1 + Player.playerDimensions) {
 				canCreate = false;
 			}
-			// bottom of creating would overlap
+			//bottom of object to be created would overlap
 			else if (Y2 >= Y1 && Y2 <= Y1 + Player.playerDimensions) {
 				canCreate = false;
 			}
@@ -156,13 +252,12 @@ public class Model {
 			if ((X2 + BeachObject.beachObjDimensions >= X1)
 					&& (X2 + BeachObject.beachObjDimensions <= X1 + Box.boxDimensions)) {
 
-				// if the top of the obj we're creating would overlap with the
-				// existing object
+				//top of object to be created would overlap
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + Box.boxDimensions) {
 					canCreate = false;
 				}
-				// bottom of creating would overlap
+				//bottom of object to be created would overlap
 				else if (Y2 >= Y1 && Y2 <= Y1 + Box.boxDimensions) {
 					canCreate = false;
 				}
@@ -172,11 +267,12 @@ public class Model {
 			// the existing object
 			else if ((X2 >= X1) && (X2 <= X1 + Box.boxDimensions)) {
 
+				//top of object to be created would overlap
 				if (Y2 + BeachObject.beachObjDimensions >= Y1
 						&& Y2 + BeachObject.beachObjDimensions <= Y1 + Box.boxDimensions) {
 					canCreate = false;
 				}
-				// bottom of creating would overlap
+				//bottom of object to be created would overlap
 				else if (Y2 >= Y1 && Y2 <= Y1 + Box.boxDimensions) {
 					canCreate = false;
 				}
@@ -188,7 +284,8 @@ public class Model {
 
 	/**
 	 * A note: This operation would work better and be less costly if we used a
-	 * hashset instead of a hashmap for beachobjects. Will explore changing it, 
+	 * hashset instead of a hashmap for beachobjects. 
+	 * TODO: Will explore changing it, 
 	 * but for now it works and we don't want to mess it up the day before beta.
 	 */
 
@@ -238,7 +335,11 @@ public class Model {
 		}
 		return canCreate;
 	}
+	
 
+/*
+ * Setters and Getters
+ */
 	public int getScore() {
 		return score;
 	}
@@ -287,38 +388,6 @@ public class Model {
 		this.waves = waves;
 	}
 
-	public void updatePlayerPosition(Point updatedPos) {
-		this.p.setCurrentPos(updatedPos);
-	}
-
-	public void resetWave(int a) {
-		// get the wave with this position, and set its position to its initial
-		// position
-			Wave w = waves.get(a);
-		
-			Point startPos = new Point(View.viewWidth - Wave.waveWidth, a * Wave.waveSpawnSpacing);
-			Point newDest = new Point(getShoreLine(), w.getDestination().y);
-//			System.out.println("new dest ="+newDest);
-			w.setCurrentPos(startPos);
-			w.setDestination(newDest);
-			w.resetVelocity();
-		
-		System.out.println("Wave reset in model");
-	}
-
-	public void updateShoreLine(int damage) {
-		shoreLine -= damage;
-		System.out.println("shoreline updated");
-	}
-
-	public void updateWavesDestinations() {
-		for(Wave w: waves){
-			Point newDest = new Point(getShoreLine(), w.getDestination().y);
-			w.setDestination(newDest);
-		}
-		
-	}
-
 	public int getShoreLine() {
 		return shoreLine;
 	}
@@ -336,55 +405,10 @@ public class Model {
 	}
 
 	public int getminShoreLine() {
-		// TODO Auto-generated method stub
 		return minShoreLine;
 	}
-
-	public boolean allBoxesFull() {
-		boolean allFull = true;
-
-		for (Box b : boxes.values()) {
-			if (!(b.isfull())) {
-				allFull = false;
-			}
-		}
-
-		return allFull;
+	
+	public static Object[] getGameObjs(){
+		return gameObjs;
 	}
-
-	public boolean boxesCorrect() {
-		boolean correct = false;
-		double oyst = 0;
-		double conc = 0;
-		if (allBoxesFull()) {
-			for (Box b : boxes.values()) {
-				switch (b.getContains()) {
-				case OYSTER:
-					oyst++;
-					break;
-				case CONCRETE:
-					conc++;
-					break;
-				default:
-					System.out.println("Problem in model->boxesCorrect: box contains " + b.getContains());
-					break;
-				}
-			}
-			double percentageOyst = (oyst / (oyst + conc)) * 100;
-			if (percentageOyst < 50) {
-				// System.out.println("Not enough gabions to win. Percentage = "
-				// + percentageOyst);
-				correct = false;
-			} else {
-				correct = true;
-				// System.out.println("you win!");
-			}
-		} else {
-			System.out.println("All boxes not yet full");
-			correct = false;
-		}
-
-		return correct;
-	}
-
 }
