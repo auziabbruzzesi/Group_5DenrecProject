@@ -66,7 +66,6 @@ public class View extends JFrame {
 	}
 
 	// Inner classes
-	// if we have time, change this to a component, rather than a whole jpanel
 	public class jpanel extends JPanel {
 
 		public jpanel() {
@@ -78,7 +77,6 @@ public class View extends JFrame {
 		protected void paintComponent(Graphics g) {
 
 			g.setColor(Color.BLUE);
-//			System.out.println("painting. shoreline = " + shoreLine);
 			g.fillRect(shoreLine, 0, viewHeight, viewWidth);
 
 			g.setColor(Color.yellow);
@@ -136,20 +134,50 @@ public class View extends JFrame {
 		}
 
 		public void damage(int healthDamage) {
-				
 				healthHeight = healthHeight + healthDamage;			
-//				System.out.println(damage + " percent damage to "+ this.height + " = " + (decDamage * height));
-				repaint();
-			
+				repaint();			
 		}
+		
+	}//end healthPanel class
+	
+	//begin view class functions
+	public void updateView(){
+		//call get() on Model's array of pointers
+		//for each item in the Model array, look at its previousPosition value to find the corresponding button in View
+			//look at the item's current position in Model, and update the View button's position to match
+		//repaint();
+	}
+	
+	public void gameEnd(status gameStatus) {		
+		//display dialogue
+		String message = "";
+		switch(gameStatus){
+		case LOSE_PLAYER:
+			message = "You Lose :( \nPlayer health reached zero";
+		break;
+		case LOSE_SHORE:
+			message = "You Lose :( \n Too much of the Estuary eroded away";
+		break;
+		case LOSE_BOXES:
+			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
+		break;
+		case WIN:
+			message = "You Win! :D \n You created enough protection for the Estuary.";
+		break;
+		default:
+			System.out.println("Error in determining gameEndStatus to display. Status = "+gameStatus);
+		break;
+		}		
+		
+		JOptionPane.showMessageDialog(null, message);
+		System.exit(0);
+		
 		
 	}
 
 	public void updateShoreline(int damage) {
-//		System.out.println("View: shoreline = " + shoreLine + " shoremin = " + shoreMin);
 		if (shoreLine > shoreMin) {
 			shoreLine -= damage;
-//			System.out.println("updating shoreLine to "+shoreLine);
 			repaint();
 		}
 	}
@@ -220,32 +248,4 @@ public class View extends JFrame {
 	public int getShoreLine(){
 		return shoreLine;
 	}
-
-	public void gameEnd(status gameStatus) {		
-		//display dialogue
-		String message = "";
-		switch(gameStatus){
-		case LOSE_PLAYER:
-			message = "You Lose :( \nPlayer health reached zero";
-		break;
-		case LOSE_SHORE:
-			message = "You Lose :( \n Too much of the Estuary eroded away";
-		break;
-		case LOSE_BOXES:
-			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
-		break;
-		case WIN:
-			message = "You Win! :D \n You created enough protection for the Estuary.";
-		break;
-		default:
-			System.out.println("Error in determining gameEndStatus to display. Status = "+gameStatus);
-		break;
-		}		
-		
-		JOptionPane.showMessageDialog(null, message);
-		System.exit(0);
-		
-		
-	}
-
 }// end View class
