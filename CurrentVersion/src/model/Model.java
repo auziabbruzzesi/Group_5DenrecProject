@@ -141,7 +141,7 @@ public class Model {
 	
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
-			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);//TODO: get rid of 20, make it a variable
+			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + Box.boxToTopSpacing);
 			this.boxes.put(p, new Box(p));
 		}
 	}

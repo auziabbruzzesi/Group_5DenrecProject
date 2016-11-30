@@ -22,6 +22,7 @@ public class Box {
 	public static final int boxToViewEdgeSpacing = 40;// distance boxes are from
 														// the right edge of the
 														// screen
+	public static final int boxToTopSpacing = 20;
 	public static final int boxX = (2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing;
 
 	public Box(Point p) {
