@@ -149,8 +149,7 @@ public class View extends JFrame {
 		pack();
 		setVisible(true);
 
-		initGameObjBtns();// DO NOT MOVE - dependent on lines of code above.
-							// Thanks!
+		initGameObjBtns();// DO NOT MOVE - dependent on lines of code above. Thanks!
 	}
 
 	public void initGameObjBtns() {
@@ -348,24 +347,6 @@ public class View extends JFrame {
 		return this.jP;
 	}
 
-	// public ArrayList<button> getWaveBtns() {
-	// return waveBtns;
-	// }
-	//
-	// public button getSingleWaveBtn(int i) {
-	// return waveBtns.get(i);
-	// }
-	//
-	// public void setSingleWaveBtn(int i, Point nP) {
-	// System.out.println("Wave btns array = "+waveBtns);
-	// waveBtns.get(i).setLocation(nP);
-	//
-	// }
-	//
-	// public void setWaveBtns(ArrayList<button> waveBtns) {
-	// this.waveBtns = waveBtns;
-	// }
-
 	public HealthPanel getHealthBar() {
 		return healthBar;
 	}
@@ -377,10 +358,6 @@ public class View extends JFrame {
 	public void setScenery(BufferedImage[] scenery) {
 		this.scenery = scenery;
 	}
-
-	// public void addToWaveBtns(button wB) {
-	// this.waveBtns.add(wB);
-	// }
 
 	public void setWaveBoxCollision(boolean b) {
 		waveBoxCollision = b;
