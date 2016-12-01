@@ -24,6 +24,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import controller.status;
 import model.*;
@@ -38,18 +39,17 @@ public class View extends JFrame {
 
 	Point playerPos = (new Point(0, 0));
 	Point playerDest = (new Point(200, 200));
-	private int playerDims;
+
 	String playerDir = "";
-	private int playerVelocity = 7;
+
 	JPanel jP = new jpanel();
-	private HealthPanel healthBar = new HealthPanel(200, 200);
+	private HealthPanel healthBar;
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
 	private Integer shoreLine = (2 * viewWidth) / 3;
 
 	private int shoreMin;
 
-	private boolean waveBoxCollision = false;
 	private BufferedImage[] scenery = new BufferedImage[2];
 
 	/*
@@ -57,8 +57,6 @@ public class View extends JFrame {
 	 */
 	public View() {
 		initView();
-		initScenery();
-//		initHealthBar();
 	}
 
 	/*
@@ -69,14 +67,14 @@ public class View extends JFrame {
 		// look at the item's current position in Model, and update the View
 		// button's position to match
 
-		for (int i = 0; i < Model.objArrSize; i++) {
+		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 
 			if (!(Model.getGameObjs().get(i) instanceof Integer)) {
 
 				// PLAYER
 				if (Model.getGameObjs().get(i) instanceof Player) {
 					gameObjBtns.get(i).setLocation((Point) (((Player) (Model.getGameObjs().get(i))).getPosition()));
-					gameObjBtns.get(i).setIcon( (Icon)( (Player)( Model.getGameObjs().get(i) ) ).getObjIcon() );
+					gameObjBtns.get(i).setIcon((Icon) ((Player) (Model.getGameObjs().get(i))).getObjIcon());
 				}
 				// WAVE
 				else if (Model.getGameObjs().get(i) instanceof Wave) {
@@ -84,9 +82,10 @@ public class View extends JFrame {
 				}
 				// BEACHOBJ
 				else if (Model.getGameObjs().get(i) instanceof BeachObject) {
-//					gameObjBtns.get(i).setLocation((Point) (((BeachObject) (Model.getGameObjs().get(i))).getPosition()));
-					
-					if( ( (BeachObject)( Model.getGameObjs().get(i) ) ).getObjIcon() == null){
+					// gameObjBtns.get(i).setLocation((Point) (((BeachObject)
+					// (Model.getGameObjs().get(i))).getPosition()));
+
+					if (((BeachObject) (Model.getGameObjs().get(i))).getObjIcon() == null) {
 						gameObjBtns.get(i).setVisible(false);
 					}
 				}
@@ -120,23 +119,43 @@ public class View extends JFrame {
 	 */
 	public void initView() {
 
-		shoreMin = shoreLine - this.healthBar.overallHeight;
+		
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
 		getContentPane().add(jP);
-		jP.add(healthBar);
 		pack();
 		setVisible(true);
 
-		initGameObjBtns();// DO NOT MOVE - dependent on lines of code above. Thanks!
+		initGameObjs();// DO NOT MOVE - dependent on lines of code above.
+							// Thanks!
 	}
 
-	public void initGameObjBtns() {
+	public void initGameObjs() {
 
-		for (int i = 0; i < Model.objArrSize; i++) {
+		for (int i = 0; i < Model.getGameObjs().size(); i++) {
+			System.out.print(i + " ");
+			// SHORELINE
+			if (Model.getGameObjs().get(i) instanceof Integer) {
+				shoreLine = (Integer) Model.getGameObjs().get(i);
+//				shoreMin = shoreLine - this.healthBar.overallHeight;
+			} 
+			// HEATLH BAR
+			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
+				System.out.println("here");
+				int totalHeight = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getHeight();
+				int startHeight = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getHealth();
+				int width = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getWidth();
+				
+				healthBar = new HealthPanel( totalHeight, startHeight, width );
+				
+				jP.add(healthBar);
 
-			if (!(Model.getGameObjs().get(i) instanceof Integer)) {
+			} 
+			// SCENERY
+			else if (Model.getGameObjs().get(i) instanceof BufferedImage[]) {
+				scenery = ( (BufferedImage[])( Model.getGameObjs().get(i) ) );
+			} else {
 				button j = new button();
 				j.setMargin(new Insets(0, 0, 0, 0));
 				j.setBorder(BorderFactory.createEmptyBorder());
@@ -180,31 +199,12 @@ public class View extends JFrame {
 				gameObjBtns.add(j);
 				jP.add(gameObjBtns.get(i));
 			}
-			// SHORELINE
-			else {
-				shoreLine = (Integer) Model.getGameObjs().get(i);
-			}
+
+			 System.out.println(Model.getGameObjs().get(i).getClass());
+
 		}
 	}
-	
-	private void initScenery() {
-		scenery[0] = (BufferedImage) createImage("sky.png").getImage();
-		scenery[1] = (BufferedImage) createImage("shore.png").getImage();
-	}
-	
-	private ImageIcon createImage(String n) {
-		ImageIcon imageIcon;
-		try {
-			// System.out.println("About to read an image");
-			imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
-			// System.out.println("bufferedImage");
-			return imageIcon;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
+
 	/*
 	 * Inner Classes
 	 */
@@ -250,41 +250,38 @@ public class View extends JFrame {
 	public class HealthPanel extends JPanel {
 		public int overallHeight;
 		public double healthHeight;
-		public double startingY;
+		public int width;
+		
+		public double startingY = 0;
 
 		private int xPos = 0;
 		private int yPos = 0;
 
 		/**
 		 * Constructor
-		 * 
+		 * TODO: update this
 		 * @param overallHeight
 		 * @param healthHeight
 		 */
-		public HealthPanel(int overallHeight, int healthHeight) {
-			this.overallHeight = overallHeight;
-			this.healthHeight = healthHeight;
+
+		public HealthPanel(int totalHeight, int startHeight, int w) {
+			this.overallHeight = totalHeight;
+			this.healthHeight = startHeight;
+			this.width = w;
+			
+			this.setBounds(0, 0, width, overallHeight);
+			
 			this.startingY = 0;
 			// System.out.println("view's HB overall height = "+overallHeight);
 		}
 
-		public HealthPanel() {
-			this.overallHeight = 200;
-			this.healthHeight = 200;
-			this.startingY = 0;
-			// System.out.println("view's HB overall height = "+overallHeight);
-		}
-
-		public int getOverallHeight() {
-			return overallHeight;
-		}
-
+		
 		@Override
 		protected void paintComponent(Graphics g) {
 			g.setColor(Color.WHITE);
 			g.fillRect(this.xPos, this.yPos, this.getWidth(), this.getHeight());
 			g.setColor(Color.green);
-			// System.out.println("here: " + this.overallHeight);
+//			 System.out.println("here: " + this.overallHeight);
 			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(), (int) healthHeight);
 		}
 
@@ -297,15 +294,14 @@ public class View extends JFrame {
 			healthHeight = healthHeight + healthDamage;
 			repaint();
 		}
-
+		public int getOverallHeight() {
+			return overallHeight;
+		}
 	}// end healthPanel class
 
 	/*
 	 * Setters & getters
 	 */
-	public void setPlayerDims(int d) {
-		playerDims = d;
-	}
 
 	public void setPlayerPos(Point position) {
 		this.playerPos = position;
@@ -337,10 +333,6 @@ public class View extends JFrame {
 
 	public void setScenery(BufferedImage[] scenery) {
 		this.scenery = scenery;
-	}
-
-	public void setWaveBoxCollision(boolean b) {
-		waveBoxCollision = b;
 	}
 
 	public int getShoreLine() {

@@ -16,9 +16,7 @@ public class HealthBar {
 	
 	public HealthBar(int width, int health){
 		this.width = width;
-		this.height = height;
-	
-				
+		this.height = height;				
 	}
 	public void damage(int damage){
 		health = health - damage;

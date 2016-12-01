@@ -90,11 +90,7 @@ public class Controller implements MouseListener {
 
 		initViewBtnListeners();
 
-		// Healthbar
-		//TODO: feed this info to view from model at initialization
-		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
-		v.getHealthBar().healthHeight = m.getHB().getInsideHeight();
-		v.getHealthBar().startingY = m.getHB().getStartingY();
+		
 	}
 
 
@@ -176,16 +172,20 @@ public class Controller implements MouseListener {
 
 				w.move(); // move model's version of wave
 				
-			} else {
+			}
+			//else, wave has reached the shore. Shoreline & Estuary Health must be updated and Wave must be reset.
+			else {
 											
 				int shoreDamage = determineDamage(w, i);				
 
-				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.				
+				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
-				v.updateShoreline(shoreDamage);
+				
+//				v.updateShoreline(shoreDamage);
 
-				m.getHB().damage(healthDamage);	
-				//v.getHealthBar().damage(healthDamage);
+				m.getHB().damage(healthDamage);
+				
+
 				v.getHealthBar().setHealthHeight(m.getHB().getInsideHeight());
 				v.getHealthBar().startingY = m.getHB().getStartingY();
 				

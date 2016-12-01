@@ -33,9 +33,7 @@ public class Model {
 	public static final int numBOS = 20;
 	private static int score = 0;
 	
-	//Pointer array. 1 player, 1 shoreLine Integer, numBoxes boxes, numWaves waves, numBOS beachObjects. Size = sum of these.
-	public static final int objArrSize = 1 + 1 + numBoxes + numWaves + numBOS;
-	private static ArrayList<Object> gameObjs = new ArrayList<Object>(objArrSize);
+	private static ArrayList<Object> gameObjs = new ArrayList<Object>();
 	
 	//General variables
 	private Player p;
@@ -174,6 +172,8 @@ public class Model {
 		gameObjs.add(this.p);
 		gameObjs.add(this.shoreLine);
 		gameObjs.add(scenery);
+		gameObjs.add(this.HB);
+		System.out.println(gameObjs);
 	}
 	
 	private void initPlayer(){
