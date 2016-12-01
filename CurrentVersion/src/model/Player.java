@@ -2,6 +2,8 @@ package model;
 
 import java.awt.Point;
 
+import javax.swing.Icon;
+
 public class Player extends Character {
 
 	private int health = 100;
@@ -18,6 +20,12 @@ public class Player extends Character {
 		this.setCurrentPos(p);
 		this.setHealth(health);
 		this.setVelocity(2);
+	}
+	
+	//General function
+	public void updateSprite(){
+		this.getDirection();
+//		crabPics[m.getP().findIndex()]);
 	}
 	
 	//Setters and Getters

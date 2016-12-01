@@ -26,7 +26,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import controller.Controller.button;
 import model.BeachObject;
 import model.Box;
 import model.HoldingType;
@@ -34,54 +33,45 @@ import model.Model;
 import model.Player;
 import model.Wave;
 import view.View;
+import view.View.button;
 
 public class Controller implements MouseListener {
-
 	private status gameStatus = status.IN_PROGRESS;
 	
 	private static Model m;
 	private static View v;
 	private boolean pickUpRequest = false;
 	private boolean putDownRequest = false;
-	button b = new button();
-	button player = new button();
+
+	private Point objToPickUp = new Point();
+	private HoldingType objToPickUpHT = null;
+	private Point putDownBox = new Point();
 
 	int i = 0;
 
-	// sprite-related variables
-	ImageIcon oystIcon;
-	ImageIcon concIcon;
-
-	final int numSprites = 6;
-	final int startPSprites = 0;
-	final int oystSprite = 9;
-	final int concSprite = 8;
-	int picNum = 0;
-	ImageIcon[] pics;// holds all sprites for all characters
-	ImageIcon[] oysterBoxes;
-	ImageIcon[] crabPics;
-	BufferedImage[] scenery = new BufferedImage[2];
+	
 
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			moveWave();
+			v.updateViewObjs();
+			v.repaint();
 			//checkGameStatus();
 		}
 	});
 
 	Timer pTimer = new Timer(10, new ActionListener() {
-
+		
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			m.getP().updateDirection();
-			player.setBorder(BorderFactory.createEmptyBorder());
-			
-			player.setIcon(crabPics[m.getP().findIndex()]);
+			m.updatePlayerSprite();
+//			player.setBorder(BorderFactory.createEmptyBorder());
 			
 			m.getP().move();
 			updatePlayerMV();
-			v.repaint();
+//			v.repaint();
 		}
 	});
 
@@ -94,97 +84,19 @@ public class Controller implements MouseListener {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor
 
-		initSprites();
-		
-		v.setScenery(scenery);
-		oystIcon = pics[oystSprite];
-		concIcon = pics[concSprite];
-
-		v.setPlayerPos(m.getP().getCurrentPos());
-		v.setPlayerDims(Player.playerDimensions);
+		initViewBtnListeners();
 
 		// Healthbar
 		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
 		v.getHealthBar().healthHeight = m.getHB().getInsideHeight();
 		v.getHealthBar().startingY = m.getHB().getStartingY();
+	}
 
-		for (Box b : m.getBoxes().values()) {
-			button j = new button();
-			j.setMargin(new Insets(0, 0, 0, 0));
-			j.setBounds(b.getPosition().x, b.getPosition().y, Box.boxDimensions, Box.boxDimensions);
-			j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
-			j.setLocation(b.getPosition());
-			j.setHoldingType(HoldingType.BOX);
-
-			v.getJPanel().setLayout(null);
-
-			// BOXES ARE ADDED TO JPANEL HERE (but created in model)
-			j.setBorder(BorderFactory.createEmptyBorder());
-			j.setContentAreaFilled(false);
-			j.setIcon(pics[10]);
-			v.getJPanel().add(j);
-			
-			j.addMouseListener(this);
-
+	private void initViewBtnListeners() {
+		for(button b : v.gameObjBtns){
+			b.addMouseListener(this);
 		}
-
-		for (Wave w : m.getWaves()) {
-
-			button k = new button();
-			k.setMargin(new Insets(0, 0, 0, 0));
-			k.setBounds(w.getCurrentPos().x, w.getCurrentPos().y, Wave.waveWidth, Wave.waveHeight);
-
-//			k.setBackground(Color.pink);
-			k.setBorder(BorderFactory.createEmptyBorder());
-			k.setContentAreaFilled(false);
-
-			k.setIcon(pics[11]);
-			v.addToWaveBtns(k);
-
-			i++;
-		}
-
-		i = 0;
-
-		for (BeachObject bo : m.getBeachObject().values()) {
-			button s = new button();
-			s.setMargin(new Insets(0, 0, 0, 0));
-
-			// BEACH OBJECT BOUNDS/DIMENSIONS ARE SET HERE
-			s.setBounds(bo.getCurrentPos().x, bo.getCurrentPos().y, BeachObject.beachObjDimensions,
-					BeachObject.beachObjDimensions);
-
-			if (bo.getH() == HoldingType.CONCRETE) {
-				s.setHoldingType(HoldingType.CONCRETE);
-				//s.setText("c");
-//				s.setBackground(Color.gray);
-				s.addMouseListener(this);
-				
-				s.setBorder(BorderFactory.createEmptyBorder());
-				s.setContentAreaFilled(false);
-
-				s.setIcon(concIcon);
-			} else if (bo.getH() == HoldingType.OYSTER) {
-				s.setHoldingType(HoldingType.OYSTER);
-				//s.setText("o");
-//				s.setBackground(Color.blue);
-				s.addMouseListener(this);
-				s.setBorder(BorderFactory.createEmptyBorder());
-				s.setContentAreaFilled(false);
-				s.setIcon(oystIcon);
-			}
-
-			// BEACH OBJECT ADDED TO JPANEL HERE (but created in model)
-			v.getJPanel().add(s);
-		}
-
-		player.setMargin(new Insets(0, 0, 0, 0));
-		player.setBorder(BorderFactory.createEmptyBorder());
-		player.setContentAreaFilled(false);
-		player.setBounds(Player.startPosition.x, Player.startPosition.y, Player.playerDimensions,
-				Player.playerDimensions);
-		v.getJPanel().add(player);
-		v.repaint();
+		
 	}
 
 	/**
@@ -195,30 +107,34 @@ public class Controller implements MouseListener {
 	 */
 	public void updatePlayerMV() {
 
-		if (m.getP().getDestination().distance(m.getP().getCurrentPos()) < 10) {
+		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {
 			pTimer.stop();
-			// System.out.println("we've reached our destination");
+
+//			 System.out.println("we've reached our destination");
 
 			if (pickUpRequest) {
 
-				if (m.getP().pickUp(b.getHoldingType())) {
-					v.getJPanel().getComponentAt(b.getLocation()).setVisible(false);
+//				System.out.println("topickup = "+objToPickUp);
+//				System.out.println("player at = "+m.getP().getPosition());
+				
+				if (m.getP().pickUp(objToPickUpHT)) {
+//					System.out.println("component = "+v.getJPanel().getComponentAt(objToPickUp));
+					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix
 				}
-				player.setIcon(crabPics[m.getP().findIndex()]);
+				m.updatePlayerSprite();
 				pickUpRequest = false;
 			} // end if(pickup)
 
 			else if (putDownRequest) {
-				System.out.println("putdown = "+putDownRequest);
 				putDown();
 				
 				putDownRequest = false;
 			}
 		} // end if(pickup)
 			// else if we're still moving toward destination
-		else {
-			player.setLocation(m.getP().getCurrentPos());
-		}
+//		else {
+//			player.setLocation(m.getP().getPosition());
+//		}
 	}
 
 	/**
@@ -226,26 +142,25 @@ public class Controller implements MouseListener {
 	 * @return String type
 	 */
 	public String putDown() {
-		System.out.println("in putdown()");
 		String type = "";
 		// check player is holding something
 		if (m.getP().getH() != HoldingType.EMPTY) {
-			HoldingType boxContains = m.getBoxes().get(b.getLocation()).getContains();
+			HoldingType boxContains = m.getBoxes().get(putDownBox).getContains();
 
 			// check type of obj matches box type, or box is empty
 			if (m.getP().getH() == boxContains || boxContains == HoldingType.EMPTY) {
 
 				// check box not full
-				if (!(m.getBoxes().get(b.getLocation()).isfull())) {
+				if (!(m.getBoxes().get(putDownBox).isfull())) {
 
 					// set box type in model if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						m.getBoxes().get(b.getLocation()).setContains(m.getP().getH());
+						m.getBoxes().get(putDownBox).setContains(m.getP().getH());
 					}
 
-					m.getBoxes().get(b.getLocation()).incrementCount();
+					m.getBoxes().get(putDownBox).incrementCount();
 					
-					System.out.println("\n\nbox count = " + m.getBoxes().get(b.getLocation()).getCount() + " isfull = "+ m.getBoxes().get(b.getLocation()).isfull());
+					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
 					m.getP().setH(HoldingType.EMPTY);
 				}
 			}
@@ -253,8 +168,8 @@ public class Controller implements MouseListener {
 		else {
 			System.out.println("can't put that down in this box");
 		}
-
-		type = m.getBoxes().get(b.getLocation()).getContains().name() + " " + m.getBoxes().get(b.getLocation()).getCount();
+//
+		type = m.getBoxes().get(putDownBox).getContains().name() + " " + m.getBoxes().get(putDownBox).getCount();
 		return type;
 	}
 
@@ -266,26 +181,24 @@ public class Controller implements MouseListener {
 			pickUpRequest = false;
 		}
 		
-		v.setPlayerDest(e.getComponent().getLocation());
+
 		m.getP().setDestination(e.getPoint());
 
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
-			b = (button) (e.getComponent());
-			m.getP().setDestination(b.getLocation());
-
-			// TODO: fix this -- Auzi;
-			// v.getHealthBar().setHealthHeight(v.getHealthBar().healthHeight +
-			// 4);
+			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
 			
 			//if pickup = true, and btn was clicked, then pickup = false.
-			if (b.getHoldingType() == HoldingType.BOX) {
+			if ( ( (View.button) ( e.getComponent() ) ).getHoldingType() == HoldingType.BOX) {
 				putDownRequest = true;
+				putDownBox = e.getComponent().getLocation();
 			} else {
 				pickUpRequest = true;
+				objToPickUp = e.getComponent().getLocation();
+				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getHoldingType();
 			}
-
 		}
+
 		pTimer.start();
 	}
 
@@ -313,23 +226,20 @@ public class Controller implements MouseListener {
 
 	}
 
-	int wavesUpdated=1;//FOR DEBUGGING
+
 	
 	public void moveWave() {
-		int i = 0;
+		int a = 0;
 		for (Wave w : m.getWaves()) {
-
 			//if we haven't reached destination
-			if ( w.getCurrentPos().x > w.getDestination().x ) {
+			if ( w.getPosition().x > w.getDestination().x ) {
 
 				w.move(); // move model's version of wave
-				v.setSingleWaveBtn(i, w.getCurrentPos()); // move view's version of wave based on model's new value
 				
 			} else {
-															
-				int shoreDamage = determineDamage(w, i);
-				
-				System.out.println(""+shoreDamage+" determined.");
+											
+				int shoreDamage = determineDamage(w, i);				
+
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on in the code. may delete later, but keeping for now.				
 				m.updateShoreLine(shoreDamage);
 				v.updateShoreline(shoreDamage);
@@ -339,48 +249,43 @@ public class Controller implements MouseListener {
 				v.getHealthBar().setHealthHeight(m.getHB().getInsideHeight());
 				v.getHealthBar().startingY = m.getHB().getStartingY();
 				
-				m.resetWave(i);
-				
-				v.resetWave(i, w.getCurrentPos());
-				
-				wavesUpdated++;
-				
-				checkGameStatus();//we call this here bc shoreline was updated (above)
+				m.resetWave(a);
 
+//				checkGameStatus();//we call this here bc shoreline was updated (above)
+			
 			}
-			i++;
+			a++;	
 		}
 		m.updateWavesDestinations();
-
 	}
 
-	private void checkGameStatus() {
-//		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
-		if(m.getShoreLine() <= m.getminShoreLine()){
-			gameStatus = status.LOSE_SHORE;
-//			System.out.println("lose - shoreline receeded");
-		}
-		else if(m.getP().getHealth() < 0){
-			gameStatus = status.LOSE_PLAYER;
-//			System.out.println("lose - player health at zero");
-		}
-		else if( m.allBoxesFull() ){
-			if( m.boxesCorrect() ){
-				gameStatus = status.WIN;
-//				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
-			}
-			else{
-				gameStatus = status.LOSE_BOXES;
-			}
-		}
-		
-		if(gameStatus != status.IN_PROGRESS){
-			wTimer.stop();
-			pTimer.stop();
-			v.gameEnd(gameStatus);
-		}
-		
-	}
+//	private void checkGameStatus() {
+////		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
+//		if(m.getShoreLine() <= m.getminShoreLine()){
+//			gameStatus = status.LOSE_SHORE;
+////			System.out.println("lose - shoreline receeded");
+//		}
+//		else if(m.getP().getHealth() < 0){
+//			gameStatus = status.LOSE_PLAYER;
+////			System.out.println("lose - player health at zero");
+//		}
+//		else if( m.allBoxesFull() ){
+//			if( m.boxesCorrect() ){
+//				gameStatus = status.WIN;
+////				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
+//			}
+//			else{
+//				gameStatus = status.LOSE_BOXES;
+//			}
+//		}
+//		
+//		if(gameStatus != status.IN_PROGRESS){
+//			wTimer.stop();
+//			pTimer.stop();
+//			v.gameEnd(gameStatus);
+//		}
+//		
+//	}
 
 	private int determineDamage(Wave w, int i) {
 		int decrement = 0;
@@ -424,78 +329,23 @@ public class Controller implements MouseListener {
 		return decrement;
 	}
 
-	public class button extends JButton {
-		private HoldingType h = HoldingType.EMPTY;
 
-		public HoldingType getHoldingType() {
-			return this.h;
-		}
-
-		public void setHoldingType(HoldingType h) {
-			this.h = h;
-		}
-
-		public button() {
-			this.setPreferredSize(new Dimension(20, 20));
-		}
-	}
-
-	public void initSprites() {
-
-		String[] myNames = { "crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
-				"crabSE.png","crabSW.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
-		String[] boxImages = {"box1.png","box2.png","box3.png","box4.png","box5.png"};
-		String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
-								"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
-								"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
-								"OystercrabSE.png","OystercrabSW.png"};
-		
-		String[] sceneryFiles = {"shore.png", "sky.png"};
-		pics = new ImageIcon[myNames.length];
-		oysterBoxes = new ImageIcon[boxImages.length];
-		crabPics = new ImageIcon[crabFiles.length];
-		scenery = new BufferedImage[sceneryFiles.length];
-		
-		
-		int i = 0;
-		for (String s : myNames) {
-			pics[i] = createImage(s);
-			i++;
-		}
-		i = 0;
-		for(String s : boxImages){
-			oysterBoxes[i] = createImage(s);
-			i++;
-		}
-		i=0;
-		for(String s : crabFiles){
-			crabPics[i] = createImage(s);
-			i++;
-		}
-		i = 0;
-		scenery[0] = (BufferedImage) createImage("sky.png").getImage();
-		scenery[1] = (BufferedImage) createImage("shore.png").getImage();
-		
-	
-		
-	}
-
-	/**
-	 * @param n
-	 * @return Read image icon and return
-	 */
-	private ImageIcon createImage(String n) {
-		ImageIcon imageIcon;
-		try {
-			// System.out.println("About to read an image");
-			imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
-			// System.out.println("bufferedImage");
-			return imageIcon;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
+//	//inner classes
+//	public class CButton extends JButton {
+//		private HoldingType h = HoldingType.EMPTY;
+//
+//		public HoldingType getHoldingType() {
+//			return this.h;
+//		}
+//
+//		public void setHoldingType(HoldingType h) {
+//			this.h = h;
+//		}
+//
+//		public CButton() {
+//			this.setPreferredSize(new Dimension(20, 20));
+//		}
+//	}
 
 	public status getGameStatus() {
 		return gameStatus;
@@ -503,5 +353,13 @@ public class Controller implements MouseListener {
 
 	public void setGameStatus(status gameStatus) {
 		this.gameStatus = gameStatus;
+	}
+
+	public Point getObjToPickUp() {
+		return objToPickUp;
+	}
+
+	public void setObjToPickUp(Point objToPickUp) {
+		this.objToPickUp = objToPickUp;
 	}
 }

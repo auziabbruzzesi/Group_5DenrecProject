@@ -2,15 +2,18 @@ package model;
 
 import java.awt.Point;
 
+import javax.swing.Icon;
+
 import view.View;
 
 public class Box {
 	private Point position;
-	private int capacity = 2;
+	private int capacity = 3;
 	private int count;
 	private HoldingType h = HoldingType.BOX;
 	private HoldingType contains = HoldingType.EMPTY;
 	private boolean isfull = false;
+	private Icon objIcon;
 	public static final int boxDimensions = 100;// box dimensions (boxes are
 												// square, so don't need
 												// individual width/height)
@@ -25,8 +28,13 @@ public class Box {
 	public static final int boxToTopSpacing = 20;
 	public static final int boxX = (2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing;
 
-	public Box(Point p) {
+	
+/*
+ * Constructors
+ */
+	public Box(Point p, Icon k) {
 		this.position = p;
+		setObjIcon(k);
 	}
 
 	public Box(Point p, int capacity) {
@@ -92,6 +100,14 @@ public class Box {
 
 	public void setContains(HoldingType contains) {
 		this.contains = contains;
+	}
+
+	public Icon getObjIcon() {
+		return objIcon;
+	}
+
+	public void setObjIcon(Icon objIcon) {
+		this.objIcon = objIcon;
 	}
 
 }

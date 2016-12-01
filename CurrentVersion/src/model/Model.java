@@ -6,6 +6,9 @@
 package model;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,46 +16,65 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
+
 import java.util.Random;
 import java.util.Set;
 import model.BeachObject;
 import view.View;
-import controller.Controller.button;
 
 public class Model {	
 	
-	//vars related to initialization
+	//Variables related to initialization
 	public static final int numBoxes = 4;
 	public static final int numWaves = 5;
 	public static final int numBOS = 20;
 	private static int score = 0;
 	
-	//pointer array. 1 player, 1 shoreLine Integer, numBoxes boxes, numWaves waves, numBOS beachObjects. Size = sum of these.
+	//Pointer array. 1 player, 1 shoreLine Integer, numBoxes boxes, numWaves waves, numBOS beachObjects. Size = sum of these.
 	public static final int objArrSize = 1 + 1 + numBoxes + numWaves + numBOS;
-	private static Object[] gameObjs = new Object[objArrSize];
+	private static ArrayList<Object> gameObjs = new ArrayList<Object>(objArrSize);
 	
-	//General vars
-	private Player p = new Player(new Point(Player.startPosition));
+	//General variables
+	private Player p;
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private HealthBar HB = new HealthBar(50, 200);
-	private int shoreLine = (2*view.View.viewWidth)/3;
+	private Integer shoreLine = (2*view.View.viewWidth)/3;
 	private int minShoreLine = shoreLine - HB.getHeight(); // TODO: have C init m's & v's minshores to ensure they're in-sync
 
+	//Sprite-related variables
+		ImageIcon oystIcon;
+		ImageIcon concIcon;
+
+		final int numSprites = 6;
+		final int startPSprites = 0;
+		final int oystSprite = 9;
+		final int concSprite = 8;
+		int picNum = 0;
+		ImageIcon[] pics;// holds all sprites for all characters
+		ImageIcon[] oysterBoxes;
+		ImageIcon[] crabPics;
+		BufferedImage[] scenery = new BufferedImage[2];
+	
 /*
  * Model Constructor
  */
 	public Model() {
-		
+
+		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
+		initPlayer();//Do not move.
 		initBoxes();
-
 		initWaves();
-
 		initBeachObjs();
 
+		initGameObjsArr();	
+
 		System.out.println("Instantiating new game");
-		System.out.println("Player Position: " + this.p.getCurrentPos());
+		System.out.println("Player Position: " + this.p.getPosition());
 		System.out.println(this.boxes.size() + " Boxes.");
 		System.out.println(this.waves.size() + " Waves.");
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
@@ -86,7 +108,10 @@ public class Model {
 	public void updatePlayerPosition(Point updatedPos) {
 		this.p.setCurrentPos(updatedPos);
 	}
-
+	public void updatePlayerSprite() {
+		p.setObjIcon(crabPics[p.findIndex()]);
+	}
+	
 	public void updateShoreLine(int damage) {
 		shoreLine -= damage;
 	}
@@ -138,18 +163,31 @@ public class Model {
 /*
  * Functions required for Model initialization
  */
+	private void initGameObjsArr() {
+		gameObjs.addAll((Collection<? extends Object>) this.boxes.values());
+		gameObjs.addAll(this.waves);
+		gameObjs.addAll((Collection<? extends Object>) this.beachObjHM.values());
+		gameObjs.add(this.p);
+		gameObjs.add(this.shoreLine);
+		gameObjs.add(scenery);
+	}
+	
+	private void initPlayer(){
+		p = new Player(new Point(Player.startPosition));
+		updatePlayerSprite();
+	}
 	
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
 			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + Box.boxToTopSpacing);
-			this.boxes.put(p, new Box(p));
+			this.boxes.put(p, new Box(p, pics[10]) );
 		}
 	}
 	private void initWaves(){
 		for (int i = 0; i < numWaves; i++) {
 
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			this.waves.add(new Wave(p));
+			this.waves.add(new Wave(p, pics[11]));
 		}
 	}
 	private void initBeachObjs(){
@@ -169,11 +207,11 @@ public class Model {
 				if (canPlace) {
 
 					if (i % 2 == 0) {
-						BeachObject bo = new BeachObject(p, HoldingType.OYSTER);
-						this.beachObjHM.put(bo.getCurrentPos(), bo);
+						BeachObject bo = new BeachObject(p, HoldingType.OYSTER, pics[oystSprite]);
+						this.beachObjHM.put(bo.getPosition(), bo);
 					} else {
-						BeachObject bo = new BeachObject(p, HoldingType.CONCRETE);
-						this.beachObjHM.put(bo.getCurrentPos(), bo);
+						BeachObject bo = new BeachObject(p, HoldingType.CONCRETE, pics[concSprite]);
+						this.beachObjHM.put(bo.getPosition(), bo);
 					}
 				}
 			} while (!canPlace);
@@ -184,8 +222,8 @@ public class Model {
 
 	public Boolean checkPlayerOverlap(Point toCreate) {
 		Boolean canCreate = true;
-		double X1 = p.getCurrentPos().getX();
-		double Y1 = p.getCurrentPos().getY();
+		double X1 = p.getPosition().getX();
+		double Y1 = p.getPosition().getY();
 
 		double X2 = toCreate.getX();
 		double Y2 = toCreate.getY();
@@ -293,7 +331,7 @@ public class Model {
 
 		// check if the position would cause overlap
 		for (BeachObject bo : beachObjHM.values()) {
-			Point existing = bo.getCurrentPos();
+			Point existing = bo.getPosition();
 			// if the element we want to create would overlap horizontally with
 			// the element already created
 			double X1 = existing.getX();
@@ -335,6 +373,59 @@ public class Model {
 		return canCreate;
 	}
 	
+	public void initSprites() {
+
+		String[] myNames = { "crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
+				"crabSE.png","crabSW.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
+		String[] boxImages = {"box1.png","box2.png","box3.png","box4.png","box5.png"};
+		String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
+								"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
+								"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
+								"OystercrabSE.png","OystercrabSW.png"};
+		
+		String[] sceneryFiles = {"shore.png", "sky.png"};
+		pics = new ImageIcon[myNames.length];
+		oysterBoxes = new ImageIcon[boxImages.length];
+		crabPics = new ImageIcon[crabFiles.length];
+		scenery = new BufferedImage[sceneryFiles.length];
+		
+		
+		int i = 0;
+		for (String s : myNames) {
+			pics[i] = createImage(s);
+			i++;
+		}
+		i = 0;
+		for(String s : boxImages){
+			oysterBoxes[i] = createImage(s);
+			i++;
+		}
+		i=0;
+		for(String s : crabFiles){
+			crabPics[i] = createImage(s);
+			i++;
+		}
+		i = 0;
+		scenery[0] = (BufferedImage) createImage("sky.png").getImage();
+		scenery[1] = (BufferedImage) createImage("shore.png").getImage();		
+	}
+
+	/**
+	 * @param n
+	 * @return Read image icon and return
+	 */
+	private ImageIcon createImage(String n) {
+		ImageIcon imageIcon;
+		try {
+			// System.out.println("About to read an image");
+			imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
+			// System.out.println("bufferedImage");
+			return imageIcon;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 /*
  * Setters and Getters
@@ -403,7 +494,7 @@ public class Model {
 		return minShoreLine;
 	}
 	
-	public static Object[] getGameObjs(){
+	public static ArrayList<Object> getGameObjs(){
 		return gameObjs;
-	}
+	}	
 }

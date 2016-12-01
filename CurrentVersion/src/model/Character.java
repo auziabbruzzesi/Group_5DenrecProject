@@ -2,13 +2,15 @@ package model;
 
 import java.awt.Point;
 
+import javax.swing.Icon;
+
 public abstract class Character implements MoveObjects {
 	private Point currentPos;
 	private Point destination = currentPos;
 	private int velocity;
 	private HoldingType h = HoldingType.EMPTY;
 	Direction direction = Direction.EAST;//default
-
+	private Icon objIcon;
 		
 	/**
 	 * @author EAviles
@@ -154,7 +156,7 @@ public abstract class Character implements MoveObjects {
 				if (currentPos.getX() != destination.getX()) {
 					if (currentPos.getX() - velocity < destination.getX()) {
 						// don't overshoot destination
-						setCurrentPos(destination.getX(), getCurrentPos().getY());
+						setCurrentPos(destination.getX(), getPosition().getY());
 					} else {
 						currentPos.translate(-velocity, 0);
 					}
@@ -214,7 +216,7 @@ public abstract class Character implements MoveObjects {
 	
 		//System.out.println("updateDirection");
 		//North
-		
+
 		if(currentPos.x == destination.x){
 			if(currentPos.y > destination.y){
 				direction = Direction.NORTH;
@@ -293,7 +295,6 @@ public abstract class Character implements MoveObjects {
 	 */
 	public int findIndex(){
 		return direction.getRank()+ (h.getRank() * 8);
-		
 	}
 	
 	
@@ -304,7 +305,7 @@ public abstract class Character implements MoveObjects {
 	public HoldingType getH() {
 		return h;
 	}
-	public Point getCurrentPos() {
+	public Point getPosition() {
 		return currentPos;
 	}
 
@@ -339,5 +340,15 @@ public abstract class Character implements MoveObjects {
 
 	public void setCurrentPos(double d, double e){
 		this.currentPos.setLocation(d, e);
+	}
+
+
+	public Icon getObjIcon() {
+		return objIcon;
+	}
+
+
+	public void setObjIcon(Icon objIcon) {
+		this.objIcon = objIcon;
 	}
 }
