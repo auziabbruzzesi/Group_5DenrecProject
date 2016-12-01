@@ -57,6 +57,12 @@ public class Wave extends Character {
 		this.initialPos = p;
 	}
 
+	public void reset(Point startPos, Point newDest){
+		setCurrentPos(startPos);
+		setDestination(newDest);
+		resetVelocity();
+	}
+	
 	public void resetVelocity(){
 		int v = randomGenerator.nextInt(4) + 1;
 		this.setVelocity(v);

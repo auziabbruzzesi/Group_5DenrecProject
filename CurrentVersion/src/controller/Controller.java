@@ -99,7 +99,9 @@ public class Controller implements MouseListener {
 
 
 
-
+/*
+ * General functions
+ */
 	public void updatePlayerMV() {
 
 		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {

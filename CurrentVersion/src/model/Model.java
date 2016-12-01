@@ -85,17 +85,21 @@ public class Model {
  * General Functions
  */
 	public void resetWave(int a) {
-		// get the wave with this position, and set its position to its initial
-		// position
+		/*
+		 *  get the wave with this position, calculate what its new start position/destination
+		 *  should be based on where shoreline currently is, and reset it based on that. 
+		 */
 			Wave w = waves.get(a);
-		
 			Point startPos = new Point(View.viewWidth - Wave.waveWidth, a * Wave.waveSpawnSpacing);
 			Point newDest = new Point(getShoreLine(), w.getDestination().y);
-			w.setCurrentPos(startPos);
-			w.setDestination(newDest);
-			w.resetVelocity();
+			w.reset(startPos, newDest);
 	}
 
+
+	/*
+	 * this is used when shoreline is eroded. If one wave erodes shoreline, all waves
+	 * have their destinations updated so they don't crash (reset) early.
+	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){
 			Point newDest = new Point(getShoreLine(), w.getDestination().y);
@@ -126,6 +130,9 @@ public class Model {
 		return allFull;
 	}
 
+	/*
+	 * used by controller at end of game to determine whether enough boxes were made into gabions
+	 */
 	public boolean boxesCorrect() {
 		boolean correct = false;
 		double oyst = 0;
