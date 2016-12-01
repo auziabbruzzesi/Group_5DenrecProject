@@ -65,7 +65,7 @@ public class Model {
  */
 	public Model() {
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
-		initPlayer();//Do not move.
+		initPlayer();//Same comment as above ^
 		initBoxes();
 		initWaves();
 		initBeachObjs();
@@ -100,8 +100,7 @@ public class Model {
 		for(Wave w: waves){
 			Point newDest = new Point(getShoreLine(), w.getDestination().y);
 			w.setDestination(newDest);
-		}
-		
+		}		
 	}
 
 	public void updatePlayerPosition(Point updatedPos) {
@@ -155,7 +154,6 @@ public class Model {
 			System.out.println("All boxes not yet full");
 			correct = false;
 		}
-
 		return correct;
 	}
 	
@@ -184,7 +182,6 @@ public class Model {
 	}
 	private void initWaves(){
 		for (int i = 0; i < numWaves; i++) {
-
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 			this.waves.add(new Wave(p, pics[11]));
 		}
@@ -214,7 +211,6 @@ public class Model {
 					}
 				}
 			} while (!canPlace);
-
 		}
 	}
 
@@ -314,7 +310,6 @@ public class Model {
 				}
 			}
 		}
-
 		return canCreate;
 	}
 

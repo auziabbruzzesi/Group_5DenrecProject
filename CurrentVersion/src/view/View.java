@@ -33,7 +33,6 @@ import view.View.HealthPanel;
 public class View extends JFrame {
 	public static final int viewHeight = 650;
 	public static final int viewWidth = 1200;
-	// private ArrayList<button> waveBtns = new ArrayList<button>();
 
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 
@@ -59,6 +58,7 @@ public class View extends JFrame {
 	public View() {
 		initView();
 		initScenery();
+//		initHealthBar();
 	}
 
 	/*
@@ -102,28 +102,8 @@ public class View extends JFrame {
 		}
 	}
 
-	public void gameEnd(status gameStatus) {
-		// display dialogue
-		String message = "";
-		switch (gameStatus) {
-		case LOSE_PLAYER:
-			message = "You Lose :( \nPlayer health reached zero";
-			break;
-		case LOSE_SHORE:
-			message = "You Lose :( \n Too much of the Estuary eroded away";
-			break;
-		case LOSE_BOXES:
-			message = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
-			break;
-		case WIN:
-			message = "You Win! :D \n You created enough protection for the Estuary.";
-			break;
-		default:
-			System.out.println("Error in determining gameEndStatus to display. Status = " + gameStatus);
-			break;
-		}
-
-		JOptionPane.showMessageDialog(null, message);
+	public void gameEnd(String m) {
+		JOptionPane.showMessageDialog(null, m);
 		System.exit(0);
 
 	}

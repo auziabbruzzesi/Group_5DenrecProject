@@ -44,7 +44,6 @@ public class Wave extends Character {
  * General Functions
  */
 	
-	@Override
 	// note that direction is always west
 	public void move() {
 			this.setCurrentPos(getPosition().getX() - getVelocity(), getPosition().getY());

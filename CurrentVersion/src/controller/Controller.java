@@ -49,7 +49,12 @@ public class Controller implements MouseListener {
 
 	int i = 0;
 
-	
+
+/*
+ * Timers (2)
+ *   wTimer - handles waves
+ *   pTimer - handles player movement
+ */
 
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
@@ -71,7 +76,6 @@ public class Controller implements MouseListener {
 			
 			m.getP().move();
 			updatePlayerMV();
-//			v.repaint();
 		}
 	});
 
@@ -87,38 +91,31 @@ public class Controller implements MouseListener {
 		initViewBtnListeners();
 
 		// Healthbar
+		//TODO: feed this info to view from model at initialization
 		v.getHealthBar().setBounds(0, 0, m.getHB().getWidth(), m.getHB().getHeight());
 		v.getHealthBar().healthHeight = m.getHB().getInsideHeight();
 		v.getHealthBar().startingY = m.getHB().getStartingY();
 	}
 
-	private void initViewBtnListeners() {
-		for(button b : v.gameObjBtns){
-			b.addMouseListener(this);
-		}
-		
-	}
 
-	/**
-	 * @author EAviles
-	 * 
-	 *         decides whether or not we've reached our destination TODO: make
-	 *         this work with pickup and putdown functionality
-	 */
+
+
 	public void updatePlayerMV() {
 
 		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {
+			
 			pTimer.stop();
-
 //			 System.out.println("we've reached our destination");
 
+			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
 
 //				System.out.println("topickup = "+objToPickUp);
 //				System.out.println("player at = "+m.getP().getPosition());
 				
+				//check that we can pick up the desired object
 				if (m.getP().pickUp(objToPickUpHT)) {
-//					System.out.println("component = "+v.getJPanel().getComponentAt(objToPickUp));
+					//pick it up
 					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix
 				}
 				m.updatePlayerSprite();
@@ -131,10 +128,6 @@ public class Controller implements MouseListener {
 				putDownRequest = false;
 			}
 		} // end if(pickup)
-			// else if we're still moving toward destination
-//		else {
-//			player.setLocation(m.getP().getPosition());
-//		}
 	}
 
 	/**
@@ -160,72 +153,18 @@ public class Controller implements MouseListener {
 
 					m.getBoxes().get(putDownBox).incrementCount();
 					
-					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
+//					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
 					m.getP().setH(HoldingType.EMPTY);
 				}
 			}
-		} 
+		 
 		else {
-			System.out.println("can't put that down in this box");
+			System.out.println("Can't put that down in this box. It is a " + m.getBoxes().get(putDownBox).getContains() +" box and you are holding "+ m.getP().getH());
 		}
-//
+	}
 		type = m.getBoxes().get(putDownBox).getContains().name() + " " + m.getBoxes().get(putDownBox).getCount();
 		return type;
 	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		
-		//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
-		if(pickUpRequest){
-			pickUpRequest = false;
-		}
-		
-		m.getP().setDestination(e.getPoint());
-
-		// if a button was clicked
-		if (e.getComponent() instanceof button) {
-			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
-			
-			//if pickup = true, and btn was clicked, then pickup = false.
-			if ( ( (View.button) ( e.getComponent() ) ).getHoldingType() == HoldingType.BOX) {
-				putDownRequest = true;
-				putDownBox = e.getComponent().getLocation();
-			} else {
-				pickUpRequest = true;
-				objToPickUp = e.getComponent().getLocation();
-				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getHoldingType();
-			}
-		}
-
-		pTimer.start();
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
-
 	
 	public void moveWave() {
 		int a = 0;
@@ -258,30 +197,6 @@ public class Controller implements MouseListener {
 		m.updateWavesDestinations();
 	}
 
-	private void checkGameStatus() {
-//		System.out.println(gameStatus);
-//		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
-		if(m.getShoreLine() <= m.getminShoreLine()){
-			gameStatus = status.LOSE_SHORE;
-//			System.out.println("lose - shoreline receded");
-		}
-		else if( m.allBoxesFull() ){
-			if( m.boxesCorrect() ){
-				gameStatus = status.WIN;
-//				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
-			}
-			else{
-				gameStatus = status.LOSE_BOXES;
-			}
-		}
-		
-		if(gameStatus != status.IN_PROGRESS){
-			wTimer.stop();
-			pTimer.stop();
-			v.gameEnd(gameStatus);
-		}
-		
-	}
 
 	private int determineDamage(Wave w, int i) {
 		int decrement = 0;
@@ -325,24 +240,74 @@ public class Controller implements MouseListener {
 		return decrement;
 	}
 
+	@Override
+	public void mousePressed(MouseEvent e) {
+		
+		//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
+		if(pickUpRequest){
+			pickUpRequest = false;
+		}
+		
+		m.getP().setDestination(e.getPoint());
 
-//	//inner classes
-//	public class CButton extends JButton {
-//		private HoldingType h = HoldingType.EMPTY;
-//
-//		public HoldingType getHoldingType() {
-//			return this.h;
-//		}
-//
-//		public void setHoldingType(HoldingType h) {
-//			this.h = h;
-//		}
-//
-//		public CButton() {
-//			this.setPreferredSize(new Dimension(20, 20));
-//		}
-//	}
+		// if a button was clicked
+		if (e.getComponent() instanceof button) {
+			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
+			
+			//if pickup = true, and btn was clicked, then pickup = false.
+			if ( ( (View.button) ( e.getComponent() ) ).getHoldingType() == HoldingType.BOX) {
+				putDownRequest = true;
+				putDownBox = e.getComponent().getLocation();
+			} else {
+				pickUpRequest = true;
+				objToPickUp = e.getComponent().getLocation();
+				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getHoldingType();
+			}
+		}
 
+		pTimer.start();
+	}
+
+
+	private void checkGameStatus() {
+//		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
+		String endMessage = "";
+		
+		if(m.getShoreLine() <= m.getminShoreLine()){
+			gameStatus = status.LOSE_SHORE;
+			endMessage = "You Lose :( \n Too much of the Estuary eroded away";
+		}
+		else if( m.allBoxesFull() ){
+			if( m.boxesCorrect() ){
+				gameStatus = status.WIN;
+				endMessage = "You Win! :D \n You created enough protection for the Estuary.";
+			}
+			else{
+				gameStatus = status.LOSE_BOXES;
+				endMessage = "You Lose :( \n The Estuary wasn't protected well enough. Try adding more Oyster Gabions!";
+			}
+		}
+		
+		if(gameStatus != status.IN_PROGRESS){
+			wTimer.stop();
+			pTimer.stop();
+			v.gameEnd(endMessage);
+		}
+		
+	}
+	
+/*
+ * Initialization functions
+ */
+	private void initViewBtnListeners() {
+		for(button b : v.gameObjBtns){
+			b.addMouseListener(this);
+		}		
+	}
+
+/*
+ * Setters & Getters
+ */
 	public status getGameStatus() {
 		return gameStatus;
 	}
@@ -358,4 +323,32 @@ public class Controller implements MouseListener {
 	public void setObjToPickUp(Point objToPickUp) {
 		this.objToPickUp = objToPickUp;
 	}
+	
+/*
+ * Unused mouse listener functions (these are required to implement MouseListener, even if they're not used)
+ */
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+
+	}
+
 }
