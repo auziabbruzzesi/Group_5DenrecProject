@@ -44,7 +44,7 @@ public class Model {
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private HealthBar HB = new HealthBar(50, 200);
 	private Integer shoreLine = (2*view.View.viewWidth)/3;
-	private int minShoreLine = shoreLine - HB.getHeight(); // TODO: have C init m's & v's minshores to ensure they're in-sync
+	private int minShoreLine = shoreLine - HB.getHeight()+ 100; // TODO: m's & v's shores & minshores in-sync
 
 	//Sprite-related variables
 		ImageIcon oystIcon;
@@ -64,7 +64,6 @@ public class Model {
  * Model Constructor
  */
 	public Model() {
-
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
 		initPlayer();//Do not move.
 		initBoxes();

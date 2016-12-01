@@ -57,7 +57,7 @@ public class Controller implements MouseListener {
 			moveWave();
 			v.updateViewObjs();
 			v.repaint();
-			//checkGameStatus();
+			checkGameStatus();
 		}
 	});
 
@@ -181,7 +181,6 @@ public class Controller implements MouseListener {
 			pickUpRequest = false;
 		}
 		
-
 		m.getP().setDestination(e.getPoint());
 
 		// if a button was clicked
@@ -251,7 +250,7 @@ public class Controller implements MouseListener {
 				
 				m.resetWave(a);
 
-//				checkGameStatus();//we call this here bc shoreline was updated (above)
+				checkGameStatus();//we call this here bc shoreline was updated (above)
 			
 			}
 			a++;	
@@ -259,33 +258,30 @@ public class Controller implements MouseListener {
 		m.updateWavesDestinations();
 	}
 
-//	private void checkGameStatus() {
-////		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
-//		if(m.getShoreLine() <= m.getminShoreLine()){
-//			gameStatus = status.LOSE_SHORE;
-////			System.out.println("lose - shoreline receeded");
-//		}
-//		else if(m.getP().getHealth() < 0){
-//			gameStatus = status.LOSE_PLAYER;
-////			System.out.println("lose - player health at zero");
-//		}
-//		else if( m.allBoxesFull() ){
-//			if( m.boxesCorrect() ){
-//				gameStatus = status.WIN;
-////				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
-//			}
-//			else{
-//				gameStatus = status.LOSE_BOXES;
-//			}
-//		}
-//		
-//		if(gameStatus != status.IN_PROGRESS){
-//			wTimer.stop();
-//			pTimer.stop();
-//			v.gameEnd(gameStatus);
-//		}
-//		
-//	}
+	private void checkGameStatus() {
+//		System.out.println(gameStatus);
+//		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
+		if(m.getShoreLine() <= m.getminShoreLine()){
+			gameStatus = status.LOSE_SHORE;
+//			System.out.println("lose - shoreline receded");
+		}
+		else if( m.allBoxesFull() ){
+			if( m.boxesCorrect() ){
+				gameStatus = status.WIN;
+//				System.out.println("win! filled the boxes in time, with at least 50% Gabions");
+			}
+			else{
+				gameStatus = status.LOSE_BOXES;
+			}
+		}
+		
+		if(gameStatus != status.IN_PROGRESS){
+			wTimer.stop();
+			pTimer.stop();
+			v.gameEnd(gameStatus);
+		}
+		
+	}
 
 	private int determineDamage(Wave w, int i) {
 		int decrement = 0;
