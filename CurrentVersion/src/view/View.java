@@ -10,6 +10,7 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -44,12 +45,12 @@ public class View extends JFrame {
 
 	JPanel jP = new jpanel();
 	private HealthPanel healthBar;
-	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
+	Dimension frameDimensions = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
 
 	private Integer shoreLineTop;
 
 	private BufferedImage[] scenery = new BufferedImage[2];
-
+   
 	/*
 	 * View Constructor
 	 */
@@ -130,6 +131,11 @@ public class View extends JFrame {
 	
 		jP = new jpanel();
 		//jP.setLayout(b);
+		JButton jbutton = new JButton();
+		jbutton.setSize(new Dimension(100,100));
+		jbutton.setBounds(100, 100, 100, 100);
+		jbutton.setText("SAVE");
+		jP.add(jbutton);
 		
 		
 
@@ -165,9 +171,9 @@ public class View extends JFrame {
 				scenery = ((BufferedImage[]) (Model.getGameObjs().get(i)));
 			} else {
 				button j = new button();
-				j.setMargin(new Insets(0, 0, 0, 0));
-				j.setBorder(BorderFactory.createEmptyBorder());
-				j.setContentAreaFilled(false);
+				//j.setMargin(new Insets(0, 0, 0, 0));
+				//j.setBorder(BorderFactory.createEmptyBorder());
+				//j.setContentAreaFilled(false);
 
 				// PLAYER
 				if (Model.getGameObjs().get(i) instanceof Player) {
@@ -236,7 +242,14 @@ public class View extends JFrame {
 			// g.setColor(Color.yellow);
 			// g.fillRect(0, 0, shoreLine, viewHeight);
 			g.setColor(Color.red);
-			g.drawLine(shoreLineTop, 0, shoreLineTop, viewHeight);
+			Double a = .206;
+			Double b = .45;
+			Double c = .625;
+			System.out.println("viewWidth = " + viewWidth);
+			System.out.println("viewHeight = " + viewHeight);
+			System.out.println("first line coord: (" + ((Double)((b)*viewWidth)).intValue() + ", " + ((Double)((a)*viewHeight)).intValue() + ")" );
+			System.out.println("second line coord: (" + ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
+			g.drawLine(((Double)((b)*viewWidth)).intValue(), ((Double)((a)*viewHeight)).intValue(),((Double)((c)*viewWidth)).intValue(), (viewHeight));
 		}
 	}
 
