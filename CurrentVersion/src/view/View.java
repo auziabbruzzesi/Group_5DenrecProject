@@ -46,9 +46,7 @@ public class View extends JFrame {
 	private HealthPanel healthBar;
 	Dimension frameDimensions = new Dimension(viewWidth, viewHeight);
 
-	private Integer shoreLine = (2 * viewWidth) / 3;
-
-	private int shoreMin;
+	private Integer shoreLineTop;
 
 	private BufferedImage[] scenery = new BufferedImage[2];
 
@@ -69,34 +67,36 @@ public class View extends JFrame {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 
-			if (!(Model.getGameObjs().get(i) instanceof Integer)) {
+			// SHORELINE
+			if (Model.getGameObjs().get(i) instanceof Integer) {
+				shoreLineTop = (Integer) Model.getGameObjs().get(i);
+				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
+				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
+			}
+			// HEATLH BAR
+			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
+				healthBar.setHealthHeight(( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight());
+				healthBar.startingY = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getStartingY();
+			}
+			// PLAYER
+			else if (Model.getGameObjs().get(i) instanceof Player) {
+				gameObjBtns.get(i).setLocation((Point) (((Player) (Model.getGameObjs().get(i))).getPosition()));
+				gameObjBtns.get(i).setIcon((Icon) ((Player) (Model.getGameObjs().get(i))).getObjIcon());
+			}
+			// WAVE
+			else if (Model.getGameObjs().get(i) instanceof Wave) {
+				gameObjBtns.get(i).setLocation((Point) (((Wave) (Model.getGameObjs().get(i))).getPosition()));
+			}
+			// BEACHOBJ
+			else if (Model.getGameObjs().get(i) instanceof BeachObject) {
 
-				// PLAYER
-				if (Model.getGameObjs().get(i) instanceof Player) {
-					gameObjBtns.get(i).setLocation((Point) (((Player) (Model.getGameObjs().get(i))).getPosition()));
-					gameObjBtns.get(i).setIcon((Icon) ((Player) (Model.getGameObjs().get(i))).getObjIcon());
-				}
-				// WAVE
-				else if (Model.getGameObjs().get(i) instanceof Wave) {
-					gameObjBtns.get(i).setLocation((Point) (((Wave) (Model.getGameObjs().get(i))).getPosition()));
-				}
-				// BEACHOBJ
-				else if (Model.getGameObjs().get(i) instanceof BeachObject) {
-					// gameObjBtns.get(i).setLocation((Point) (((BeachObject)
-					// (Model.getGameObjs().get(i))).getPosition()));
-
-					if (((BeachObject) (Model.getGameObjs().get(i))).getObjIcon() == null) {
-						gameObjBtns.get(i).setVisible(false);
-					}
-				}
-				// BOX
-				else if (Model.getGameObjs().get(i) instanceof Box) {
-					gameObjBtns.get(i).setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
+				if (((BeachObject) (Model.getGameObjs().get(i))).getObjIcon() == null) {
+					gameObjBtns.get(i).setVisible(false);
 				}
 			}
-			// SHORELINE
-			else {
-				shoreLine = (Integer) Model.getGameObjs().get(i);
+			// BOX
+			else if (Model.getGameObjs().get(i) instanceof Box) {
+				gameObjBtns.get(i).setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
 			}
 		}
 	}
@@ -108,10 +108,8 @@ public class View extends JFrame {
 	}
 
 	public void updateShoreline(int damage) {
-		if (shoreLine > shoreMin) {
-			shoreLine -= damage;
-			repaint();
-		}
+		shoreLineTop -= damage;
+		// repaint();
 	}
 
 	/*
@@ -119,42 +117,40 @@ public class View extends JFrame {
 	 */
 	public void initView() {
 
-		
 		setTitle("Estuary Quest");
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		jP = new jpanel();
+
+		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
+						// Thanks!
 		getContentPane().add(jP);
 		pack();
 		setVisible(true);
 
-		initGameObjs();// DO NOT MOVE - dependent on lines of code above.
-							// Thanks!
 	}
 
 	public void initGameObjs() {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
-			System.out.print(i + " ");
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Integer) {
-				shoreLine = (Integer) Model.getGameObjs().get(i);
-//				shoreMin = shoreLine - this.healthBar.overallHeight;
-			} 
+				shoreLineTop = (Integer) Model.getGameObjs().get(i);
+				System.out.println("init shorelinetop = " + shoreLineTop);
+			}
 			// HEATLH BAR
 			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
-				System.out.println("here");
-				int totalHeight = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getHeight();
-				int startHeight = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getHealth();
-				int width = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getWidth();
-				
-				healthBar = new HealthPanel( totalHeight, startHeight, width );
-				
+				int totalHeight = ((HealthBar) (Model.getGameObjs().get(i))).getHeight();
+				double startHeight = ((HealthBar) (Model.getGameObjs().get(i))).getInsideHeight();
+				int width = ((HealthBar) (Model.getGameObjs().get(i))).getWidth();
+
+				healthBar = new HealthPanel(totalHeight, startHeight, width);
+
 				jP.add(healthBar);
 
-			} 
+			}
 			// SCENERY
 			else if (Model.getGameObjs().get(i) instanceof BufferedImage[]) {
-				scenery = ( (BufferedImage[])( Model.getGameObjs().get(i) ) );
+				scenery = ((BufferedImage[]) (Model.getGameObjs().get(i)));
 			} else {
 				button j = new button();
 				j.setMargin(new Insets(0, 0, 0, 0));
@@ -199,9 +195,6 @@ public class View extends JFrame {
 				gameObjBtns.add(j);
 				jP.add(gameObjBtns.get(i));
 			}
-
-			 System.out.println(Model.getGameObjs().get(i).getClass());
-
 		}
 	}
 
@@ -227,7 +220,7 @@ public class View extends JFrame {
 			// g.setColor(Color.yellow);
 			// g.fillRect(0, 0, shoreLine, viewHeight);
 			g.setColor(Color.red);
-			g.drawLine(shoreLine, 0, shoreLine, viewHeight);
+			g.drawLine(shoreLineTop, 0, shoreLineTop, viewHeight);
 		}
 	}
 
@@ -251,37 +244,30 @@ public class View extends JFrame {
 		public int overallHeight;
 		public double healthHeight;
 		public int width;
-		
 		public double startingY = 0;
-
 		private int xPos = 0;
 		private int yPos = 0;
 
 		/**
-		 * Constructor
-		 * TODO: update this
+		 * Constructor TODO: update this
+		 * 
 		 * @param overallHeight
 		 * @param healthHeight
 		 */
 
-		public HealthPanel(int totalHeight, int startHeight, int w) {
-			this.overallHeight = totalHeight;
-			this.healthHeight = startHeight;
-			this.width = w;
-			
-			this.setBounds(0, 0, width, overallHeight);
-			
-			this.startingY = 0;
-			// System.out.println("view's HB overall height = "+overallHeight);
+		public HealthPanel(int totalHeight, double startHeight, int w) {
+			overallHeight = totalHeight;
+			healthHeight = startHeight;
+			width = w;
+			startingY = 0;
+			setBounds(0, 0, width, overallHeight);
 		}
 
-		
 		@Override
 		protected void paintComponent(Graphics g) {
 			g.setColor(Color.WHITE);
 			g.fillRect(this.xPos, this.yPos, this.getWidth(), this.getHeight());
 			g.setColor(Color.green);
-//			 System.out.println("here: " + this.overallHeight);
 			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(), (int) healthHeight);
 		}
 
@@ -294,6 +280,7 @@ public class View extends JFrame {
 			healthHeight = healthHeight + healthDamage;
 			repaint();
 		}
+
 		public int getOverallHeight() {
 			return overallHeight;
 		}
@@ -335,7 +322,7 @@ public class View extends JFrame {
 		this.scenery = scenery;
 	}
 
-	public int getShoreLine() {
-		return shoreLine;
+	public int getShoreLineTop() {
+		return shoreLineTop;
 	}
 }// end View class
