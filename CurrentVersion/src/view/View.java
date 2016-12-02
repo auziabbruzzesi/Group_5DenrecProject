@@ -70,13 +70,15 @@ public class View extends JFrame {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Integer) {
 				shoreLineTop = (Integer) Model.getGameObjs().get(i);
-				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
-				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
+//				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
+//				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
 			}
 			// HEATLH BAR
 			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				healthBar.setHealthHeight(( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight());
 				healthBar.startingY = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getStartingY();
+//				System.out.println("health in model's array = "+ ( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight() );
+//				System.out.println("health in view's data = "+ healthBar.getHealthHeight() );
 			}
 			// PLAYER
 			else if (Model.getGameObjs().get(i) instanceof Player) {
@@ -97,7 +99,10 @@ public class View extends JFrame {
 			// BOX
 			else if (Model.getGameObjs().get(i) instanceof Box) {
 				gameObjBtns.get(i).setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
+//				System.out.println("updating a box. count = " +  ((Box) (Model.getGameObjs().get(i))).getCount()  );
+
 				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
+
 			}
 		}
 	}
@@ -142,7 +147,7 @@ public class View extends JFrame {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Integer) {
 				shoreLineTop = (Integer) Model.getGameObjs().get(i);
-				System.out.println("init shorelinetop = " + shoreLineTop);
+//				System.out.println("init shorelinetop = " + shoreLineTop);
 			}
 			// HEATLH BAR
 			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
@@ -284,6 +289,9 @@ public class View extends JFrame {
 		public void setHealthHeight(double d) {
 			this.healthHeight = d;
 			repaint();
+		}
+		public double getHealthHeight(){
+			return this.healthHeight;
 		}
 
 		public void damage(int healthDamage) {

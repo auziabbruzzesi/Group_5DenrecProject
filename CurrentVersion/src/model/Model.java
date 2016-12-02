@@ -44,9 +44,12 @@ public class Model {
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private HealthBar HB = new HealthBar(50, 200);
-	private Integer shoreLine = (2*view.View.viewWidth)/3;
-	private int minShoreLine = shoreLine - HB.getHeight()+ 100; // TODO: m's & v's shores & minshores in-sync
+
+	private Integer shoreLine;
+	private int minShoreLine;// TODO: m's & v's shores & minshores in-sync
+
 	public Dimension gameDi = new Dimension(1200,650);
+
 
 	//Sprite-related variables
 		ImageIcon oystIcon;
@@ -71,7 +74,8 @@ public class Model {
 		initBoxes();
 		initWaves();
 		initBeachObjs();
-
+		shoreLine = (2*view.View.viewWidth)/3;
+		minShoreLine = shoreLine - HB.getHeight()+ 100; 
 		initGameObjsArr();	
 
 		System.out.println("Instantiating new game");

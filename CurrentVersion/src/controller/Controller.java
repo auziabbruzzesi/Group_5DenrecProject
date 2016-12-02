@@ -183,13 +183,15 @@ public class Controller implements MouseListener {
 			else {
 											
 				int shoreDamage = determineDamage(w, i);				
+System.out.println("shoredamage = "+shoreDamage);
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
-
+				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
+				
 				m.getHB().damage(healthDamage);
 				
-				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
+
 
 				
 				m.resetWave(a);
