@@ -32,8 +32,8 @@ import model.Character;
 import view.View.HealthPanel;
 
 public class View extends JFrame {
-	public static final int viewHeight = 650;
-	public static final int viewWidth = 1200;
+	public static int viewHeight = 650;
+	public static int viewWidth = 1200;
 
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 
@@ -97,6 +97,7 @@ public class View extends JFrame {
 			// BOX
 			else if (Model.getGameObjs().get(i) instanceof Box) {
 				gameObjBtns.get(i).setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
+				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
 			}
 		}
 	}
@@ -210,8 +211,11 @@ public class View extends JFrame {
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			g.drawImage(scenery[0], 0, 0, this);
-			g.drawImage(scenery[1], 0, 0, this);
+//			g.drawImage(scenery[0], 0, 0, this);
+			g.drawImage(scenery[0], 0, 0,viewWidth, viewHeight,this);
+			g.drawImage(scenery[1], 0, 0, viewWidth, viewHeight, this);
+//			g.drawImage(scenery[1], 0, 0, this);
+//		
 
 			// g.setColor(Color.BLUE);
 			//// System.out.println("painting. shoreline = " + shoreLine);

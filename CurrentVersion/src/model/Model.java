@@ -5,6 +5,8 @@
  */
 package model;
 
+import java.awt.Dimension;
+import java.awt.Image;
 import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -18,6 +20,7 @@ import java.util.Map;
 import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
+import javax.swing.Icon;
 import javax.swing.ImageIcon;
 
 import java.util.Random;
@@ -43,6 +46,7 @@ public class Model {
 	private HealthBar HB = new HealthBar(50, 200);
 	private Integer shoreLine = (2*view.View.viewWidth)/3;
 	private int minShoreLine = shoreLine - HB.getHeight()+ 100; // TODO: m's & v's shores & minshores in-sync
+	public Dimension gameDi = new Dimension(1200,650);
 
 	//Sprite-related variables
 		ImageIcon oystIcon;
@@ -184,7 +188,14 @@ public class Model {
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
 			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + Box.boxToTopSpacing);
-			this.boxes.put(p, new Box(p, pics[10]) );
+			Box.boxDimensions = (int) (.1 * this.gameDi.height);
+			//pics[10].setImage(pics[10].getImage());
+			
+			
+			
+			Box box = new Box(p, new ImageIcon(pics[10].getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
+			
+			this.boxes.put(p, box);
 		}
 	}
 	private void initWaves(){
