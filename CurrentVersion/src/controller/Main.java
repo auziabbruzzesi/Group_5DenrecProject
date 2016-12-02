@@ -19,9 +19,9 @@ import view.View;
 
 public class Main {
 
-	static Model m = new Model();
-	static View v = new View();
-	static Controller c = new Controller(m,v);
+	static Model m = new Model(/*State tutorial*/);
+	static View v = new View(/*State tutorial*/);
+	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
 	
 	public static void main(String[] args) {
@@ -35,6 +35,9 @@ public class Main {
 //		v.setMinimumSize(new Dimension(700, 150));
 //		v.setMaximumSize(new Dimension(Toolkit.getDefaultToolkit().getScreenSize().width , Toolkit.getDefaultToolkit().getScreenSize().height));
 //		v.setResizable(true);
+		
+		//tutorial
+		
 		v.getJPanel().addMouseListener(c);
 		c.wTimer.start();
 		v.repaint();
