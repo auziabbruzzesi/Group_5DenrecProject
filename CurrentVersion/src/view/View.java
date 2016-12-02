@@ -117,10 +117,16 @@ public class View extends JFrame {
 	 * Functions required for View initialization
 	 */
 	public void initView() {
-
+		//BorderLayout b = new BorderLayout();
+		
 		setTitle("Estuary Quest");
+		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+	
 		jP = new jpanel();
+		//jP.setLayout(b);
+		
+		
 
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 						// Thanks!

@@ -61,7 +61,12 @@ public class Controller implements MouseListener {
 		public void actionPerformed(ActionEvent e) {
 			View.viewHeight = v.getContentPane().getHeight();
 			View.viewWidth = v.getContentPane().getWidth();
+			v.getJPanel().setSize(v.getContentPane().getSize());
+			
 			m.gameDi = v.getContentPane().getSize();
+		//	m.initSprites();
+			//v.updateViewObjs();
+			//m.initSprites();
 			moveWave();
 			v.updateViewObjs();
 			v.repaint();
