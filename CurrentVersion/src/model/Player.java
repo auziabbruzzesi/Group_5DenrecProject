@@ -264,6 +264,7 @@ public class Player extends Character implements MoveObjects {
 	public void setHealth(int health) {
 		this.health = health;
 	}
+	
 
 	
 	
