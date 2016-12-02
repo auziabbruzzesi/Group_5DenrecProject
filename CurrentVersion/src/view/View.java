@@ -198,7 +198,8 @@ public class View extends JFrame {
 				// BOX
 				else if (Model.getGameObjs().get(i) instanceof Box) {
 					j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
-					j.setHoldingType(HoldingType.BOX);
+					j.setHoldingType((((Box) ((Model.getGameObjs()).get(i))).getContains()));
+					
 					j.setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Box.boxDimensions, Box.boxDimensions);
 					j.setIcon((Icon) ((Box) (Model.getGameObjs().get(i))).getObjIcon());

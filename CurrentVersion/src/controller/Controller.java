@@ -64,13 +64,16 @@ public class Controller implements MouseListener {
 			v.getJPanel().setSize(v.getContentPane().getSize());
 			
 			m.gameDi = v.getContentPane().getSize();
+			
 		//	m.initSprites();
 			//v.updateViewObjs();
 			//m.initSprites();
 			moveWave();
 			v.updateViewObjs();
+			
 			v.repaint();
 			checkGameStatus();
+			
 		}
 	});
 
@@ -221,10 +224,14 @@ System.out.println("shoredamage = "+shoreDamage);
 		switch (b.getContains()) {
 		case EMPTY:
 			decrement = 5;
+			
+			b.setCount(b.getCount() -1);
+			b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 			break;
 		case OYSTER:
 			if(b.isfull()){
 				decrement = 1;
+				
 			}
 			else{
 				decrement = 3;
@@ -237,6 +244,8 @@ System.out.println("shoredamage = "+shoreDamage);
 			else{
 				decrement = 4;
 			}
+			System.out.println("here");
+			
 			break;
 		default:
 			System.out.println("Error: Box contains = " + b.getContains());

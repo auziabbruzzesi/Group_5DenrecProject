@@ -20,13 +20,14 @@ public class Box {
 	public static final int boxSpawnSpacing = 50; // minimum distance spawned
 													// objects should be from
 													// boxes upon creation
-	public static final int boxToBoxInterval = 150;// distance between created
+	public static final int boxToBoxInterval = 145
+			;// distance between created
 													// boxes
 	public static final int boxToViewEdgeSpacing = 40;// distance boxes are from
 														// the right edge of the
 														// screen
 	public static final int boxToTopSpacing = 20;
-	public static final int boxX = (2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing;
+	public static final int boxX = (2 * View.viewWidth) / 3 - Box.boxDimensions - Box.boxToViewEdgeSpacing - 250;
 
 	
 /*

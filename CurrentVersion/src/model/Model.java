@@ -63,6 +63,7 @@ public class Model {
 		ImageIcon[] pics;// holds all sprites for all characters
 		ImageIcon[] oysterBoxes;
 		ImageIcon[] crabPics;
+		public ImageIcon[] concreteImages;
 		BufferedImage[] scenery = new BufferedImage[2];
 	
 /*
@@ -191,14 +192,16 @@ public class Model {
 	
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
-			Point p = new Point(Box.boxX, i * Box.boxToBoxInterval + Box.boxToTopSpacing);
-			Box.boxDimensions = (int) (.1 * this.gameDi.height);
+			Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
+			Box.boxDimensions = (int) (.3*this.gameDi.height);
 			//pics[10].setImage(pics[10].getImage());
 			
 			
 			
-			Box box = new Box(p, new ImageIcon(pics[10].getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
-			
+			Box box = new Box(p, new ImageIcon(concreteImages[0].getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
+			box.setCapacity(3);
+			box.setCount(3);
+			box.setContains(HoldingType.CONCRETE);
 			this.boxes.put(p, box);
 		}
 	}
@@ -393,7 +396,8 @@ public class Model {
 
 		String[] myNames = { "crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
 				"crabSE.png","crabSW.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
-		String[] boxImages = {"box1.png","box2.png","box3.png","box4.png","box5.png"};
+		String[] boxImages = {"concrete100.png","box2.png","box3.png","box4.png","box5.png"};
+		String[] concreteFiles = {"concrete100.png"};//,"concrete66.png","concrete33.png"};
 		String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
 								"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
 								"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
@@ -402,6 +406,7 @@ public class Model {
 		String[] sceneryFiles = {"shore.png", "sky.png"};
 		pics = new ImageIcon[myNames.length];
 		oysterBoxes = new ImageIcon[boxImages.length];
+		concreteImages = new ImageIcon[concreteFiles.length];
 		crabPics = new ImageIcon[crabFiles.length];
 		scenery = new BufferedImage[sceneryFiles.length];
 		
@@ -419,6 +424,11 @@ public class Model {
 		i=0;
 		for(String s : crabFiles){
 			crabPics[i] = createImage(s);
+			i++;
+		}
+		i = 0;
+		for(String s: concreteFiles){
+			concreteImages[i] = createImage(s);
 			i++;
 		}
 		i = 0;
