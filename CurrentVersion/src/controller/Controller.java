@@ -59,10 +59,21 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			View.viewHeight = v.getContentPane().getHeight();
+			View.viewWidth = v.getContentPane().getWidth();
+			v.getJPanel().setSize(v.getContentPane().getSize());
+			
+			m.gameDi = v.getContentPane().getSize();
+			
+		//	m.initSprites();
+			//v.updateViewObjs();
+			//m.initSprites();
 			moveWave();
 			v.updateViewObjs();
+			
 			v.repaint();
 			checkGameStatus();
+			
 		}
 	});
 
@@ -169,30 +180,26 @@ public class Controller implements MouseListener {
 		for (Wave w : m.getWaves()) {
 			//if we haven't reached destination
 			if ( w.getPosition().x > w.getDestination().x ) {
-
-				w.move(); // move model's version of wave
-				
+				w.move();		
 			}
-			//else, wave has reached the shore. Shoreline & Estuary Health must be updated and Wave must be reset.
+			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
 			else {
 											
 				int shoreDamage = determineDamage(w, i);				
+System.out.println("shoredamage = "+shoreDamage);
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
+				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
-//				v.updateShoreline(shoreDamage);
-
 				m.getHB().damage(healthDamage);
 				
 
-				v.getHealthBar().setHealthHeight(m.getHB().getInsideHeight());
-				v.getHealthBar().startingY = m.getHB().getStartingY();
+
 				
 				m.resetWave(a);
 
 				checkGameStatus();//we call this here bc shoreline was updated (above)
-			
 			}
 			a++;	
 		}
@@ -217,10 +224,14 @@ public class Controller implements MouseListener {
 		switch (b.getContains()) {
 		case EMPTY:
 			decrement = 5;
+			
+			b.setCount(b.getCount() -1);
+			b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 			break;
 		case OYSTER:
 			if(b.isfull()){
 				decrement = 1;
+				
 			}
 			else{
 				decrement = 3;
@@ -233,6 +244,8 @@ public class Controller implements MouseListener {
 			else{
 				decrement = 4;
 			}
+			System.out.println("here");
+			
 			break;
 		default:
 			System.out.println("Error: Box contains = " + b.getContains());
