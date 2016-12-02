@@ -14,7 +14,7 @@ public class Box {
 	private HoldingType contains = HoldingType.EMPTY;
 	private boolean isfull = false;
 	private Icon objIcon;
-	public static final int boxDimensions = 100;// box dimensions (boxes are
+	public static int boxDimensions = 100;// box dimensions (boxes are
 												// square, so don't need
 												// individual width/height)
 	public static final int boxSpawnSpacing = 50; // minimum distance spawned

@@ -59,6 +59,9 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			View.viewHeight = v.getContentPane().getHeight();
+			View.viewWidth = v.getContentPane().getWidth();
+			m.gameDi = v.getContentPane().getSize();
 			moveWave();
 			v.updateViewObjs();
 			v.repaint();
