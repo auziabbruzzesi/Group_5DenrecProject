@@ -18,7 +18,6 @@ public class Wave extends GameObject {
 	private int velocity;
 	private int shorelineX = 360;//TODO:
 	private Point initialPos;
-
 	private Random randomGenerator = new Random();
 	
 	

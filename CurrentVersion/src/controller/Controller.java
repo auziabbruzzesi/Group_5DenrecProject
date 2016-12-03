@@ -180,11 +180,11 @@ public class Controller implements MouseListener {
 			if ( w.getPosition().x > w.getDestination().x ) {
 				w.move();		
 			}
+			
 			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
 			else {
 											
-				int shoreDamage = determineDamage(w, i);				
-//System.out.println("shoredamage = "+shoreDamage);
+				int shoreDamage = determineDamage(w);				
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
@@ -205,19 +205,28 @@ public class Controller implements MouseListener {
 	}
 
 
-	private int determineDamage(Wave w, int i) {
+	private int determineDamage(Wave w) {
 		int decrement = 0;
-		Box b;
+		Box b = null;
 		Point p;
 		//TODO: this is repeated code with what is in model
 		//figure out which box wave crashed on
-		if (i < m.getBoxes().size()) {
-			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
-		} else {
-			p = new Point(Box.boxX, (m.getNumBoxes() - 1) * Box.boxToBoxInterval + 20);
+//		if (i < m.getBoxes().size()) {
+//			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
+//		} else {
+//			p = new Point(Box.boxX, (m.getNumBoxes() - 1) * Box.boxToBoxInterval + 20);
+//		}
+//		b = m.getBoxes().get(w.getPosition());
+		
+		for( Box k : m.getBoxes().values() ){
+			if(k.getIndex() == w.getIndex()){
+				b = k;
+			}
 		}
-		b = m.getBoxes().get(p);
-
+		if(b == null){
+			System.out.println("error in Controller: determineDamage: no box with index matching wave");
+		}
+		
 		//set decrement based box contents
 		switch (b.getContains()) {
 		case EMPTY:
@@ -249,6 +258,7 @@ public class Controller implements MouseListener {
 			break;
 		}
 //		System.out.println("\nbox contains " + b.getContains() + "\nfull = " + b.isfull() + "\ndecrement = " + decrement);
+//		System.out.println("box with index "+b.getIndex() + " decremented");
 		return decrement;
 	}
 

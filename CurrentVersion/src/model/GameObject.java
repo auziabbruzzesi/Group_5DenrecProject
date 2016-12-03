@@ -13,7 +13,7 @@ public abstract class GameObject {
 	private int width;
 	private int height;
 	private Point destination;
-
+	private int index;
 
 	public Icon setObjIcon(){
 		return myIcon;
@@ -47,6 +47,12 @@ public abstract class GameObject {
 
 	public Point getDestination() {
 		return destination;
+	}
+	public int getIndex() {
+		return index;
+	}
+	public void setIndex(int index) {
+		this.index = index;
 	}
 	
 }

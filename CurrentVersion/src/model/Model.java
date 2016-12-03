@@ -32,7 +32,7 @@ public class Model {
 	
 	//Variables related to initialization
 	public static final int numBoxes = 4;
-	public static final int numWaves = 5;
+	public static final int numWaves = 4;
 	public static final int numBOS = 20;
 	private static int score = 0;
 	
@@ -207,6 +207,7 @@ public class Model {
 			box.setCapacity(3);
 			box.setCount(3);
 			box.setContains(HoldingType.CONCRETE);
+			box.setIndex(i);
 			this.boxes.put(p, box);
 //			System.out.println("ht (not contains) for this box = "+box.getH());
 		}
@@ -214,7 +215,9 @@ public class Model {
 	private void initWaves(){
 		for (int i = 0; i < numWaves; i++) {
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			this.waves.add(new Wave(p, pics[11]));
+			Wave w = new Wave(p, pics[11]);
+			w.setIndex(i);
+			this.waves.add(w);
 		}
 	}
 	private void initBeachObjs(){
