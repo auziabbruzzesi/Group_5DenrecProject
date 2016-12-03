@@ -195,7 +195,9 @@ public class Model {
 	
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
-			Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
+			//Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
+			System.out.println(((this.gameDi.width*.36)+(i*47)));
+			Point p = new Point((int) ((this.gameDi.width*.36)+(i*47)),73+(i*131));
 			Box.boxDimensions = (int) (.3*this.gameDi.height);
 			//pics[10].setImage(pics[10].getImage());
 			
