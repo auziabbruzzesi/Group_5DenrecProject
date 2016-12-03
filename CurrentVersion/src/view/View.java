@@ -120,6 +120,7 @@ public class View extends JFrame {
 	/*
 	 * Functions required for View initialization
 	 */
+
 	public void initView() {
 		//BorderLayout b = new BorderLayout();
 		
@@ -128,24 +129,26 @@ public class View extends JFrame {
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 	
 		jP = new jpanel();
-		//jP.setLayout(b);
-//		JButton jbutton = new JButton();
-//		jbutton.setSize(new Dimension(100,100));
-//		jbutton.setBounds(100, 100, 100, 100);
-//		jbutton.setText("SAVE");
-//		jP.add(jbutton);
+//		jP.setLayout(b);
+		JButton jbutton = new JButton();
+		jbutton.setSize(new Dimension(100,100));
+		jbutton.setBounds(100, 100, 100, 100);
+		jbutton.setText("SAVE");
+		jP.add(jbutton);
 		
 		
 
-		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
+		initGameObjBtns();// DO NOT MOVE - dependent on lines of code above&below.
 						// Thanks!
 		getContentPane().add(jP);
 		pack();
 		setVisible(true);
+		
+		System.out.println("\n\nView's array of buttons contains:\n"+this.gameObjBtns+"\n\n");
 
 	}
 
-	public void initGameObjs() {
+	public void initGameObjBtns() {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
@@ -153,6 +156,7 @@ public class View extends JFrame {
 				shoreLineTop = ((Shoreline)Model.getGameObjs().get(i)).getShoreTop().x;
 			}
 			// HEATLH BAR
+			//NOT IN VIEW'S ARRAY
 			if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				int totalHeight = ((HealthBar) (Model.getGameObjs().get(i))).getHeight();
 				double startHeight = ((HealthBar) (Model.getGameObjs().get(i))).getInsideHeight();
@@ -200,8 +204,8 @@ public class View extends JFrame {
 					j.setBounds(j.getLocation().x, j.getLocation().y, BeachObject.beachObjDimensions,
 							BeachObject.beachObjDimensions);
 					j.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
-					System.out.println("button width "+j.getWidth()+" button height = "+j.getHeight());
-					System.out.println("instanceof = "+Model.getGameObjs().get(i).getClass());
+//					System.out.println("button width "+j.getWidth()+" button height = "+j.getHeight());
+//					System.out.println("instanceof = "+Model.getGameObjs().get(i).getClass());
 				}
 				// BOX
 				else if (Model.getGameObjs().get(i) instanceof Box) {

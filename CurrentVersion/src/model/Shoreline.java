@@ -10,6 +10,8 @@ public class Shoreline extends GameObject{
 	//current
 	public Shoreline(int x){
 		setShoreLine(x);
+		setShoreBottom(new Point(x,x));
+		setShoreTop(new Point(x,x));
 	}
 	//will switch to this
 	public Shoreline(Point t, Point b){

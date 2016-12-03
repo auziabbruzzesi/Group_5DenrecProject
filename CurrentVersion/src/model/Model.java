@@ -36,6 +36,7 @@ public class Model {
 	public static final int numBOS = 20;
 	private static int score = 0;
 	
+	//RITA
 	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
 	
 	//General variables
@@ -46,7 +47,7 @@ public class Model {
 	private HealthBar HB = new HealthBar(50, 200);
 
 	private Integer shoreLine;
-//	private Shoreline shoreLine;
+	private Shoreline shoreLineObj = new Shoreline(800);
 	private int minShoreLine;// TODO: m's & v's shores & minshores in-sync
 
 	public Dimension gameDi = new Dimension(1200,650);
@@ -176,16 +177,17 @@ public class Model {
 /*
  * Functions required for Model initialization
  */
+	//RITA
 	private void initGameObjsArr() {
 
 		gameObjs.addAll(( Collection <? extends GameObject>) this.boxes.values());
 		gameObjs.addAll(this.waves);
 		gameObjs.addAll( ( Collection <? extends GameObject>) this.beachObjHM.values());
 		gameObjs.add(this.p);
-//		gameObjs.add(this.shoreLine);
-		gameObjs.add(gameScenery);
+		gameObjs.add(this.shoreLineObj);
+		gameObjs.add(gameScenery);//might not need to save this
 		gameObjs.add(this.HB);
-//		System.out.println(gameObjs);
+		System.out.println("\n\nModel's array of game objects contains:\n"+gameObjs+"\n\n");
 	}
 	
 	private void initPlayer(){
