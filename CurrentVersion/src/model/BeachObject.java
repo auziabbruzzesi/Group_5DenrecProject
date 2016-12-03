@@ -7,7 +7,7 @@ import javax.swing.Icon;
 import view.View;
 import model.Box;
 
-public class BeachObject extends Character {
+public class BeachObject extends GameObject {
 	private HoldingType h;
 	public static final int beachObjDimensions = 30;
 	public static final int spawnZoneHeight = View.viewHeight - beachObjDimensions;
@@ -19,7 +19,8 @@ public class BeachObject extends Character {
  */
 	public BeachObject(Point position, HoldingType h, Icon k){
 		this.setH(h);
-		this.setCurrentPos(position);
+		this.setPosition(position);
+		this.setDestination(null);
 		setObjIcon(k);
 	}
 

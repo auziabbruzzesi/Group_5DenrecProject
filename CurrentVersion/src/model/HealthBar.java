@@ -4,7 +4,7 @@ package model;
  * @author Auzi
  *
  */
-public class HealthBar {
+public class HealthBar extends GameObject {
 	//%
 	private int health = 100; //default
 	private int width = 100;

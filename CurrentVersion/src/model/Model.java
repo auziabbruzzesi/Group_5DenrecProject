@@ -36,7 +36,7 @@ public class Model {
 	public static final int numBOS = 20;
 	private static int score = 0;
 	
-	private static ArrayList<Object> gameObjs = new ArrayList<Object>();
+	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
 	
 	//General variables
 	private Player p;
@@ -46,6 +46,7 @@ public class Model {
 	private HealthBar HB = new HealthBar(50, 200);
 
 	private Integer shoreLine;
+//	private Shoreline shoreLine;
 	private int minShoreLine;// TODO: m's & v's shores & minshores in-sync
 
 	public Dimension gameDi = new Dimension(1200,650);
@@ -64,7 +65,8 @@ public class Model {
 		ImageIcon[] oysterBoxes;
 		ImageIcon[] crabPics;
 		public ImageIcon[] concreteImages;
-		BufferedImage[] scenery = new BufferedImage[2];
+		BufferedImage[] scenery = new BufferedImage[2];	
+		Scenery gameScenery = new Scenery();
 	
 /*
  * Model Constructor
@@ -115,7 +117,7 @@ public class Model {
 	}
 
 	public void updatePlayerPosition(Point updatedPos) {
-		this.p.setCurrentPos(updatedPos);
+		this.p.setPosition(updatedPos);
 	}
 	public void updatePlayerSprite() {
 		p.setObjIcon(crabPics[p.findIndex()]);
@@ -175,14 +177,15 @@ public class Model {
  * Functions required for Model initialization
  */
 	private void initGameObjsArr() {
-		gameObjs.addAll((Collection<? extends Object>) this.boxes.values());
+
+		gameObjs.addAll(( Collection <? extends GameObject>) this.boxes.values());
 		gameObjs.addAll(this.waves);
-		gameObjs.addAll((Collection<? extends Object>) this.beachObjHM.values());
+		gameObjs.addAll( ( Collection <? extends GameObject>) this.beachObjHM.values());
 		gameObjs.add(this.p);
-		gameObjs.add(this.shoreLine);
-		gameObjs.add(scenery);
+//		gameObjs.add(this.shoreLine);
+		gameObjs.add(gameScenery);
 		gameObjs.add(this.HB);
-		System.out.println(gameObjs);
+//		System.out.println(gameObjs);
 	}
 	
 	private void initPlayer(){
@@ -196,13 +199,12 @@ public class Model {
 			Box.boxDimensions = (int) (.3*this.gameDi.height);
 			//pics[10].setImage(pics[10].getImage());
 			
-			
-			
 			Box box = new Box(p, new ImageIcon(concreteImages[0].getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
 			box.setCapacity(3);
 			box.setCount(3);
 			box.setContains(HoldingType.CONCRETE);
 			this.boxes.put(p, box);
+//			System.out.println("ht (not contains) for this box = "+box.getH());
 		}
 	}
 	private void initWaves(){
@@ -433,7 +435,10 @@ public class Model {
 		}
 		i = 0;
 		scenery[0] = (BufferedImage) createImage("sky.png").getImage();
-		scenery[1] = (BufferedImage) createImage("shore.png").getImage();		
+		scenery[1] = (BufferedImage) createImage("shore.png").getImage();	
+		
+		this.gameScenery.setScenery(scenery);
+		System.out.println(gameScenery);
 	}
 
 	/**
@@ -520,7 +525,7 @@ public class Model {
 		return minShoreLine;
 	}
 	
-	public static ArrayList<Object> getGameObjs(){
+	public static ArrayList<GameObject> getGameObjs(){
 		return gameObjs;
 	}	
 }

@@ -28,7 +28,7 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import controller.status;
 import model.*;
-import model.Character;
+import model.GameObject;
 import view.View.HealthPanel;
 
 public class View extends JFrame {
@@ -68,13 +68,13 @@ public class View extends JFrame {
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 
 			// SHORELINE
-			if (Model.getGameObjs().get(i) instanceof Integer) {
-				shoreLineTop = (Integer) Model.getGameObjs().get(i);
-//				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
-//				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
-			}
+//			if (Model.getGameObjs().get(i) instanceof Shoreline) {
+//				shoreLineTop = Model.getGameObjs().get(i)
+////				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
+////				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
+//			}
 			// HEATLH BAR
-			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
+			if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				healthBar.setHealthHeight(( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight());
 				healthBar.startingY = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getStartingY();
 //				System.out.println("health in model's array = "+ ( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight() );
@@ -82,27 +82,25 @@ public class View extends JFrame {
 			}
 			// PLAYER
 			else if (Model.getGameObjs().get(i) instanceof Player) {
-				gameObjBtns.get(i).setLocation((Point) (((Player) (Model.getGameObjs().get(i))).getPosition()));
-				gameObjBtns.get(i).setIcon((Icon) ((Player) (Model.getGameObjs().get(i))).getObjIcon());
+				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
+				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
 			}
 			// WAVE
 			else if (Model.getGameObjs().get(i) instanceof Wave) {
-				gameObjBtns.get(i).setLocation((Point) (((Wave) (Model.getGameObjs().get(i))).getPosition()));
+				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
 			}
 			// BEACHOBJ
 			else if (Model.getGameObjs().get(i) instanceof BeachObject) {
 
-				if (((BeachObject) (Model.getGameObjs().get(i))).getObjIcon() == null) {
+				if ((Model.getGameObjs().get(i)).getObjIcon() == null) {
 					gameObjBtns.get(i).setVisible(false);
 				}
 			}
 			// BOX
 			else if (Model.getGameObjs().get(i) instanceof Box) {
-				gameObjBtns.get(i).setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
-//				System.out.println("updating a box. count = " +  ((Box) (Model.getGameObjs().get(i))).getCount()  );
-
+				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
+				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
 				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
-
 			}
 		}
 	}
@@ -145,12 +143,11 @@ public class View extends JFrame {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
-			if (Model.getGameObjs().get(i) instanceof Integer) {
-				shoreLineTop = (Integer) Model.getGameObjs().get(i);
-//				System.out.println("init shorelinetop = " + shoreLineTop);
-			}
+//			if (Model.getGameObjs().get(i) instanceof Integer) {
+//				shoreLineTop = (Integer) Model.getGameObjs().get(i);
+//			}
 			// HEATLH BAR
-			else if (Model.getGameObjs().get(i) instanceof HealthBar) {
+			if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				int totalHeight = ((HealthBar) (Model.getGameObjs().get(i))).getHeight();
 				double startHeight = ((HealthBar) (Model.getGameObjs().get(i))).getInsideHeight();
 				int width = ((HealthBar) (Model.getGameObjs().get(i))).getWidth();
@@ -161,8 +158,8 @@ public class View extends JFrame {
 
 			}
 			// SCENERY
-			else if (Model.getGameObjs().get(i) instanceof BufferedImage[]) {
-				scenery = ((BufferedImage[]) (Model.getGameObjs().get(i)));
+			else if (Model.getGameObjs().get(i) instanceof Scenery) {
+				scenery = ( (Scenery)( Model.getGameObjs().get(i) ) ).getScenery();
 			} else {
 				button j = new button();
 				j.setMargin(new Insets(0, 0, 0, 0));
@@ -173,6 +170,7 @@ public class View extends JFrame {
 				if (Model.getGameObjs().get(i) instanceof Player) {
 					j.setSize(new Dimension(Player.playerDimensions, Player.playerDimensions));
 					j.setHoldingType(HoldingType.EMPTY);
+					j.setType(null);
 					j.setLocation((Point) (((Player) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Player.playerDimensions, Player.playerDimensions);
 					j.setIcon((Icon) ((Player) (Model.getGameObjs().get(i))).getObjIcon());
@@ -182,6 +180,7 @@ public class View extends JFrame {
 				else if (Model.getGameObjs().get(i) instanceof Wave) {
 					j.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
 					j.setHoldingType(null);
+					j.setType(null);
 					j.setLocation((Point) (((Wave) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Wave.waveWidth, Wave.waveHeight);
 					j.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
@@ -190,6 +189,7 @@ public class View extends JFrame {
 				else if (Model.getGameObjs().get(i) instanceof BeachObject) {
 					j.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
 					j.setHoldingType(((BeachObject) Model.getGameObjs().get(i)).getH());
+					j.setType(j.getHoldingType());
 					j.setLocation((Point) (((BeachObject) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, BeachObject.beachObjDimensions,
 							BeachObject.beachObjDimensions);
@@ -199,7 +199,7 @@ public class View extends JFrame {
 				else if (Model.getGameObjs().get(i) instanceof Box) {
 					j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
 					j.setHoldingType((((Box) ((Model.getGameObjs()).get(i))).getContains()));
-					
+					j.setType(HoldingType.BOX);
 					j.setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Box.boxDimensions, Box.boxDimensions);
 					j.setIcon((Icon) ((Box) (Model.getGameObjs().get(i))).getObjIcon());
@@ -235,14 +235,15 @@ public class View extends JFrame {
 			//
 			// g.setColor(Color.yellow);
 			// g.fillRect(0, 0, shoreLine, viewHeight);
-			g.setColor(Color.red);
-			g.drawLine(shoreLineTop, 0, shoreLineTop, viewHeight);
+//			g.setColor(Color.red);
+//			g.drawLine(shoreLineTop, 0, shoreLineTop, viewHeight);
 		}
 	}
 
 	public class button extends JButton {
 		private HoldingType h = HoldingType.EMPTY;
-
+		private HoldingType type;
+	
 		public HoldingType getHoldingType() {
 			return this.h;
 		}
@@ -253,6 +254,14 @@ public class View extends JFrame {
 
 		public button() {
 			this.setPreferredSize(new Dimension(20, 20));
+		}
+
+		public HoldingType getType() {
+			return type;
+		}
+
+		public void setType(HoldingType type) {
+			this.type = type;
 		}
 	}
 

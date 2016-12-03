@@ -100,8 +100,6 @@ public class Controller implements MouseListener {
 		this.v = v; //init occurs in view's constructor
 
 		initViewBtnListeners();
-
-		
 	}
 
 
@@ -119,7 +117,7 @@ public class Controller implements MouseListener {
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
 
-//				System.out.println("topickup = "+objToPickUp);
+				System.out.println("topickup = "+objToPickUp);
 //				System.out.println("player at = "+m.getP().getPosition());
 				
 				//check that we can pick up the desired object
@@ -146,29 +144,29 @@ public class Controller implements MouseListener {
 	public String putDown() {
 		String type = "";
 		// check player is holding something
-		if (m.getP().getH() != HoldingType.EMPTY) {
+		if (m.getP().getHT() != HoldingType.EMPTY) {
 			HoldingType boxContains = m.getBoxes().get(putDownBox).getContains();
 
 			// check type of obj matches box type, or box is empty
-			if (m.getP().getH() == boxContains || boxContains == HoldingType.EMPTY) {
+			if (m.getP().getHT() == boxContains || boxContains == HoldingType.EMPTY) {
 
 				// check box not full
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
 
 					// set box type in model if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						m.getBoxes().get(putDownBox).setContains(m.getP().getH());
+						m.getBoxes().get(putDownBox).setContains(m.getP().getHT());
 					}
 
 					m.getBoxes().get(putDownBox).incrementCount();
 					
 //					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
-					m.getP().setH(HoldingType.EMPTY);
+					m.getP().setHT(HoldingType.EMPTY);
 				}
 			}
 		 
 		else {
-			System.out.println("Can't put that down in this box. It is a " + m.getBoxes().get(putDownBox).getContains() +" box and you are holding "+ m.getP().getH());
+			System.out.println("Can't put that down in this box. It is a " + m.getBoxes().get(putDownBox).getContains() +" box and you are holding "+ m.getP().getHT());
 		}
 	}
 		type = m.getBoxes().get(putDownBox).getContains().name() + " " + m.getBoxes().get(putDownBox).getCount();
@@ -186,11 +184,11 @@ public class Controller implements MouseListener {
 			else {
 											
 				int shoreDamage = determineDamage(w, i);				
-System.out.println("shoredamage = "+shoreDamage);
+//System.out.println("shoredamage = "+shoreDamage);
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
-				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
+//				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
 				m.getHB().damage(healthDamage);
 				
@@ -244,7 +242,6 @@ System.out.println("shoredamage = "+shoreDamage);
 			else{
 				decrement = 4;
 			}
-			System.out.println("here");
 			
 			break;
 		default:
@@ -269,8 +266,7 @@ System.out.println("shoredamage = "+shoreDamage);
 		if (e.getComponent() instanceof button) {
 			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
 			
-			//if pickup = true, and btn was clicked, then pickup = false.
-			if ( ( (View.button) ( e.getComponent() ) ).getHoldingType() == HoldingType.BOX) {
+			if ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.BOX) {
 				putDownRequest = true;
 				putDownBox = e.getComponent().getLocation();
 			} else {

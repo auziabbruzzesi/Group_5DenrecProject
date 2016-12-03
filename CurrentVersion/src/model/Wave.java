@@ -8,14 +8,14 @@ import javax.swing.text.View;
 
 
 
-public class Wave extends Character {
+public class Wave extends GameObject {
 
 	public static final int waveWidth = 50;// wave width
 	public static final int waveHeight = 50; // wave height
 	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
 	public static final int waveToWaveInterval = 100;// distance between created waves
 	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
-	
+	private int velocity;
 	private int shorelineX = 360;//TODO:
 	private Point initialPos;
 
@@ -26,7 +26,7 @@ public class Wave extends Character {
  * Constructor
  */
 	public Wave(Point p, Icon k) {
-		this.setCurrentPos(p);
+		this.setPosition(p);
 		this.setInitialPos(p);
 		
 		//generate a random number within a specified range (1-4 for now) and set velocity to that number
@@ -46,7 +46,7 @@ public class Wave extends Character {
 	
 	// note that direction is always west
 	public void move() {
-			this.setCurrentPos(getPosition().getX() - getVelocity(), getPosition().getY());
+			this.setPosition(getPosition().x - getVelocity(), getPosition().y);
 	}
 
 	public Point getInitialPos() {
@@ -58,7 +58,7 @@ public class Wave extends Character {
 	}
 
 	public void reset(Point startPos, Point newDest){
-		setCurrentPos(startPos);
+		setPosition(startPos);
 		setDestination(newDest);
 		resetVelocity();
 	}
@@ -68,4 +68,11 @@ public class Wave extends Character {
 		this.setVelocity(v);
 	}
 	
+	//sg
+	public int getVelocity() {
+		return velocity;
+	}	
+	public void setVelocity(int velocity) {
+		this.velocity = velocity;
+	}
 }

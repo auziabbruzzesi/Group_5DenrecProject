@@ -6,7 +6,7 @@ import javax.swing.Icon;
 
 import view.View;
 
-public class Box {
+public class Box extends GameObject {
 	private Point position;
 	private int capacity = 3;
 	private int count;
@@ -79,11 +79,12 @@ public class Box {
 		}
 	}
 
-	public HoldingType getH() {
+	public HoldingType getHoldingType() {
+		System.out.println("returning h ="+h);
 		return h;
 	}
 
-	public void setH(HoldingType h) {
+	public void setHoldingType(HoldingType h) {
 		this.h = h;
 	}
 
