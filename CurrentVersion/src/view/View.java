@@ -72,13 +72,13 @@ public class View extends JFrame {
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 
 			// SHORELINE
-//			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-//				shoreLineTop = Model.getGameObjs().get(i)
-////				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
-////				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
-//			}
+			if (Model.getGameObjs().get(i) instanceof Shoreline) {
+				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
+//				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
+//				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
+			}
 			// HEATLH BAR
-			if (Model.getGameObjs().get(i) instanceof HealthBar) {
+				else if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				healthBar.setHealthHeight(( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight());
 				healthBar.startingY = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getStartingY();
 //				System.out.println("health in model's array = "+ ( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight() );
@@ -159,7 +159,7 @@ public void initSaveBtn(){
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-				shoreLineTop = ((Shoreline)Model.getGameObjs().get(i)).getShoreTop().x;
+				//shoreLineTop = ((Shoreline)Model.getGameObjs().get(i)).getShoreTop().x;
 			}
 			// HEATLH BAR
 			//NOT IN VIEW'S ARRAY

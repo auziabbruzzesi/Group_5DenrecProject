@@ -137,7 +137,9 @@ public class Model {
 	}
 	
 	public void updateShoreLine(int damage) {
-		shoreLine -= damage;
+		
+		this.shoreLineObj.setShoreTop(new Point(this.shoreLineObj.getShoreTop().x -= damage,this.shoreLineObj.getShoreTop().y));
+		this.shoreLineObj.setShoreBottom(new Point(this.shoreLineObj.getShoreBottom().x -= damage,this.shoreLineObj.getShoreBottom().y));
 	}
 
 	/**
