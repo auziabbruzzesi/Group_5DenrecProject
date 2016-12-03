@@ -51,6 +51,8 @@ public class View extends JFrame {
 	private Integer shoreLineTop;
 
 	private BufferedImage[] scenery = new BufferedImage[2];
+
+	private int totalShoreDecrement = 0;
 	
 	public SaveButton sb;
    
@@ -74,6 +76,7 @@ public class View extends JFrame {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Shoreline) {
 				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
+				this.totalShoreDecrement = ( (Shoreline)(Model.getGameObjs().get(i)) ).getTotalDecrement();
 //				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
 //				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
 			}
@@ -159,7 +162,7 @@ public void initSaveBtn(){
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-				//shoreLineTop = ((Shoreline)Model.getGameObjs().get(i)).getShoreTop().x;
+				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
 			}
 			// HEATLH BAR
 			//NOT IN VIEW'S ARRAY
@@ -244,8 +247,8 @@ public void initSaveBtn(){
 //			g.drawImage(scenery[0], 0, 0, this);
 			//draws scenery image starting at 0,0, up to width/height
 			//need to change x variable to equal shoreline's coordinate
-			g.drawImage(scenery[0], 0, 0,viewWidth, viewHeight,this);
-			g.drawImage(scenery[1], 0, 0, viewWidth, viewHeight, this);
+			g.drawImage(scenery[0], 0, 0, viewWidth, viewHeight, this);
+			g.drawImage(scenery[1], 0+totalShoreDecrement, 0, viewWidth, viewHeight, this);
 //			g.drawImage(scenery[1], 0, 0, this);
 //		
 

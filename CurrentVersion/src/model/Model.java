@@ -583,7 +583,9 @@ public class Model {
 	public int getShoreLine() {
 		return shoreLine;
 	}
-
+	public Shoreline getShoreLineObj(){
+		return shoreLineObj;
+	}
 	public void setShoreLine(int shoreLine) {
 		this.shoreLine = shoreLine;
 	}

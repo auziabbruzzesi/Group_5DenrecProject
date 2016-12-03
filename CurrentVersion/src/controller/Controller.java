@@ -247,12 +247,10 @@ public class Controller implements MouseListener {
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
+				m.getShoreLineObj().updateTotalDecrement(shoreDamage);
 //				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
 				m.getHB().damage(healthDamage);
-				
-
-
 				
 				m.resetWave(a);
 
