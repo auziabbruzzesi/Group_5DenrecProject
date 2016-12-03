@@ -3,7 +3,7 @@ package model;
 import java.awt.image.BufferedImage;
 
 public class Scenery extends GameObject{
-	BufferedImage[] scenery= new BufferedImage[2];
+	transient BufferedImage[] scenery= new BufferedImage[2];
 	
 	public Scenery(){
 		

@@ -28,7 +28,6 @@ import java.util.Random;
 import java.util.Set;
 import model.BeachObject;
 import view.View;
-
 public class Model {	
 	
 	//Variables related to initialization
@@ -68,7 +67,7 @@ public class Model {
 		ImageIcon[] oysterBoxes;
 		ImageIcon[] crabPics;
 		public ImageIcon[] concreteImages;
-		BufferedImage[] scenery = new BufferedImage[2];	
+		transient BufferedImage[] scenery = new BufferedImage[2];	
 		Scenery gameScenery = new Scenery();
 	
 /*
@@ -119,9 +118,10 @@ public class Model {
 	}
 
 
-	/*
-	 * this is used when shoreline is eroded. If one wave erodes shoreline, all waves
-	 * have their destinations updated so they don't crash (reset) early.
+	/**
+	 * @author Eaviles
+	 * Purpose: this is used when shoreline is eroded. If one wave erodes shoreline, all waves
+	 * must have their destinations updated so they don't reset early.
 	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){
@@ -583,8 +583,15 @@ public class Model {
 	public Shoreline getShoreLine() {
 		return this.shoreLine;
 	}
+<<<<<<< HEAD
 
 	public void setShoreLine(Shoreline shoreLine) {
+=======
+	public Shoreline getShoreLineObj(){
+		return shoreLineObj;
+	}
+	public void setShoreLine(int shoreLine) {
+>>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 		this.shoreLine = shoreLine;
 	}
 

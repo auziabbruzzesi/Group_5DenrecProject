@@ -22,10 +22,12 @@ public abstract class GameObject implements Serializable {
 	 * 
 	 */
 	private static final long serialVersionUID = 571534261898920559L;
+	
+	
 	private Point position;
-	private Icon myIcon;
+	private transient Icon myIcon;
 	private HoldingType hT;
-	private HoldingType myType;
+	//private HoldingType myType;
 	private int width;
 	private int height;
 	private Point destination;

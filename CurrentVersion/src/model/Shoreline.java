@@ -8,6 +8,8 @@ public class Shoreline extends GameObject{
 	private int shoreLine;
 	private double slope;
 	private int loosingCoordinate;
+	private int totalDecrement = 0;
+
 	
 	
 
@@ -28,10 +30,10 @@ public class Shoreline extends GameObject{
 	public int findCorrespondingX(int y){
 		double x = (((y - this.shoreTop.y)/(this.slope)) + this.shoreTop.x);
 		int x1 = (int) (x);
-		return x1;
-		 
-		
-		
+		return x1;			
+	}
+	public void updateTotalDecrement(int dec){
+		this.totalDecrement -= dec;
 	}
 	public Point getShoreBottom() {
 		return shoreBottom;
@@ -51,6 +53,7 @@ public class Shoreline extends GameObject{
 	public void setShoreTop(Point shoreTop) {
 		this.shoreTop = shoreTop;
 	}
+
 	public int getLoosingCoordinate() {
 		return loosingCoordinate;
 	}
@@ -65,6 +68,13 @@ public class Shoreline extends GameObject{
 
 	public void setSlope(double slope) {
 		this.slope = slope;
+	}
+	public int getTotalDecrement() {
+		return totalDecrement;
+	}
+	public void setTotalDecrement(int totalDecrement) {
+		this.totalDecrement = totalDecrement;
+
 	}
 	
 	

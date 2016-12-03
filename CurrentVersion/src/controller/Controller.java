@@ -49,14 +49,14 @@ public class Controller implements MouseListener {
 	private static View v;
 	private boolean pickUpRequest = false;
 	private boolean putDownRequest = false;
-    private boolean saveRequest=false;
+   
 	
 	private Point objToPickUp = new Point();
 	private HoldingType objToPickUpHT = null;
 	private Point putDownBox = new Point();
 
 	int i = 0;
-
+	//GameObject go;
 
 /*
  * Timers (2)
@@ -64,6 +64,9 @@ public class Controller implements MouseListener {
  *   pTimer - handles player movement
  */
 
+	/**
+	 * @author Eaviles
+	 */
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -76,7 +79,7 @@ public class Controller implements MouseListener {
 		//	m.initSprites();
 			//v.updateViewObjs();
 			//m.initSprites();
-			moveWave();
+			moveWaves();
 			v.updateViewObjs();
 			
 			v.repaint();
@@ -85,6 +88,9 @@ public class Controller implements MouseListener {
 		}
 	});
 
+	/**
+	 * @Auzi
+	 */
 	Timer pTimer = new Timer(10, new ActionListener() {
 		
 		@Override
@@ -108,6 +114,7 @@ public class Controller implements MouseListener {
 		this.v = v; //init occurs in view's constructor
 
 		initViewBtnListeners();
+		initViewLoadBtnListeners();
 		initViewSaveBtnListeners();
 	}
 
@@ -125,7 +132,6 @@ public class Controller implements MouseListener {
 		}catch(IOException e){
 			e.printStackTrace();
 		}
-		System.out.println("save buttom save");
 		
 	}
 
@@ -182,7 +188,7 @@ public class Controller implements MouseListener {
 	}
 
 	/**
-	 * 
+	 * @author ?
 	 * @return String type
 	 */
 	public String putDown() {
@@ -217,7 +223,12 @@ public class Controller implements MouseListener {
 		return type;
 	}
 	
-	public void moveWave() {
+	/**
+	 * @author Eaviles
+	 * Purpose: move all waves by one increment of their respective velocities. This is done by
+	 * calling Wave.move() on each wave.
+	 */
+	public void moveWaves() {
 		int a = 0;
 		for (Wave w : m.getWaves()) {
 //			System.out.println("##################################################################################");
@@ -236,12 +247,10 @@ public class Controller implements MouseListener {
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				m.updateShoreLine(shoreDamage);
+				m.getShoreLineObj().updateTotalDecrement(shoreDamage);
 //				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
 				m.getHB().damage(healthDamage);
-				
-
-
 				
 				m.resetWave(a);
 
@@ -317,17 +326,15 @@ public class Controller implements MouseListener {
 		if(pickUpRequest){
 			pickUpRequest = false;
 		}
-//		if(saveRequest){
-//			saveRequest = false;
-//		}
+
 		m.getP().setDestination(e.getPoint());
 
 		//if a saveButton was clicked
-		if(e.getComponent() instanceof SaveButton){
-			System.out.println("press save button");
-			//save(m.getGameObjs());
-			saveRequest=false;
-		}
+//		if(e.getComponent() instanceof SaveButton){
+//			System.out.println("press save button");
+//			//save(m.getGameObjs());
+//			saveRequest=false;
+//		}
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
 			
@@ -392,10 +399,31 @@ public class Controller implements MouseListener {
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
 			
+			for(GameObject go:m.getGameObjs()){
+				save(go);
+			}
+			
 		}
 		
 	});
 		
+	}
+	
+	private void initViewLoadBtnListeners() {
+	v.sb.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+			for(GameObject go:m.getGameObjs()){
+				load();
+			}
+			
+		}
+		
+	});
+	System.out.println("Load works");	
 	}
 
 /*
