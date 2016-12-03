@@ -16,7 +16,7 @@ public class Wave extends GameObject {
 	public static final int waveToWaveInterval = 100;// distance between created waves
 	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
 	private int velocity;
-	private int shorelineX = 360;//TODO:
+	//private int shorelineX = 360;//TODO:
 	private Point initialPos;
 	private Random randomGenerator = new Random();
 	
@@ -24,7 +24,7 @@ public class Wave extends GameObject {
 /*
  * Constructor
  */
-	public Wave(Point p, Icon k) {
+	public Wave(Point p, Icon k, int shorelineX) {
 		this.setPosition(p);
 		this.setInitialPos(p);
 		
@@ -32,7 +32,7 @@ public class Wave extends GameObject {
 		int v = randomGenerator.nextInt(2) + 1;
 		this.setVelocity(v);
 
-		Point d = new Point(this.getPosition().x - shorelineX, this.getPosition().y);
+		Point d = new Point((shorelineX), this.getPosition().y);
 		this.setDestination(d);
 		
 		setObjIcon(k);
