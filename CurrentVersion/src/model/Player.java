@@ -47,9 +47,10 @@ public class Player extends GameObject implements MoveObjects {
 	}
 
 	/**
+	 * @author Eaviles
+	 * Purpose: moves the player north (decrements y-coordinate of position) 
+	 * by 1 increment of velocity, or by whatever distance is left.
 	 * 
-	 * 
-	 * functions for use in player movement
 	 */
 
 	public void moveNorth() {
@@ -65,6 +66,12 @@ public class Player extends GameObject implements MoveObjects {
 		}
 	}
 
+	/**
+	 * @author Eaviles
+	 * Purpose: moves the player south (increments y-coordinate of position) 
+	 * by 1 increment of velocity, or by whatever distance is left.
+	 * 
+	 */
 	public void moveSouth() {
 		if (this.getPosition().getY() + this.getVelocity() > this.getDestination().getY()) {
 			// don't overshoot destination
@@ -73,7 +80,12 @@ public class Player extends GameObject implements MoveObjects {
 			this.getPosition().translate(0, this.getVelocity());
 		}
 	}
-
+	/**
+	 * @author Eaviles
+	 * Purpose: moves the player east (increments x-coordinate of position) 
+	 * by 1 increment of velocity, or by whatever distance is left.
+	 * 
+	 */
 	public void moveEast() {
 		// check if there is enough space for 1 tick
 		if (this.getDestination().getX() - this.getPosition().getX() < this.getVelocity()) {
@@ -84,7 +96,12 @@ public class Player extends GameObject implements MoveObjects {
 			this.getPosition().translate(this.getVelocity(), 0);
 		}
 	}
-
+	/**
+	 * @author Eaviles
+	 * Purpose: moves the player east (decrements x-coordinate of position) 
+	 * by 1 increment of velocity, or by whatever distance is left.
+	 * 
+	 */
 	public void moveWest() {
 		if (this.getPosition().getX() - this.getVelocity() < this.getDestination().getX()) {
 			// don't overshoot destination
@@ -96,8 +113,11 @@ public class Player extends GameObject implements MoveObjects {
 
 	/**
 	 * @author EAviles
+	 * Function Purpose: to update Player's position by one increment of velocity. 
+	 * This function checks player's current direction and destination, then checks whether position's
+	 * x & y coordinates match those of destination. If either does not match, x and/or y is incremented
+	 * by velocity, or (if distance to destination is less than velocity), by whatever distance remains.
 	 * 
-	 *         updates current position once based on current destination
 	 */
 	@Override
 	public void move() {
@@ -184,11 +204,7 @@ public class Player extends GameObject implements MoveObjects {
 
 	/**
 	 * @author EAviles
-	 * 
-	 *         figures out which direction we'll be moving in so move can
-	 *         function properly
-	 * 
-	 *         make directions Enums (enum class already made)
+	 * Purpose: Sets player direction by checking position & destination.
 	 */
 	public void updateDirection() {
 
