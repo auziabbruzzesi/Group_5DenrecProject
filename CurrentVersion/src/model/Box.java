@@ -1,5 +1,6 @@
 package model;
 
+import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.Icon;
@@ -15,7 +16,7 @@ public class Box extends GameObject {
 	private boolean isfull = false;
 	private Icon objIcon;
 	public static int boxDimensions = 100;// box dimensions (boxes are
-												// square, so don't need
+	//private DimenBoxDimension// square, so don't need
 												// individual width/height)
 	public static final int boxSpawnSpacing = 50; // minimum distance spawned
 													// objects should be from
