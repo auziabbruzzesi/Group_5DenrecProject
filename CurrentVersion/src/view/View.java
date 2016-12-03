@@ -129,11 +129,11 @@ public class View extends JFrame {
 	
 		jP = new jpanel();
 		//jP.setLayout(b);
-		JButton jbutton = new JButton();
-		jbutton.setSize(new Dimension(100,100));
-		jbutton.setBounds(100, 100, 100, 100);
-		jbutton.setText("SAVE");
-		jP.add(jbutton);
+//		JButton jbutton = new JButton();
+//		jbutton.setSize(new Dimension(100,100));
+//		jbutton.setBounds(100, 100, 100, 100);
+//		jbutton.setText("SAVE");
+//		jP.add(jbutton);
 		
 		
 
@@ -149,9 +149,9 @@ public class View extends JFrame {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
-//			if (Model.getGameObjs().get(i) instanceof Integer) {
-//				shoreLineTop = (Integer) Model.getGameObjs().get(i);
-//			}
+			if (Model.getGameObjs().get(i) instanceof Shoreline) {
+				shoreLineTop = ((Shoreline)Model.getGameObjs().get(i)).getShoreTop().x;
+			}
 			// HEATLH BAR
 			if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				int totalHeight = ((HealthBar) (Model.getGameObjs().get(i))).getHeight();
@@ -168,9 +168,9 @@ public class View extends JFrame {
 				scenery = ( (Scenery)( Model.getGameObjs().get(i) ) ).getScenery();
 			} else {
 				button j = new button();
-				//j.setMargin(new Insets(0, 0, 0, 0));
-				//j.setBorder(BorderFactory.createEmptyBorder());
-				//j.setContentAreaFilled(false);
+				j.setMargin(new Insets(0, 0, 0, 0));
+				j.setBorder(BorderFactory.createEmptyBorder());
+				j.setContentAreaFilled(false);
 
 				// PLAYER
 				if (Model.getGameObjs().get(i) instanceof Player) {
@@ -192,7 +192,7 @@ public class View extends JFrame {
 					j.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
 				}
 				// BEACHOBJ
-				else if (Model.getGameObjs().get(i) instanceof BeachObject) {
+				if (Model.getGameObjs().get(i) instanceof BeachObject) {
 					j.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
 					j.setHoldingType(((BeachObject) Model.getGameObjs().get(i)).getH());
 					j.setType(j.getHoldingType());
@@ -200,6 +200,8 @@ public class View extends JFrame {
 					j.setBounds(j.getLocation().x, j.getLocation().y, BeachObject.beachObjDimensions,
 							BeachObject.beachObjDimensions);
 					j.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
+					System.out.println("button width "+j.getWidth()+" button height = "+j.getHeight());
+					System.out.println("instanceof = "+Model.getGameObjs().get(i).getClass());
 				}
 				// BOX
 				else if (Model.getGameObjs().get(i) instanceof Box) {
@@ -246,11 +248,11 @@ public class View extends JFrame {
 			Double a = .206;
 			Double b = .45;
 			Double c = .625;
-			System.out.println("viewWidth = " + viewWidth);
-			System.out.println("viewHeight = " + viewHeight);
-			System.out.println("first line coord: (" + ((Double)((b)*viewWidth)).intValue() + ", " + ((Double)((a)*viewHeight)).intValue() + ")" );
-			System.out.println("second line coord: (" + ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
-			g.drawLine(((Double)((b)*viewWidth)).intValue(), ((Double)((a)*viewHeight)).intValue(),((Double)((c)*viewWidth)).intValue(), (viewHeight));
+//			System.out.println("viewWidth = " + viewWidth);
+//			System.out.println("viewHeight = " + viewHeight);
+//			System.out.println("first line coord: (" + ((Double)((b)*viewWidth)).intValue() + ", " + ((Double)((a)*viewHeight)).intValue() + ")" );
+//			System.out.println("second line coord: (" + ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
+//			g.drawLine(((Double)((b)*viewWidth)).intValue(), ((Double)((a)*viewHeight)).intValue(),((Double)((c)*viewWidth)).intValue(), (viewHeight));
 
 		}
 	}
