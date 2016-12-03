@@ -28,7 +28,6 @@ import java.util.Random;
 import java.util.Set;
 import model.BeachObject;
 import view.View;
-
 public class Model {	
 	
 	//Variables related to initialization
@@ -68,7 +67,7 @@ public class Model {
 		ImageIcon[] oysterBoxes;
 		ImageIcon[] crabPics;
 		public ImageIcon[] concreteImages;
-		BufferedImage[] scenery = new BufferedImage[2];	
+		transient BufferedImage[] scenery = new BufferedImage[2];	
 		Scenery gameScenery = new Scenery();
 	
 /*
