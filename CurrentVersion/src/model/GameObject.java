@@ -1,8 +1,12 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import javax.swing.Icon;
+
+
+public abstract class GameObject implements Serializable {
 /**
  * @author Eaviles
  * Class GameObject: parent class for all game objects. Used by Model to implement an array visible to View.
@@ -11,8 +15,13 @@ import javax.swing.Icon;
  * Wave, Box, BeachObject, Player, HealthBar, Shoreline, Scenery.
  *
  */
-public abstract class GameObject {
 
+
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 571534261898920559L;
 	private Point position;
 	private Icon myIcon;
 	private HoldingType hT;
@@ -20,6 +29,10 @@ public abstract class GameObject {
 	private int width;
 	private int height;
 	private Point destination;
+
+    public GameObject(){
+    	
+    }
 	private int index;
 
 	public Icon setObjIcon(){

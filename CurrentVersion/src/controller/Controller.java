@@ -15,7 +15,12 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -28,11 +33,13 @@ import javax.swing.Timer;
 
 import model.BeachObject;
 import model.Box;
+import model.GameObject;
 import model.HoldingType;
 import model.Model;
 import model.Player;
 import model.Wave;
 import view.View;
+import view.View.SaveButton;
 import view.View.button;
 
 public class Controller implements MouseListener {
@@ -42,7 +49,8 @@ public class Controller implements MouseListener {
 	private static View v;
 	private boolean pickUpRequest = false;
 	private boolean putDownRequest = false;
-
+    private boolean saveRequest=false;
+	
 	private Point objToPickUp = new Point();
 	private HoldingType objToPickUpHT = null;
 	private Point putDownBox = new Point();
@@ -100,10 +108,46 @@ public class Controller implements MouseListener {
 		this.v = v; //init occurs in view's constructor
 
 		initViewBtnListeners();
+		initViewSaveBtnListeners();
 	}
 
+/*
+ * Save and load function
+ */
+	public void save(Serializable objectToSerializa){
+		FileOutputStream fos=null;//file creation
+		try{
+			fos=new FileOutputStream("game.sav");
+			ObjectOutputStream oos=new ObjectOutputStream(fos);
+			oos.writeObject(objectToSerializa);
+			oos.flush();
+			oos.close();
+		}catch(IOException e){
+			e.printStackTrace();
+		}
+		System.out.println("save buttom save");
+		
+	}
 
+	public static void load(){
+		if(checkFileExists()){
+			FileInputStream fis=null;
+		
+		try{
+			fis=new FileInputStream("game.sav");
+			ObjectInputStream ois=new ObjectInputStream(fis);
+			GameObject loadedObject=(GameObject)ois.readObject();
+			ois.close();
+		}catch(ClassNotFoundException|IOException e){
+			e.printStackTrace();
+		}
+	}
+	}
 
+	private static boolean checkFileExists() {
+		// TODO Auto-generated method stub
+		return new File("game.sav").isFile();
+	}
 /*
  * General functions
  */
@@ -273,11 +317,20 @@ public class Controller implements MouseListener {
 		if(pickUpRequest){
 			pickUpRequest = false;
 		}
-		
+//		if(saveRequest){
+//			saveRequest = false;
+//		}
 		m.getP().setDestination(e.getPoint());
 
+		//if a saveButton was clicked
+		if(e.getComponent() instanceof SaveButton){
+			System.out.println("press save button");
+			//save(m.getGameObjs());
+			saveRequest=false;
+		}
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
+			
 			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
 			
 			if ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.BOX) {
@@ -327,7 +380,20 @@ public class Controller implements MouseListener {
 	private void initViewBtnListeners() {
 		for(button b : v.gameObjBtns){
 			b.addMouseListener(this);
-		}		
+		}	
+		
+	}
+	private void initViewSaveBtnListeners() {
+	v.sb.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			
+		}
+		
+	});
+		
 	}
 
 /*
@@ -348,6 +414,7 @@ public class Controller implements MouseListener {
 	public void setObjToPickUp(Point objToPickUp) {
 		this.objToPickUp = objToPickUp;
 	}
+
 	
 /*
  * Unused mouse listener functions (these are required to implement MouseListener, even if they're not used)

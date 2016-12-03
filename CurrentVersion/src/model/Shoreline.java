@@ -25,6 +25,7 @@ public class Shoreline extends GameObject{
 	public int findCorrespondingX(int y){
 		double x = (((y - this.shoreTop.y)/(this.slope)) + this.shoreTop.x);
 		int x1 = (int) (x);
+
 		return x1;
 		 
 		

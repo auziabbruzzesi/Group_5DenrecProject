@@ -23,7 +23,6 @@ public class Main {
 	static View v = new View(/*State tutorial*/);
 	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
-	
 	public static void main(String[] args) {
 		v.setLayout(null);
 		/*
