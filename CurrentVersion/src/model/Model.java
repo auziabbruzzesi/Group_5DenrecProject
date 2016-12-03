@@ -117,9 +117,10 @@ public class Model {
 	}
 
 
-	/*
-	 * this is used when shoreline is eroded. If one wave erodes shoreline, all waves
-	 * have their destinations updated so they don't crash (reset) early.
+	/**
+	 * @author Eaviles
+	 * Purpose: this is used when shoreline is eroded. If one wave erodes shoreline, all waves
+	 * must have their destinations updated so they don't reset early.
 	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){

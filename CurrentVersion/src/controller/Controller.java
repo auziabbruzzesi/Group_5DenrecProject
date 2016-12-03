@@ -56,6 +56,9 @@ public class Controller implements MouseListener {
  *   pTimer - handles player movement
  */
 
+	/**
+	 * @author Eaviles
+	 */
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -68,7 +71,7 @@ public class Controller implements MouseListener {
 		//	m.initSprites();
 			//v.updateViewObjs();
 			//m.initSprites();
-			moveWave();
+			moveWaves();
 			v.updateViewObjs();
 			
 			v.repaint();
@@ -77,6 +80,9 @@ public class Controller implements MouseListener {
 		}
 	});
 
+	/**
+	 * @Auzi
+	 */
 	Timer pTimer = new Timer(10, new ActionListener() {
 		
 		@Override
@@ -138,7 +144,7 @@ public class Controller implements MouseListener {
 	}
 
 	/**
-	 * 
+	 * @author ?
 	 * @return String type
 	 */
 	public String putDown() {
@@ -173,7 +179,12 @@ public class Controller implements MouseListener {
 		return type;
 	}
 	
-	public void moveWave() {
+	/**
+	 * @author Eaviles
+	 * Purpose: move all waves by one increment of their respective velocities. This is done by
+	 * calling Wave.move() on each wave.
+	 */
+	public void moveWaves() {
 		int a = 0;
 		for (Wave w : m.getWaves()) {
 //			System.out.println("##################################################################################");
