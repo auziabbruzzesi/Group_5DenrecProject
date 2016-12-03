@@ -127,7 +127,13 @@ public class Model {
 	public void updateShoreLine(int damage) {
 		shoreLine -= damage;
 	}
-	
+
+	/**
+	 * @author Eaviles
+	 * @return true if all boxes are full. Else, return false.
+	 * Purpose: used by controller to check whether all boxes are full
+	 * (i.e. all boxes count variables are equal to their capacity)
+	 */
 	public boolean allBoxesFull() {
 		boolean allFull = true;
 
@@ -140,8 +146,10 @@ public class Model {
 		return allFull;
 	}
 
-	/*
-	 * used by controller at end of game to determine whether enough boxes were made into gabions
+	/**
+	 * @author Eaviles
+	 * @return true if at least 50% of boxes were filled with oysters. Else, returns false
+	 * Purpose: used by controller at end of game to determine whether enough boxes were made into gabions
 	 */
 	public boolean boxesCorrect() {
 		boolean correct = false;
@@ -177,7 +185,12 @@ public class Model {
 /*
  * Functions required for Model initialization
  */
-	//RITA
+
+	/**
+	 * @author Eaviles
+	 * Purpose: initialize gameObjsArr to contain all game objects needed for 
+	 * saving the game and updating View.
+	 */
 	private void initGameObjsArr() {
 
 		gameObjs.addAll(( Collection <? extends GameObject>) this.boxes.values());
@@ -189,12 +202,18 @@ public class Model {
 		gameObjs.add(this.HB);
 		System.out.println("\n\nModel's array of game objects contains:\n"+gameObjs+"\n\n");
 	}
-	
+	/**
+	 * @author Eaviles
+	 * Purpose: initializes Player 
+	 */
 	private void initPlayer(){
 		p = new Player(new Point(Player.startPosition));
 		updatePlayerSprite();
 	}
-	
+	/**
+	 * @author @Auzi
+	 * Purpose: initializes Boxes 
+	 */
 	private void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
 			//Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
@@ -212,6 +231,10 @@ public class Model {
 //			System.out.println("ht (not contains) for this box = "+box.getH());
 		}
 	}
+	/**
+	 * @author Eaviles
+	 * Purpose: initializes Waves
+	 */
 	private void initWaves(){
 		for (int i = 0; i < numWaves; i++) {
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
@@ -220,6 +243,11 @@ public class Model {
 			this.waves.add(w);
 		}
 	}
+	/**
+	 * @author Eaviles
+	 * Purpose: initializes BeachObjects within their spawn zone (area they're allowed to spawn in)
+	 * and makes sure they are not created with positions that would overlap with player/boxes
+	 */
 	private void initBeachObjs(){
 		Random r = new Random();
 		Boolean canPlace;
@@ -248,7 +276,14 @@ public class Model {
 		}
 	}
 
-
+	/**
+	 * @author Eaviles
+	 * @param toCreate: proposed point of creation
+	 * @return true = spot available false = spot not available
+	 * Purpose: checks whether creating a beachObject at Point toCreate would
+	 * cause the beachObject to overlap with Player. Takes into account the size
+	 * of beachObjects and Player, as well as their position variables.
+	 */
 	public Boolean checkPlayerOverlap(Point toCreate) {
 		Boolean canCreate = true;
 		double X1 = p.getPosition().getX();
@@ -296,10 +331,12 @@ public class Model {
 	}
 
 	/**
-	 * 
-	 * @param toCreate
-	 *            : proposed point of creation
-	 * @return true = spot available false = not
+	 * @author Eaviles
+	 * @param toCreate: proposed point of creation
+	 * @return true = spot available false = spot not available
+	 * Purpose: checks whether creating a beachObject at Point toCreate would
+	 * cause the beachObject to overlap with a box. Takes into account the size
+	 * of beachObjects and Boxes, as well as their position variables.
 	 */
 	public Boolean checkBoxOverlap(Point toCreate) {
 		Boolean canCreate = true;
@@ -348,10 +385,12 @@ public class Model {
 	}
 
 	/**
-	 * A note: This operation would work better and be less costly if we used a
-	 * hashset instead of a hashmap for beachobjects. 
-	 * TODO: Will explore changing it, 
-	 * but for now it works and we don't want to mess it up the day before beta.
+	 * @author Eaviles
+	 * @param toCreate: proposed point of creation
+	 * @return true = spot available false = spot not available
+	 * Purpose: checks whether creating a beachObject at Point toCreate would
+	 * cause the BeachObject to overlap with another BeachObject. Takes into account the size
+	 * of the BeachObjects, as well as their position variables.
 	 */
 
 	public Boolean checkBeachObjectOverlap(Point toCreate) {
@@ -401,6 +440,10 @@ public class Model {
 		return canCreate;
 	}
 	
+	/**
+	 * @author Auzi
+	 * Purpose:
+	 */
 	public void initSprites() {
 
 		String[] myNames = { "crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
@@ -449,8 +492,10 @@ public class Model {
 	}
 
 	/**
-	 * @param n
-	 * @return Read image icon and return
+	 * @author Pulled from Orc animation lab
+	 * @param n: name of file to be read from
+	 * @return: imageIcon that was created from file, or null
+	 * Purpose: read from file, create imageIcon from file. 
 	 */
 	private ImageIcon createImage(String n) {
 		ImageIcon imageIcon;

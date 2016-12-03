@@ -3,7 +3,14 @@ package model;
 import java.awt.Point;
 
 import javax.swing.Icon;
-
+/**
+ * @author Eaviles
+ * Class GameObject: parent class for all game objects. Used by Model to implement an array visible to View.
+ * 
+ * Classes that extend GameObject:
+ * Wave, Box, BeachObject, Player, HealthBar, Shoreline, Scenery.
+ *
+ */
 public abstract class GameObject {
 
 	private Point position;
