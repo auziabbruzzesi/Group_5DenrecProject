@@ -242,6 +242,8 @@ public void initSaveBtn(){
 		@Override
 		protected void paintComponent(Graphics g) {
 //			g.drawImage(scenery[0], 0, 0, this);
+			//draws scenery image starting at 0,0, up to width/height
+			//need to change x variable to equal shoreline's coordinate
 			g.drawImage(scenery[0], 0, 0,viewWidth, viewHeight,this);
 			g.drawImage(scenery[1], 0, 0, viewWidth, viewHeight, this);
 //			g.drawImage(scenery[1], 0, 0, this);
