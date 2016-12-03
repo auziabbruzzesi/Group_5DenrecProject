@@ -262,7 +262,7 @@ public void initSaveBtn(){
 //			System.out.println("viewHeight = " + viewHeight);
 //			System.out.println("first line coord: (" + ((Double)((b)*viewWidth)).intValue() + ", " + ((Double)((a)*viewHeight)).intValue() + ")" );
 //			System.out.println("second line coord: (" + ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
-//			g.drawLine(((Double)((b)*viewWidth)).intValue(), ((Double)((a)*viewHeight)).intValue(),((Double)((c)*viewWidth)).intValue(), (viewHeight));
+		g.drawLine(((Double)((b)*viewWidth)).intValue(), ((Double)((a)*viewHeight)).intValue(),((Double)((c)*viewWidth)).intValue(), (viewHeight));
 
 		}
 	}
