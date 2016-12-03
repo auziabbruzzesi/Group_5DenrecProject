@@ -6,6 +6,7 @@ public class Shoreline extends GameObject{
 	private Point shoreTop;
 	private Point shoreBottom;
 	private int shoreLine;
+	private double slope;
 	
 	//current
 	public Shoreline(int x){
@@ -17,6 +18,19 @@ public class Shoreline extends GameObject{
 	public Shoreline(Point t, Point b){
 		setShoreTop(t);
 		setShoreBottom(b);
+		this.slope = (this.shoreTop.y - this.shoreBottom.y)/(this.shoreTop.x - this.shoreBottom.x);
+		
+	}
+	
+	public int findCorrespondingX(int y){
+		double x = (((y - this.shoreTop.y)/(this.slope)) + this.shoreTop.x);
+		int x1 = (int) (x);
+		System.out.println("corresponding x: " + x);
+		System.out.println("corresponding x1: " + x1);
+		return x1;
+		 
+		
+		
 	}
 	public Point getShoreBottom() {
 		return shoreBottom;
@@ -36,4 +50,6 @@ public class Shoreline extends GameObject{
 	public void setShoreTop(Point shoreTop) {
 		this.shoreTop = shoreTop;
 	}
+	
+	
 }

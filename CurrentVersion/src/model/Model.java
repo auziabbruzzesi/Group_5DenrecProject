@@ -8,6 +8,7 @@ package model;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -73,6 +74,12 @@ public class Model {
  * Model Constructor
  */
 	public Model() {
+		this.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
+		Double a = .206;
+		Double b = .45;
+		Double c = .625;
+		this.shoreLineObj = new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
+		//System.out.println(this.shoreLineObj.getShoreTop());
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
 		initPlayer();//Same comment as above ^
 		initBoxes();
@@ -88,6 +95,10 @@ public class Model {
 		System.out.println(this.waves.size() + " Waves.");
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
 		System.out.println("Shoreline = " + getShoreLine());
+	}
+	public Model(Dimension d){
+		super();
+		
 	}
 
 	
@@ -238,7 +249,9 @@ public class Model {
 	private void initWaves(){
 		for (int i = 0; i < numWaves; i++) {
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
-			Wave w = new Wave(p, pics[11]);
+			Wave w = new Wave(p, pics[11],this.shoreLineObj.findCorrespondingX(p.y));
+			System.out.println("wave "+ i + " position: " + w.getPosition().x + ", " + w.getPosition().y);
+			System.out.println("wave " + i + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
 			w.setIndex(i);
 			this.waves.add(w);
 		}
@@ -249,13 +262,15 @@ public class Model {
 	 * and makes sure they are not created with positions that would overlap with player/boxes
 	 */
 	private void initBeachObjs(){
+		BeachObject.spawnZoneHeight = (int) (this.gameDi.height*.88);
+		BeachObject.spawnZoneWidth = (int) (this.gameDi.width*.45);
 		Random r = new Random();
 		Boolean canPlace;
 		
 		for (int i = 0; i < numBOS; i++) {
 			do {
 				// create a point and check that it won't overlap
-				Point p = new Point(r.nextInt(BeachObject.spawnZoneWidth), r.nextInt(BeachObject.spawnZoneHeight));
+				Point p = new Point(r.nextInt(BeachObject.spawnZoneWidth),(int) ((this.gameDi.height*.22) + r.nextInt(BeachObject.spawnZoneHeight)));
 
 				if (checkBeachObjectOverlap(p) && checkBoxOverlap(p) && checkPlayerOverlap(p)) {
 					canPlace = true;
