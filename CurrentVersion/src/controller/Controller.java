@@ -176,10 +176,10 @@ public class Controller implements MouseListener {
 	public void moveWave() {
 		int a = 0;
 		for (Wave w : m.getWaves()) {
-			System.out.println("##################################################################################");
-			System.out.println("wave "+ w.getIndex() + " position: " + w.getPosition().x + ", " + w.getPosition().y);
-			System.out.println("wave " + w.getIndex() + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
-			System.out.println("##################################################################################");
+//			System.out.println("##################################################################################");
+//			System.out.println("wave "+ w.getIndex() + " position: " + w.getPosition().x + ", " + w.getPosition().y);
+//			System.out.println("wave " + w.getIndex() + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
+//			System.out.println("##################################################################################");
 			//if we haven't reached destination
 			if ( w.getPosition().x > w.getDestination().x ) {
 				w.move();		

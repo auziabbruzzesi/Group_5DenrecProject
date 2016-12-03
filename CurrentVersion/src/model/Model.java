@@ -123,7 +123,7 @@ public class Model {
 	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){
-			Point newDest = new Point(getShoreLine(), w.getDestination().y);
+			Point newDest = new Point(this.shoreLineObj.findCorrespondingX(w.getInitialPos().y), w.getDestination().y);
 			w.setDestination(newDest);
 		}		
 	}
@@ -227,8 +227,8 @@ public class Model {
 		for (int i = 0; i < numWaves; i++) {
 			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
 			Wave w = new Wave(p, pics[11],this.shoreLineObj.findCorrespondingX(p.y));
-			System.out.println("wave "+ i + " position: " + w.getPosition().x + ", " + w.getPosition().y);
-			System.out.println("wave " + i + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
+//			System.out.println("wave "+ i + " position: " + w.getPosition().x + ", " + w.getPosition().y);
+//			System.out.println("wave " + i + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
 			w.setIndex(i);
 			this.waves.add(w);
 		}
