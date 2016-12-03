@@ -117,9 +117,10 @@ public class Model {
 	}
 
 
-	/*
-	 * this is used when shoreline is eroded. If one wave erodes shoreline, all waves
-	 * have their destinations updated so they don't crash (reset) early.
+	/**
+	 * @author Eaviles
+	 * Purpose: this is used when shoreline is eroded. If one wave erodes shoreline, all waves
+	 * must have their destinations updated so they don't reset early.
 	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){
@@ -136,7 +137,9 @@ public class Model {
 	}
 	
 	public void updateShoreLine(int damage) {
-		shoreLine -= damage;
+		
+		this.shoreLineObj.setShoreTop(new Point(this.shoreLineObj.getShoreTop().x -= damage,this.shoreLineObj.getShoreTop().y));
+		this.shoreLineObj.setShoreBottom(new Point(this.shoreLineObj.getShoreBottom().x -= damage,this.shoreLineObj.getShoreBottom().y));
 	}
 
 	/**
@@ -579,7 +582,9 @@ public class Model {
 	public int getShoreLine() {
 		return shoreLine;
 	}
-
+	public Shoreline getShoreLineObj(){
+		return shoreLineObj;
+	}
 	public void setShoreLine(int shoreLine) {
 		this.shoreLine = shoreLine;
 	}

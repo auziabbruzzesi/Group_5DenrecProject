@@ -51,6 +51,8 @@ public class View extends JFrame {
 	private Integer shoreLineTop;
 
 	private BufferedImage[] scenery = new BufferedImage[2];
+
+	private int totalShoreDecrement = 0;
 	
 	public SaveButton sb;
 	public LoadButton lb;
@@ -73,13 +75,14 @@ public class View extends JFrame {
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 
 			// SHORELINE
-//			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-//				shoreLineTop = Model.getGameObjs().get(i)
-////				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
-////				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
-//			}
+			if (Model.getGameObjs().get(i) instanceof Shoreline) {
+				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
+				this.totalShoreDecrement = ( (Shoreline)(Model.getGameObjs().get(i)) ).getTotalDecrement();
+//				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
+//				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
+			}
 			// HEATLH BAR
-			if (Model.getGameObjs().get(i) instanceof HealthBar) {
+				else if (Model.getGameObjs().get(i) instanceof HealthBar) {
 				healthBar.setHealthHeight(( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight());
 				healthBar.startingY = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getStartingY();
 //				System.out.println("health in model's array = "+ ( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight() );
@@ -167,7 +170,7 @@ public void initLoadBtn(){
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-				shoreLineTop = ((Shoreline)Model.getGameObjs().get(i)).getShoreTop().x;
+				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
 			}
 			// HEATLH BAR
 			//NOT IN VIEW'S ARRAY
@@ -250,8 +253,10 @@ public void initLoadBtn(){
 		@Override
 		protected void paintComponent(Graphics g) {
 //			g.drawImage(scenery[0], 0, 0, this);
-			g.drawImage(scenery[0], 0, 0,viewWidth, viewHeight,this);
-			g.drawImage(scenery[1], 0, 0, viewWidth, viewHeight, this);
+			//draws scenery image starting at 0,0, up to width/height
+			//need to change x variable to equal shoreline's coordinate
+			g.drawImage(scenery[0], 0, 0, viewWidth, viewHeight, this);
+			g.drawImage(scenery[1], 0+totalShoreDecrement, 0, viewWidth, viewHeight, this);
 //			g.drawImage(scenery[1], 0, 0, this);
 //		
 
