@@ -11,6 +11,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +39,6 @@ public class View extends JFrame {
 	public static int viewWidth = 1200;
 
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
-
 	Point playerPos = (new Point(0, 0));
 	Point playerDest = (new Point(200, 200));
 
@@ -50,6 +51,8 @@ public class View extends JFrame {
 	private Integer shoreLineTop;
 
 	private BufferedImage[] scenery = new BufferedImage[2];
+	
+	public SaveButton sb;
    
 	/*
 	 * View Constructor
@@ -130,14 +133,8 @@ public class View extends JFrame {
 	
 		jP = new jpanel();
 //		jP.setLayout(b);
-		JButton jbutton = new JButton();
-		jbutton.setSize(new Dimension(100,100));
-		jbutton.setBounds(100, 100, 100, 100);
-		jbutton.setText("SAVE");
-		jP.add(jbutton);
 		
-		
-
+		initSaveBtn();
 		initGameObjBtns();// DO NOT MOVE - dependent on lines of code above&below.
 						// Thanks!
 		getContentPane().add(jP);
@@ -147,6 +144,15 @@ public class View extends JFrame {
 		System.out.println("\n\nView's array of buttons contains:\n"+this.gameObjBtns+"\n\n");
 
 	}
+public void initSaveBtn(){
+		
+		sb=new SaveButton();	
+		sb.setBounds(1100,0, 100, 50);
+		sb.setText("Save Game");
+		jP.add(sb);
+	}
+	
+	
 
 	public void initGameObjBtns() {
 
@@ -260,7 +266,10 @@ public class View extends JFrame {
 
 		}
 	}
-
+	
+	public class SaveButton extends JButton {
+		
+        }
 	public class button extends JButton {
 		private HoldingType h = HoldingType.EMPTY;
 		private HoldingType type;

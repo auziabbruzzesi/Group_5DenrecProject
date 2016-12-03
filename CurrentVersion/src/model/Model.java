@@ -40,6 +40,7 @@ public class Model {
 	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
 	
 	//General variables
+	
 	private Player p;
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();

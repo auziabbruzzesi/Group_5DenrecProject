@@ -1,11 +1,16 @@
 package model;
 
 import java.awt.Point;
+import java.io.Serializable;
 
 import javax.swing.Icon;
 
-public abstract class GameObject {
+public abstract class GameObject implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 571534261898920559L;
 	private Point position;
 	private Icon myIcon;
 	private HoldingType hT;
@@ -14,7 +19,9 @@ public abstract class GameObject {
 	private int height;
 	private Point destination;
 
-
+    public GameObject(){
+    	
+    }
 	public Icon setObjIcon(){
 		return myIcon;
 	}
