@@ -351,7 +351,9 @@ public class Controller implements MouseListener {
 //		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
 		String endMessage = "";
 		
-		if(m.getShoreLine() <= m.getminShoreLine()){
+		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
+			System.out.println("SHORELINE TOP COORD: " + m.getShoreLine().getShoreBottom().getX());
+			System.out.println("SHORELINE LOOSING COORD: " + m.getShoreLine().getLoosingCoordinate());
 			gameStatus = status.LOSE_SHORE;
 			endMessage = "You Lose :( \n Too much of the Estuary eroded away";
 		}

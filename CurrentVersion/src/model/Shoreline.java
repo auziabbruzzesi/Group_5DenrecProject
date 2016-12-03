@@ -7,13 +7,16 @@ public class Shoreline extends GameObject{
 	private Point shoreBottom;
 	private int shoreLine;
 	private double slope;
+	private int loosingCoordinate;
 	
+	
+
 	//current
-	public Shoreline(int x){
-		setShoreLine(x);
-		setShoreBottom(new Point(x,x));
-		setShoreTop(new Point(x,x));
-	}
+//	public Shoreline(int x){
+//		setShoreLine(x);
+//		setShoreBottom(new Point(x,x));
+//		setShoreTop(new Point(x,x));
+//	}
 	//will switch to this
 	public Shoreline(Point t, Point b){
 		setShoreTop(t);
@@ -47,6 +50,21 @@ public class Shoreline extends GameObject{
 	}
 	public void setShoreTop(Point shoreTop) {
 		this.shoreTop = shoreTop;
+	}
+	public int getLoosingCoordinate() {
+		return loosingCoordinate;
+	}
+
+	public void setLoosingCoordinate(int loosingCoordinate) {
+		this.loosingCoordinate = loosingCoordinate;
+	}
+
+	public double getSlope() {
+		return slope;
+	}
+
+	public void setSlope(double slope) {
+		this.slope = slope;
 	}
 	
 	
