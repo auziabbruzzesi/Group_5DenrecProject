@@ -79,6 +79,7 @@ public class Controller implements MouseListener {
 		//	m.initSprites();
 			//v.updateViewObjs();
 			//m.initSprites();
+			
 			moveWaves();
 			v.updateViewObjs();
 			
@@ -112,7 +113,7 @@ public class Controller implements MouseListener {
 	public Controller(Model m, View v) {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor
-
+		
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewSaveBtnListeners();
@@ -237,7 +238,7 @@ public class Controller implements MouseListener {
 			
 			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
 			else {
-											
+				System.out.println("in model's movewaves(). have not reset wave. startpos = "+w.getInitialPos());							
 				int shoreDamage = determineDamage(w);				
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
@@ -248,7 +249,7 @@ public class Controller implements MouseListener {
 				m.getHB().damage(healthDamage);
 				
 				m.resetWave(a);
-
+//				System.out.println("in model's movewaves(). have reset. startpos = "+w.getInitialPos()+"\n");
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 			}
 			a++;	

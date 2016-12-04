@@ -7,7 +7,7 @@ public class Scenery extends GameObject{
 	transient BufferedImage[] scenery= new BufferedImage[2];
 	
 	public Scenery(){
-		this.setScenery(new BufferedImage[2]);
+		//this.setScenery(new BufferedImage[2]);
 	}
 	
 	@Override

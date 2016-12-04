@@ -3,7 +3,7 @@ package model;
 import java.awt.Point;
 
 public class Shoreline extends GameObject{
-	
+	private Point shoreTop;
 	private Point shoreBottom;
 	private int shoreLine;
 	private double slope;
@@ -34,7 +34,9 @@ public class Shoreline extends GameObject{
 		int x1 = (int) (x);
 		return x1;			
 	}
-
+	public void updateTotalDecrement(int dec){
+		this.totalDecrement -= dec;
+	}
 	public Point getShoreBottom() {
 		return shoreBottom;
 	}
@@ -46,6 +48,12 @@ public class Shoreline extends GameObject{
 	}
 	public void setShoreLine(int shoreLine) {
 		this.shoreLine = shoreLine;
+	}
+	public Point getShoreTop() {
+		return shoreTop;
+	}
+	public void setShoreTop(Point shoreTop) {
+		this.shoreTop = shoreTop;
 	}
 
 	public int getLoosingCoordinate() {
@@ -66,4 +74,8 @@ public class Shoreline extends GameObject{
 	public int getTotalDecrement() {
 		return totalDecrement;
 	}	
+	public void setTotalDecrement(int totalDecrement) {
+		this.totalDecrement = totalDecrement;
+
+	}
 }

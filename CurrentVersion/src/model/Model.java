@@ -40,7 +40,6 @@ public class Model {
 	public final Double c = .625;
 
 	
-	//RITA
 	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
 	
 	//General variables
@@ -110,9 +109,8 @@ public class Model {
 		 *  should be based on where shoreline currently is, and reset it based on that. 
 		 */
 			Wave w = waves.get(a);
-			Point startPos = new Point(View.viewWidth - Wave.waveWidth, a * Wave.waveSpawnSpacing);
 			Point newDest = new Point(getShoreLine().findCorrespondingX(w.getPosition().y), w.getDestination().y);
-			w.reset(startPos, newDest);
+			w.reset(newDest);
 	}
 
 
@@ -260,6 +258,7 @@ public class Model {
 			w.setIndex(i);
 			this.waves.add(w);
 			i++;
+			System.out.println("in model's initwaves() startpos = "+w.getInitialPos()+"\n");
 		}
 		
 	}
@@ -535,7 +534,13 @@ public class Model {
 /*
  * Setters and Getters
  */
+	public int getScore() {
+		return score;
+	}
 
+	public void setScore(int score) {
+		this.score = score;
+	}
 	public Player getP() {
 		return p;
 	}
