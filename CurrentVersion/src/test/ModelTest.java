@@ -186,5 +186,10 @@ public class ModelTest {
 		assertEquals(w1.getDestination().getX(), 5, 0);
 		
 	}
+	@Test
+	public void updateShorelineTest(){
+		
+	}
+	
 
 }

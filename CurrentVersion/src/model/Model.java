@@ -138,8 +138,8 @@ public class Model {
 	
 	public void updateShoreLine(int damage) {
 		
-		this.shoreLine.setShoreTop(new Point(this.shoreLine.getShoreTop().x -= damage,this.shoreLine.getShoreTop().y));
-		this.shoreLine.setShoreBottom(new Point(this.shoreLine.getShoreBottom().x -= damage,this.shoreLine.getShoreBottom().y));
+		shoreLine.setShoreTop(new Point(this.shoreLine.getShoreTop().x -= damage,this.shoreLine.getShoreTop().y));
+		shoreLine.setShoreBottom(new Point(this.shoreLine.getShoreBottom().x -= damage,this.shoreLine.getShoreBottom().y));
 	}
 
 	/**
@@ -512,6 +512,9 @@ public class Model {
 		this.gameScenery.setScenery(scenery);
 		System.out.println(gameScenery);
 	}
+	public void initShoreline(){
+		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
+	}
 
 	/**
 	 * @author Pulled from Orc animation lab
@@ -589,17 +592,11 @@ public class Model {
 	public void setShoreLine(Shoreline shoreLine) {
 			this.shoreLine = shoreLine;
 	}
-	public void initShoreline(){
-		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
-	}
+	
 
 	public int getNumBoxes() {
 		return numBoxes;
 	}
-
-//	public int getminShoreLine() {
-//		return minShoreLine;
-//	}
 	
 	public static ArrayList<GameObject> getGameObjs(){
 		return gameObjs;
