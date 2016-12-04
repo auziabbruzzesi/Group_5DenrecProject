@@ -535,7 +535,13 @@ public class Model {
 /*
  * Setters and Getters
  */
+	public int getScore() {
+		return score;
+	}
 
+	public void setScore(int score) {
+		this.score = score;
+	}
 	public Player getP() {
 		return p;
 	}
