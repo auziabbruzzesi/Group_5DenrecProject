@@ -250,8 +250,6 @@ public class Controller implements MouseListener {
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
 					m.getBoxes().get(putDownBox).incrementCount();
 					// set box type in model if this is 1st item placed in box
-				
-					
 						Box currBox = m.getBoxes().get(putDownBox);
 						currBox.setContains(m.getP().getHT());
 						if(m.getP().getHT() == HoldingType.CONCRETE){
@@ -259,9 +257,7 @@ public class Controller implements MouseListener {
 						}
 						else if(m.getP().getHT() == HoldingType.OYSTER){
 							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
-							v.updateViewObjs();
-						
-						
+							v.updateViewObjs();					
 					}
 
 					
