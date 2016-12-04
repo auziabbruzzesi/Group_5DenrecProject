@@ -34,11 +34,13 @@ public class Player extends GameObject implements MoveObjects {
 	 */
 	public boolean pickUp(HoldingType boType) {
 		if (this.getHT() == HoldingType.EMPTY) {
-			this.setHT(boType);
-			return true;
-		} else {
-			return false;
+			if (boType == HoldingType.OYSTER || boType == HoldingType.CONCRETE) {
+				this.setHT(boType);
+				return true;
+			}
 		}
+		
+		return false;
 	}
 
 	public void updateSprite() {
