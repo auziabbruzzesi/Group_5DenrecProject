@@ -5,6 +5,7 @@ import static org.junit.Assert.*;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 
 import org.junit.After;
 import org.junit.Before;
@@ -27,7 +28,7 @@ public class ModelTest {
 	Point playerPos = new Point(5, 5);
 	BeachObject concrete = new BeachObject(new Point(2, 4), HoldingType.CONCRETE, null);
 	HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
-	HashMap<Point, Box> boxes = new HashMap<Point, Box>();
+	LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
 	ArrayList<Wave> waves = new ArrayList<Wave>();
 	int numWaves = 6;
 	int shoreLine = 840;

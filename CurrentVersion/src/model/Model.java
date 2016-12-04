@@ -17,6 +17,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -46,7 +47,7 @@ public class Model {
 	
 	private Player p;
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
-	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
+	private LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private HealthBar HB = new HealthBar(50, 200);
 	private Shoreline shoreLine;
@@ -561,14 +562,13 @@ public class Model {
 		beachObjHM = beachObject;
 	}
 
-	public HashMap<Point, Box> getBoxes() {
+	public LinkedHashMap<Point, Box> getBoxes() {
 		return boxes;
 	}
 
-	public void setBoxes(HashMap<Point, Box> boxes) {
+	public void setBoxes(LinkedHashMap<Point, Box> boxes) {
 		this.boxes = boxes;
 	}
-
 	public HealthBar getHB() {
 		return HB;
 	}
@@ -576,7 +576,6 @@ public class Model {
 	public void setHB(HealthBar hB) {
 		HB = hB;
 	}
-
 	public ArrayList<Wave> getWaves() {
 		return waves;
 	}

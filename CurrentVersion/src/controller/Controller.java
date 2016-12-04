@@ -254,6 +254,7 @@ public class Controller implements MouseListener {
 						currBox.setContains(m.getP().getHT());
 						if(m.getP().getHT() == HoldingType.CONCRETE){
 							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
+							v.updateViewObjs();	
 						}
 						else if(m.getP().getHT() == HoldingType.OYSTER){
 							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
@@ -330,6 +331,7 @@ public class Controller implements MouseListener {
 			a++;	
 		}
 		m.updateWavesDestinations();
+		v.updateViewObjs();
 	}
 
 
@@ -370,23 +372,18 @@ public class Controller implements MouseListener {
 				decrement = 3;
 			}
 			b.setCount(b.getCount() - 1);
-			//
-			//b.setObjIcon(m.getGabionImages()[b.getCount()]);
+			b.setObjIcon(m.getGabionImages()[b.getCount()]);
 			break;
 		case CONCRETE:
 			if(b.isfull()){
 				decrement = 3;
-			//	b.setCount(b.getCount() - 1);
-				//
-				//b.setObjIcon(m.concreteImages[b.getCount()]);
-				
+
 			}
 			else{
 				decrement = 4;
 			}
 			b.setCount(b.getCount() - 1);
-			
-			
+			b.setObjIcon(m.concreteImages[b.getCount()]);
 			break;
 		default:
 			System.out.println("Error: Box contains = " + b.getContains());
