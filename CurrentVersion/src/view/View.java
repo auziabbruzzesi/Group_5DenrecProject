@@ -11,6 +11,8 @@ import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -27,6 +29,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import controller.status;
@@ -57,13 +60,50 @@ public class View extends JFrame {
 	public SaveButton sb;
 	public LoadButton lb;
    
+	
+	Timer screenTimer = new Timer(1, new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			setSize(Toolkit.getDefaultToolkit().getScreenSize());
+			viewHeight = getContentPane().getHeight();
+			viewWidth = getContentPane().getWidth();
+			
+
+			//m.gameDi = v.getContentPane().getSize();
+
+		}
+	});
+	
 	/*
 	 * View Constructor
 	 */
 	public View() {
 		initView();
 	}
+	
+	public View(String s){
+		if( s == "t" ){
+			initView();
+		}
+	}
 
+	public void playTutorial(){
+		screenTimer.start();
+		
+		JOptionPane.showMessageDialog(null, "Welcome to Estuary Quest!");
+		JOptionPane.showMessageDialog(null, "Oh no, the estuary is being eroded away by BIG waves! Let's protect it!");
+		JOptionPane.showMessageDialog(null, "Click on an oyster to pick it up!");
+//		button k;
+		for( button b : this.gameObjBtns ){
+			if( b.getType() == HoldingType.OYSTER  ){
+//				if(b.getLocation() ){
+//					k = b;
+//				}
+			}
+		}
+	}
+	
 	/*
 	 * General functions
 	 */
@@ -149,7 +189,7 @@ public class View extends JFrame {
 		pack();
 		setVisible(true);
 		
-		System.out.println("\n\nView's array of buttons contains:\n"+this.gameObjBtns+"\n\n");
+//		System.out.println("\n\nView's array of buttons contains:\n"+this.gameObjBtns+"\n\n");
 
 	}
 public void initSaveBtn(){

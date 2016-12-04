@@ -20,10 +20,17 @@ import view.View;
 public class Main {
 
 	static Model m = new Model(/*State tutorial*/);
-	static View v = new View(/*State tutorial*/);
+	static View v = new View("t"/*State tutorial*/);
 	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
 	public static void main(String[] args) {
+		
+		//tutorial
+//		v.screenTimer.start();
+		
+		c.playTutorial();
+		
+		
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
 		c.wTimer.start();

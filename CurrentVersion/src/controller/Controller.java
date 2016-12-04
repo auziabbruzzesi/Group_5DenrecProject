@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Insets;
 import java.awt.Point;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -56,25 +57,36 @@ public class Controller implements MouseListener {
 	private Point putDownBox = new Point();
 
 	int i = 0;
-	//GameObject go;
 
+	
+	//Tutorial stuff
+	
+	public void playTutorial(){
+		//everything will display - model & view initialized as normal
+		//display a welcome dialog (view init) 
+		v.playTutorial();
+		
+	}
+	
+
+	
+	
 /*
  * Timers (2)
  *   wTimer - handles waves
  *   pTimer - handles player movement
  */
 
+	
+
+	
+	
 	/**
 	 * @author Eaviles
 	 */
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			View.viewHeight = v.getContentPane().getHeight();
-			View.viewWidth = v.getContentPane().getWidth();
-			v.getJPanel().setSize(v.getContentPane().getSize());
-			
-			m.gameDi = v.getContentPane().getSize();
 			
 		//	m.initSprites();
 			//v.updateViewObjs();
@@ -113,7 +125,8 @@ public class Controller implements MouseListener {
 	public Controller(Model m, View v) {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor
-		
+		v.setSize(m.gameDi);
+		v.getJPanel().setSize(m.gameDi);
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewSaveBtnListeners();
