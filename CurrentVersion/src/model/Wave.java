@@ -24,7 +24,7 @@ public class Wave extends GameObject {
 	public static final int waveToTopSpacing = 100;
 	private int velocity;
 
-	private Point initialPos;
+	private final Point initialPos;
 	private Random randomGenerator = new Random();
 	private Shoreline shoreline;
 	
@@ -54,7 +54,7 @@ public class Wave extends GameObject {
 		this.setDestination(d);
 		
 		setObjIcon(k);
-		System.out.println("wave constructor: startpos = "+this.getInitialPos());
+//		System.out.println("wave constructor: startpos = "+this.getInitialPos());
 	}
 
 	
@@ -71,9 +71,7 @@ public class Wave extends GameObject {
 		return initialPos;
 	}
 
-	public void setInitialPos(Point p) {
-		this.initialPos = p;
-	}
+
 
 	/**
 	 * @author Eaviles
@@ -81,8 +79,9 @@ public class Wave extends GameObject {
 	 * starting position. Velocity is reset (see resetVelocity function for details). Shoreline recedes
 	 * after wave collision, so wave's destination changes slightly, as well. 
 	 */
-	public void reset(Point newDest){
-		setPosition(initialPos);
+	public void reset(Point start, Point newDest){
+//		System.out.println("resetting wave. stored startpos = "+this.getInitialPos());
+		setPosition(start);
 		setDestination(newDest);
 		resetVelocity();
 	}

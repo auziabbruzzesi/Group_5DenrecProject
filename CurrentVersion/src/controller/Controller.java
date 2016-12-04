@@ -238,7 +238,13 @@ public class Controller implements MouseListener {
 			
 			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
 			else {
-				System.out.println("in model's movewaves(). have not reset wave. startpos = "+w.getInitialPos());							
+//				System.out.println("in controller's movewaves(). have not reset wave. startpos = "+w.getInitialPos());							
+
+//				System.out.println("\nwave start positions:");
+//				for(Wave v:m.getWaves()){
+//					System.out.println(v.getInitialPos());
+//				}
+				
 				int shoreDamage = determineDamage(w);				
 
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
@@ -249,6 +255,11 @@ public class Controller implements MouseListener {
 				m.getHB().damage(healthDamage);
 				
 				m.resetWave(a);
+				
+//				System.out.println("\nwave start positions post-reset:");
+//				for(Wave v:m.getWaves()){
+//					System.out.println(v.getInitialPos());
+//				}
 //				System.out.println("in model's movewaves(). have reset. startpos = "+w.getInitialPos()+"\n");
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 			}

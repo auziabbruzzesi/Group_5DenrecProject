@@ -109,8 +109,10 @@ public class Model {
 		 *  should be based on where shoreline currently is, and reset it based on that. 
 		 */
 			Wave w = waves.get(a);
-			Point newDest = new Point(getShoreLine().findCorrespondingX(w.getPosition().y), w.getDestination().y);
-			w.reset(newDest);
+			Point startPos = new Point( this.gameDi.width - Wave.waveWidth, w.getPosition().y );
+			Point newDest = new Point( ( getShoreLine().findCorrespondingX(w.getInitialPos().y) ), w.getDestination().y);
+//			System.out.println("calculated destination = "+newDest);
+			w.reset(startPos, newDest);
 	}
 
 
@@ -252,13 +254,13 @@ public class Model {
 		int i=0;
 		for( Box b : this.getBoxes().values() ){
 			
-			Point p = new Point( this.gameDi.width - Wave.waveWidth, b.getPosition().y + Box.boxDimensions/2 /*its own x, but same y as box*/ );
+			Point p = new Point( this.gameDi.width - Wave.waveWidth, b.getPosition().y + Box.boxDimensions/2 );
 			Wave w = new Wave(p, pics[11],this.shoreLine.findCorrespondingX(p.y));
 
 			w.setIndex(i);
 			this.waves.add(w);
 			i++;
-			System.out.println("in model's initwaves() startpos = "+w.getInitialPos()+"\n");
+//			System.out.println("in model's initwaves() startpos = "+w.getInitialPos()+"\n");
 		}
 		
 	}
