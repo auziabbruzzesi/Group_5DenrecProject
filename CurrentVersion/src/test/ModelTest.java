@@ -13,6 +13,7 @@ import org.junit.Test;
 
 import model.BeachObject;
 import model.Box;
+import model.GameObject;
 import model.HoldingType;
 import model.Model;
 import model.Player;
@@ -36,17 +37,6 @@ public class ModelTest {
 	Box b3 = new Box();
 	Box b4 = new Box();
 
-	@BeforeClass
-	public static void setUpBeforeClass() throws Exception {
-	}
-
-	@Before
-	public void setUp() throws Exception {
-	}
-
-	@After
-	public void tearDown() throws Exception {
-	}
 
 	@Test
 	public void playerOverlapTest() {
@@ -98,38 +88,22 @@ public class ModelTest {
 	// TODO: figure out why this test is failing!!!!!!!!!!!!!!!!
 	@Test
 	public void resetWaveTest() {
-		// model.resetWave(2);
-		// Point defaultPos = new Point(10, 2);
-		// Wave w1 = new Wave(defaultPos);
-		// Wave w2 = new Wave(new Point (1,1));
-		//
-		// waves.add(w1);
-		// waves.add(w2);
-		//
-		// //Wave w2 = new Wave(new Point (1,1));
-		//
-		// //waves.add(w2);
-		// model.resetWave(2);
-		//
-		//// waves.add(w1);
-		//// waves.add(w2);
-		// // waves.add(new Wave(new Point(3,3)));
-		// //model.resetWave(2);
-		//
-		// assertEquals(w1.getCurrentPos().x, w2.getCurrentPos().x);
-		//
+		 model.resetWave(2);
+		 Point defaultPos = new Point(10, 2);
+		 Wave w1 = new Wave(defaultPos, null, 15);
+		 Wave w2 = new Wave(new Point (1,1), null, 20);
+		
+		 waves.add(w1);
+		 waves.add(w2);
+		
+		 model.resetWave(2);
+		
+		 assertEquals(w1.getInitialPos().x, w1.getPosition().x, 0);
+		 assertEquals(w1.getDestination().x, 15);
+		 assertEquals(w2.getDestination().x, 20);
+		
 
 	}
-
-	// TODO: updateShorelineTest
-//	@Test
-//	public void updateShorelineTest() {
-//
-//		int damage = 10;
-//		model.updateShoreLine(damage);
-//		assertTrue(model.getShoreLine() == (shoreLine - damage));
-//
-//	}
 
 	@Test
 	public void allBoxesNotTest() {
@@ -186,5 +160,16 @@ public class ModelTest {
 		assertEquals(w1.getDestination().getX(), 5, 0);
 		
 	}
-
+	@Test
+	public void updateShorelineTest(){
+		Shoreline sl = new Shoreline(new Point(10,10), new Point(100,100));
+		model.setShoreLine(sl);
+		model.updateShoreLine(10);
+		
+		assertEquals(sl.getShoreTop().x, 0);  // decrement 10
+		assertEquals(sl.getShoreTop().y, 10);
+		assertEquals(sl.getShoreBottom().x, 90);  // decrement 10
+		assertEquals(sl.getShoreBottom().y, 100);  
+	}
+	
 }
