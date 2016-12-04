@@ -68,6 +68,7 @@ public class Model {
 		ImageIcon[] oysterBoxes;
 		ImageIcon[] crabPics;
 		public ImageIcon[] concreteImages;
+		private ImageIcon[] gabionImages;
 		transient BufferedImage[] scenery = new BufferedImage[2];	
 		Scenery gameScenery = new Scenery();
 	
@@ -233,13 +234,13 @@ public class Model {
 			//Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
 			System.out.println(((this.gameDi.width*.36)+(i*47)));
 			Point p = new Point((int) ((this.gameDi.width*.36)+(i*47)),73+(i*131));
-			Box.boxDimensions = (int) (.3*this.gameDi.height);
+			//Box.boxDimensions = (int) (.3*this.gameDi.height);
 			//pics[10].setImage(pics[10].getImage());
 			
-			Box box = new Box(p, new ImageIcon(concreteImages[0].getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
+			Box box = new Box(p, concreteImages[0]);//.getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
 			box.setCapacity(3);
-			box.setCount(3);
-			box.setContains(HoldingType.CONCRETE);
+			box.setCount(0);
+			box.setContains(HoldingType.EMPTY);
 			box.setIndex(i);
 			this.boxes.put(p, box);
 //			System.out.println("ht (not contains) for this box = "+box.getH());
@@ -471,8 +472,9 @@ public class Model {
 
 		String[] myNames = { "crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
 				"crabSE.png","crabSW.png", "concrete1.png", "oyster1.png","box.png", "wave.png"};
-		String[] boxImages = {"concrete100.png","box2.png","box3.png","box4.png","box5.png"};
-		String[] concreteFiles = {"concrete100.png"};//,"concrete66.png","concrete33.png"};
+		
+		String[] concreteFiles = {"empty.png","concrete33.png","concrete66.png","concrete100.png"};
+		String[] gabionFiles = {"empty.png", "gabion33.png","gabion66.png","gabion100.png"};
 		String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
 								"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
 								"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
@@ -480,8 +482,8 @@ public class Model {
 		
 		String[] sceneryFiles = {"shore.png", "sky.png"};
 		pics = new ImageIcon[myNames.length];
-		oysterBoxes = new ImageIcon[boxImages.length];
 		concreteImages = new ImageIcon[concreteFiles.length];
+		setGabionImages(new ImageIcon[gabionFiles.length]);
 		crabPics = new ImageIcon[crabFiles.length];
 		scenery = new BufferedImage[sceneryFiles.length];
 		
@@ -492,11 +494,7 @@ public class Model {
 			i++;
 		}
 		i = 0;
-		for(String s : boxImages){
-			oysterBoxes[i] = createImage(s);
-			i++;
-		}
-		i=0;
+	
 		for(String s : crabFiles){
 			crabPics[i] = createImage(s);
 			i++;
@@ -507,6 +505,10 @@ public class Model {
 			i++;
 		}
 		i = 0;
+		for(String s: gabionFiles){
+			getGabionImages()[i] = createImage(s);
+			i++;
+		}
 		scenery[0] = (BufferedImage) createImage("sky.png").getImage();
 		scenery[1] = (BufferedImage) createImage("shore.png").getImage();	
 		
@@ -589,6 +591,12 @@ public class Model {
 
 	public void setShoreLine(Shoreline shoreLine) {
 			this.shoreLine = shoreLine;
+	}
+	public ImageIcon[] getGabionImages() {
+		return gabionImages;
+	}
+	public void setGabionImages(ImageIcon[] gabionImages) {
+		this.gabionImages = gabionImages;
 	}
 	public void initShoreline(){
 		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));

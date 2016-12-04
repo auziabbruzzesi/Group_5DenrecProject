@@ -11,7 +11,7 @@ public class Box extends GameObject {
 	private Point position;
 	private int capacity = 3;
 	private int count;
-	private HoldingType h = HoldingType.BOX;
+	
 	private HoldingType contains = HoldingType.EMPTY;
 	private boolean isfull = false;
 	private Icon objIcon;
@@ -37,6 +37,7 @@ public class Box extends GameObject {
 	public Box(Point p, Icon k) {
 		this.position = p;
 		setObjIcon(k);
+		setMyType(HoldingType.BOX);
 	}
 
 	public Box(Point p, int capacity) {
@@ -71,6 +72,9 @@ public class Box extends GameObject {
 
 	public void setCount(int count) {
 		this.count = count;
+		if(count == 0){
+			this.contains = HoldingType.EMPTY;
+		}
 	}
 
 	public void incrementCount(){
@@ -80,14 +84,9 @@ public class Box extends GameObject {
 		}
 	}
 
-	public HoldingType getHoldingType() {
-		System.out.println("returning h ="+h);
-		return h;
-	}
 
-	public void setHoldingType(HoldingType h) {
-		this.h = h;
-	}
+
+
 
 	public boolean isfull() {
 		return isfull;

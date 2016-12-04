@@ -58,14 +58,21 @@ public class Controller implements MouseListener {
 
 	int i = 0;
 
+	Boolean tutorial = null;
 	
 	//Tutorial stuff
 	
+/**
+ * @author Eaviles
+ * Purpose: calls the necessary functions for the game tutorial to execute. 
+ * Regulates the flow of the tutorial.
+ */
 	public void playTutorial(){
 		//everything will display - model & view initialized as normal
-		//display a welcome dialog (view init) 
-		v.playTutorial();
-		
+		//display a welcome dialog (view init)
+		tutorial = true;
+		v.playTutorialSequence(1);
+		v.getK().addMouseListener(this);	
 	}
 	
 
@@ -93,7 +100,7 @@ public class Controller implements MouseListener {
 			//m.initSprites();
 			
 			moveWaves();
-			v.updateViewObjs();
+//			v.updateViewObjs();
 			
 			v.repaint();
 			checkGameStatus();
@@ -102,18 +109,19 @@ public class Controller implements MouseListener {
 	});
 
 	/**
-	 * @Auzi
+	 * @author Auzi
 	 */
 	Timer pTimer = new Timer(10, new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+//			System.out.println("ptimer");
 			m.getP().updateDirection();
 			m.updatePlayerSprite();
 //			player.setBorder(BorderFactory.createEmptyBorder());
 			
 			m.getP().move();
-			updatePlayerMV();
+			handlePlayerAction();
 		}
 	});
 
@@ -125,8 +133,9 @@ public class Controller implements MouseListener {
 	public Controller(Model m, View v) {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor
-		v.setSize(m.gameDi);
-		v.getJPanel().setSize(m.gameDi);
+		v.viewHeight = m.gameDi.height;
+		v.viewWidth = m.gameDi.width;
+		//v.getJPanel().setSize(m.gameDi);
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewSaveBtnListeners();
@@ -168,10 +177,17 @@ public class Controller implements MouseListener {
 		// TODO Auto-generated method stub
 		return new File("game.sav").isFile();
 	}
+
 /*
  * General functions
  */
-	public void updatePlayerMV() {
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: dictates what should happen when a player tries to pickup or putdown
+	 * a BeachObject.
+	 */
+	public void handlePlayerAction() {
 
 		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {
 			
@@ -181,11 +197,16 @@ public class Controller implements MouseListener {
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
 
-				System.out.println("topickup = "+objToPickUp);
+//				System.out.println("Pickuprequest true. Topickup = "+objToPickUpHT);
 				
 				//try to pickup the object. If we are successful, remove that object from jpanel
 				if (m.getP().pickUp(objToPickUpHT)) {
 					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix?
+					m.updatePlayerSprite();
+					
+//					if(tutorial){
+//						v.playTutorialSequence(2);
+//					}
 				}
 				m.updatePlayerSprite();
 				pickUpRequest = false;
@@ -214,17 +235,26 @@ public class Controller implements MouseListener {
 
 				// check box not full
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
-
+					m.getBoxes().get(putDownBox).incrementCount();
 					// set box type in model if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						m.getBoxes().get(putDownBox).setContains(m.getP().getHT());
+						Box currBox = m.getBoxes().get(putDownBox);
+						currBox.setContains(m.getP().getHT());
+						if(m.getP().getHT() == HoldingType.CONCRETE){
+							currBox.setObjIcon(m.concreteImages[currBox.getCount() -1]);
+						}
+						else if(m.getP().getHT() == HoldingType.OYSTER){
+							currBox.setObjIcon(m.getGabionImages()[currBox.getCount() -1]);
+						}
+						
 					}
 
-					m.getBoxes().get(putDownBox).incrementCount();
+					
 					
 //					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
 					m.getP().setHT(HoldingType.EMPTY);
 				}
+				v.updateViewObjs();
 			}
 		 
 		else {
@@ -274,6 +304,16 @@ public class Controller implements MouseListener {
 //					System.out.println(v.getInitialPos());
 //				}
 //				System.out.println("in model's movewaves(). have reset. startpos = "+w.getInitialPos()+"\n");
+				System.out.println("################################################################################");
+				for(Box b : m.getBoxes().values()){
+				
+					System.out.println("box index: " + b.getIndex());
+					System.out.println("box Type: " + b.getContains());
+					System.out.println("box IconImage: " + b.getObjIcon());
+					System.out.println("Box Count: "+ b.getCount());
+					
+				}
+				System.out.println("###############################################################################");
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 			}
 			a++;	
@@ -307,8 +347,8 @@ public class Controller implements MouseListener {
 		switch (b.getContains()) {
 		case EMPTY:
 			decrement = 5;		
-			b.setCount(b.getCount() -1);
-			b.setObjIcon(m.concreteImages[b.getCount() - 1]);
+			//b.setCount(b.getCount() -1);
+			//b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 			break;
 		case OYSTER:
 			if(b.isfull()){
@@ -318,14 +358,21 @@ public class Controller implements MouseListener {
 			else{
 				decrement = 3;
 			}
+			b.setCount(b.getCount() - 1);
 			break;
 		case CONCRETE:
 			if(b.isfull()){
 				decrement = 3;
+			//	b.setCount(b.getCount() - 1);
+				//
+				//b.setObjIcon(m.concreteImages[b.getCount()]);
+				
 			}
 			else{
 				decrement = 4;
 			}
+			b.setCount(b.getCount() - 1);
+			
 			
 			break;
 		default:
@@ -354,16 +401,20 @@ public class Controller implements MouseListener {
 //		}
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
-			
+//			System.out.println("button clicked");
 			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
 			
+			//if a box was clicked
 			if ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.BOX) {
 				putDownRequest = true;
 				putDownBox = e.getComponent().getLocation();
-			} else {
+			} 
+			//if anything else was clicked
+			else {
+//				System.out.println("button with type "+ ( (View.button)(e.getComponent()) ).getType() + " clicked");
 				pickUpRequest = true;
 				objToPickUp = e.getComponent().getLocation();
-				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getHoldingType();
+				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getType();
 			}
 		}
 
