@@ -4,6 +4,7 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
+
 import javax.swing.Icon;
 
 
@@ -17,12 +18,8 @@ public abstract class GameObject implements Serializable {
  *
  */
 
-
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 571534261898920559L;
+	
 	
 	private Point position;
 	private transient Icon myIcon;
@@ -34,7 +31,6 @@ public abstract class GameObject implements Serializable {
 	private int totalDecrement = 0;
 	private double insideHeight = height;
 	private double startingY = 0;
-
 	BufferedImage[] scenery;
 	
     public GameObject(){
@@ -123,5 +119,4 @@ public abstract class GameObject implements Serializable {
 	public void setMyType(HoldingType myType) {
 		this.myType = myType;
 	}
-	
 }

@@ -235,17 +235,26 @@ public class Controller implements MouseListener {
 
 				// check box not full
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
-
+					m.getBoxes().get(putDownBox).incrementCount();
 					// set box type in model if this is 1st item placed in box
 					if (boxContains == HoldingType.EMPTY) {
-						m.getBoxes().get(putDownBox).setContains(m.getP().getHT());
+						Box currBox = m.getBoxes().get(putDownBox);
+						currBox.setContains(m.getP().getHT());
+						if(m.getP().getHT() == HoldingType.CONCRETE){
+							currBox.setObjIcon(m.concreteImages[currBox.getCount() -1]);
+						}
+						else if(m.getP().getHT() == HoldingType.OYSTER){
+							currBox.setObjIcon(m.getGabionImages()[currBox.getCount() -1]);
+						}
+						
 					}
 
-					m.getBoxes().get(putDownBox).incrementCount();
+					
 					
 //					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
 					m.getP().setHT(HoldingType.EMPTY);
 				}
+				v.updateViewObjs();
 			}
 		 
 		else {
@@ -295,6 +304,16 @@ public class Controller implements MouseListener {
 //					System.out.println(v.getInitialPos());
 //				}
 //				System.out.println("in model's movewaves(). have reset. startpos = "+w.getInitialPos()+"\n");
+				System.out.println("################################################################################");
+				for(Box b : m.getBoxes().values()){
+				
+					System.out.println("box index: " + b.getIndex());
+					System.out.println("box Type: " + b.getContains());
+					System.out.println("box IconImage: " + b.getObjIcon());
+					System.out.println("Box Count: "+ b.getCount());
+					
+				}
+				System.out.println("###############################################################################");
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 			}
 			a++;	
@@ -328,8 +347,8 @@ public class Controller implements MouseListener {
 		switch (b.getContains()) {
 		case EMPTY:
 			decrement = 5;		
-			b.setCount(b.getCount() -1);
-			b.setObjIcon(m.concreteImages[b.getCount() - 1]);
+			//b.setCount(b.getCount() -1);
+			//b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 			break;
 		case OYSTER:
 			if(b.isfull()){
@@ -339,14 +358,21 @@ public class Controller implements MouseListener {
 			else{
 				decrement = 3;
 			}
+			b.setCount(b.getCount() - 1);
 			break;
 		case CONCRETE:
 			if(b.isfull()){
 				decrement = 3;
+			//	b.setCount(b.getCount() - 1);
+				//
+				//b.setObjIcon(m.concreteImages[b.getCount()]);
+				
 			}
 			else{
 				decrement = 4;
 			}
+			b.setCount(b.getCount() - 1);
+			
 			
 			break;
 		default:

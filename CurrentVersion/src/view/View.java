@@ -176,10 +176,13 @@ public class View extends JFrame {
 				}
 			}
 			// BOX
-			else if (Model.getGameObjs().get(i) instanceof Box) {
-				gameObjBtns.get(i).setLocation((Model.getGameObjs().get(i)).getPosition());
-				gameObjBtns.get(i).setIcon(((Model.getGameObjs().get(i))).getObjIcon());
-				gameObjBtns.get(i).setSize(Box.boxDimensions, Box.boxDimensions);
+
+			else if ( Model.getGameObjs().get(i) instanceof Box ) {
+				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
+				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
+				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
+				
+
 			}
 		}
 	}
@@ -267,9 +270,9 @@ public class View extends JFrame {
 				scenery = Model.getGameObjs().get(i).getScenery();
 			} else {
 				button j = new button();
-				j.setMargin(new Insets(0, 0, 0, 0));
-				j.setBorder(BorderFactory.createEmptyBorder());
-				j.setContentAreaFilled(false);
+//				j.setMargin(new Insets(0, 0, 0, 0));
+//				j.setBorder(BorderFactory.createEmptyBorder());
+//				j.setContentAreaFilled(false);
 
 				// PLAYER
 				if (Model.getGameObjs().get(i) instanceof Player) {
