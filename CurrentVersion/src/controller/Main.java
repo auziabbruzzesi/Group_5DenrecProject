@@ -15,7 +15,7 @@ import javax.swing.Timer;
 import model.HoldingType;
 import model.Model;
 import model.Player;
-import view.View;
+import view.*;
 
 public class Main {
 

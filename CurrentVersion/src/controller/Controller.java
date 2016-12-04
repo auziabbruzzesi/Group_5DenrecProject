@@ -57,7 +57,11 @@ public class Controller implements MouseListener {
 	private Point putDownBox = new Point();
 
 	int i = 0;
-
+	
+	//save and load variable
+	int saveFileNum=1;
+	String fname=Integer.toString(saveFileNum)+".sav";
+	
 	Boolean tutorial = null;
 	
 	//Tutorial stuff
@@ -141,42 +145,49 @@ public class Controller implements MouseListener {
 		initViewSaveBtnListeners();
 	}
 
-/*
- * Save and load function
- */
-	public void save(Serializable objectToSerializa){
-		FileOutputStream fos=null;//file creation
-		try{
-			fos=new FileOutputStream("game.sav");
-			ObjectOutputStream oos=new ObjectOutputStream(fos);
-			oos.writeObject(objectToSerializa);
-			oos.flush();
-			oos.close();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+	/*
+	 * Save and load function
+	 */
+		public void save(Serializable objectToSerializa,String filename){
+			FileOutputStream fos=null;//file creation
+			try{
+				fos=new FileOutputStream(filename);
+				ObjectOutputStream oos=new ObjectOutputStream(fos);
+				oos.writeObject(objectToSerializa);
+				oos.flush();
+				oos.close();
+				//System.out.println("save game"+filename);
+
+				//System.out.println(objectToSerializa.toString());
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 		
 	}
 
-	public static void load(){
-		if(checkFileExists()){
-			FileInputStream fis=null;
-		
-		try{
-			fis=new FileInputStream("game.sav");
-			ObjectInputStream ois=new ObjectInputStream(fis);
-			GameObject loadedObject=(GameObject)ois.readObject();
-			ois.close();
-		}catch(ClassNotFoundException|IOException e){
-			e.printStackTrace();
-		}
-	}
-	}
+		public static void load(String loadName){
+			if(checkFileExists()){
+				FileInputStream fis=null;
+			
+			try{
+				fis=new FileInputStream(loadName);
 
-	private static boolean checkFileExists() {
-		// TODO Auto-generated method stub
-		return new File("game.sav").isFile();
-	}
+				ObjectInputStream ois=new ObjectInputStream(fis);
+				GameObject loadedObject=(GameObject)ois.readObject();
+
+				ois.close();
+				//System.out.println("load game");
+				//System.out.println(loadedObject.toString());
+			}catch(ClassNotFoundException|IOException e){
+				e.printStackTrace();
+			}
+		}
+		}
+
+		private static boolean checkFileExists() {
+			// TODO Auto-generated method stub
+			return new File("game.sav").isFile();
+		}
 
 /*
  * General functions
@@ -228,6 +239,8 @@ public class Controller implements MouseListener {
 		String type = "";
 		// check player is holding something
 		if (m.getP().getHT() != HoldingType.EMPTY) {
+			//what's in the box is stored in a variable
+			
 			HoldingType boxContains = m.getBoxes().get(putDownBox).getContains();
 
 			// check type of obj matches box type, or box is empty
@@ -237,15 +250,17 @@ public class Controller implements MouseListener {
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
 					m.getBoxes().get(putDownBox).incrementCount();
 					// set box type in model if this is 1st item placed in box
-					if (boxContains == HoldingType.EMPTY) {
+				
+					
 						Box currBox = m.getBoxes().get(putDownBox);
 						currBox.setContains(m.getP().getHT());
 						if(m.getP().getHT() == HoldingType.CONCRETE){
-							currBox.setObjIcon(m.concreteImages[currBox.getCount() -1]);
+							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
 						}
 						else if(m.getP().getHT() == HoldingType.OYSTER){
-							currBox.setObjIcon(m.getGabionImages()[currBox.getCount() -1]);
-						}
+							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
+							v.updateViewObjs();
+						
 						
 					}
 
@@ -254,7 +269,7 @@ public class Controller implements MouseListener {
 //					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
 					m.getP().setHT(HoldingType.EMPTY);
 				}
-				v.updateViewObjs();
+				//v.updateViewObjs();
 			}
 		 
 		else {
@@ -296,7 +311,7 @@ public class Controller implements MouseListener {
 //				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
 				m.getHB().damage(healthDamage);
-				
+				//v.updateViewObjs();
 				m.resetWave(a);
 				
 //				System.out.println("\nwave start positions post-reset:");
@@ -359,6 +374,8 @@ public class Controller implements MouseListener {
 				decrement = 3;
 			}
 			b.setCount(b.getCount() - 1);
+			//
+			//b.setObjIcon(m.getGabionImages()[b.getCount()]);
 			break;
 		case CONCRETE:
 			if(b.isfull()){
@@ -474,7 +491,10 @@ public class Controller implements MouseListener {
 			// TODO Auto-generated method stub
 			
 			for(GameObject go:m.getGameObjs()){
-				save(go);
+				save(go,fname);
+				saveFileNum=saveFileNum+1;
+				fname=Integer.toString(saveFileNum)+".sav";
+				//System.out.println("click"+fname);
 			}
 			
 		}
@@ -484,22 +504,22 @@ public class Controller implements MouseListener {
 	}
 	
 	private void initViewLoadBtnListeners() {
-	v.sb.addActionListener(new ActionListener(){
+	v.lb.addActionListener(new ActionListener(){
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			
-			for(GameObject go:m.getGameObjs()){
-				load();
-			}
+	for(int loadNum=saveFileNum-1;loadNum>0;loadNum--){
+		fname=Integer.toString(loadNum)+".sav";
+        //System.out.println("load"+fname);
+				load(fname);
+	}
 			
 		}
 		
 	});
-	System.out.println("Load works");	
+	
 	}
-
 /*
  * Setters & Getters
  */

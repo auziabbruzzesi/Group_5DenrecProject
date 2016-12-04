@@ -18,16 +18,6 @@ public abstract class GameObject implements Serializable {
  *
  */
 
-
-
-	/**
-	 * 
-	 */
-
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 571534261898920559L;
 	
 	
@@ -41,7 +31,6 @@ public abstract class GameObject implements Serializable {
 	private int totalDecrement = 0;
 	private double insideHeight = height;
 	private double startingY = 0;
-//	private int width = 100;
 	BufferedImage[] scenery;
 	
     public GameObject(){
@@ -130,6 +119,4 @@ public abstract class GameObject implements Serializable {
 	public void setMyType(HoldingType myType) {
 		this.myType = myType;
 	}
-	
-
 }
