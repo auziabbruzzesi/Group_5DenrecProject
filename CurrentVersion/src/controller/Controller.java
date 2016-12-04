@@ -168,12 +168,10 @@ public class Controller implements MouseListener {
 			if (pickUpRequest) {
 
 				System.out.println("topickup = "+objToPickUp);
-//				System.out.println("player at = "+m.getP().getPosition());
 				
-				//check that we can pick up the desired object
+				//try to pickup the object. If we are successful, remove that object from jpanel
 				if (m.getP().pickUp(objToPickUpHT)) {
-					//pick it up
-					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix
+					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix?
 				}
 				m.updatePlayerSprite();
 				pickUpRequest = false;
@@ -231,10 +229,7 @@ public class Controller implements MouseListener {
 	public void moveWaves() {
 		int a = 0;
 		for (Wave w : m.getWaves()) {
-//			System.out.println("##################################################################################");
-//			System.out.println("wave "+ w.getIndex() + " position: " + w.getPosition().x + ", " + w.getPosition().y);
-//			System.out.println("wave " + w.getIndex() + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
-//			System.out.println("##################################################################################");
+
 			//if we haven't reached destination
 			if ( w.getPosition().x > w.getDestination().x ) {
 				w.move();		
@@ -262,18 +257,17 @@ public class Controller implements MouseListener {
 	}
 
 
+	/**
+	 * @author Eaviles
+	 * @param w - wave that hit shoreline
+	 * @return int decrement - the amount to decrement the shoreline by
+	 * Purpose: waves will damage the shoreline by different amounts, depending on the contents
+	 * of the box they hit. This function determines how much damage will be done.
+	 */
 	private int determineDamage(Wave w) {
 		int decrement = 0;
 		Box b = null;
 		Point p;
-		//TODO: this is repeated code with what is in model
-		//figure out which box wave crashed on
-//		if (i < m.getBoxes().size()) {
-//			p = new Point(Box.boxX, i * Box.boxToBoxInterval + 20);
-//		} else {
-//			p = new Point(Box.boxX, (m.getNumBoxes() - 1) * Box.boxToBoxInterval + 20);
-//		}
-//		b = m.getBoxes().get(w.getPosition());
 		
 		for( Box k : m.getBoxes().values() ){
 			if(k.getIndex() == w.getIndex()){
@@ -287,8 +281,7 @@ public class Controller implements MouseListener {
 		//set decrement based box contents
 		switch (b.getContains()) {
 		case EMPTY:
-			decrement = 5;
-			
+			decrement = 5;		
 			b.setCount(b.getCount() -1);
 			b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 			break;
@@ -314,11 +307,10 @@ public class Controller implements MouseListener {
 			System.out.println("Error: Box contains = " + b.getContains());
 			break;
 		}
-//		System.out.println("\nbox contains " + b.getContains() + "\nfull = " + b.isfull() + "\ndecrement = " + decrement);
-//		System.out.println("box with index "+b.getIndex() + " decremented");
 		return decrement;
 	}
 
+	
 	@Override
 	public void mousePressed(MouseEvent e) {
 		
@@ -354,6 +346,12 @@ public class Controller implements MouseListener {
 	}
 
 
+	/**
+	 * @author Eaviles
+	 * Purpose: check whether the game has ended. If ended, pause all timers,
+	 * determine the game outcome, craft message communicating the outcome, 
+	 * and tell View to display it.
+	 */
 	private void checkGameStatus() {
 //		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
 		String endMessage = "";

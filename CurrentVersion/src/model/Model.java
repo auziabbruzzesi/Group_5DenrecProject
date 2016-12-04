@@ -591,10 +591,6 @@ public class Model {
 		return numBoxes;
 	}
 
-//	public int getminShoreLine() {
-//		return minShoreLine;
-//	}
-	
 	public static ArrayList<GameObject> getGameObjs(){
 		return gameObjs;
 	}	
