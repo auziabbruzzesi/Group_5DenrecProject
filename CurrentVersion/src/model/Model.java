@@ -579,21 +579,12 @@ public class Model {
 	public Shoreline getShoreLine() {
 		return shoreLine;
 	}
-<<<<<<< HEAD
-=======
-
->>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 
 	public void setShoreLine(Shoreline shoreLine) {
-<<<<<<< HEAD
-
-		this.shoreLine = shoreLine;
-=======
 			this.shoreLine = shoreLine;
 	}
 	public void initShoreline(){
 		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
->>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 	}
 
 	public int getNumBoxes() {
