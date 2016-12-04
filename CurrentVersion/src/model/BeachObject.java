@@ -24,14 +24,15 @@ public class BeachObject extends GameObject {
 		this.setPosition(position);
 		this.setDestination(null);
 		setObjIcon(k);
+		setMyType(h);
 	}
 
 /*
  * Setters & Getters
  */
-	public HoldingType getH() {
-		return h;
-	}
+//	public HoldingType getH() {
+//		return h;
+//	}
 	
 	public void setH(HoldingType h) {
 		this.h = h;

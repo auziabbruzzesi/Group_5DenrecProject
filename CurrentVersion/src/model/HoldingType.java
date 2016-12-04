@@ -7,7 +7,7 @@ public enum HoldingType {
 	OYSTER(2),
 	TRASH(3),
 	RECYCLING(4), 
-	BOX(5) ;
+	BOX(5);
 	
 	private int rank;
 	HoldingType(int rank){

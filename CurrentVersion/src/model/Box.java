@@ -37,6 +37,7 @@ public class Box extends GameObject {
 	public Box(Point p, Icon k) {
 		this.position = p;
 		setObjIcon(k);
+		setMyType(HoldingType.BOX);
 	}
 
 	public Box(Point p, int capacity) {
