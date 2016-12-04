@@ -28,7 +28,6 @@ import java.util.Random;
 import java.util.Set;
 import model.BeachObject;
 import view.View;
-
 public class Model {	
 	
 	//Variables related to initialization
@@ -46,9 +45,9 @@ public class Model {
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private HealthBar HB = new HealthBar(50, 200);
 
-	private Integer shoreLine;
-	private Shoreline shoreLineObj = new Shoreline(800);
-	private int minShoreLine;// TODO: m's & v's shores & minshores in-sync
+	private Shoreline shoreLine;
+	//private Shoreline shoreLineObj;
+	private int losingShorelineCoord;// TODO: m's & v's shores & minshores in-sync
 
 	public Dimension gameDi = new Dimension(1200,650);
 
@@ -66,7 +65,7 @@ public class Model {
 		ImageIcon[] oysterBoxes;
 		ImageIcon[] crabPics;
 		public ImageIcon[] concreteImages;
-		BufferedImage[] scenery = new BufferedImage[2];	
+		transient BufferedImage[] scenery = new BufferedImage[2];	
 		Scenery gameScenery = new Scenery();
 	
 /*
@@ -77,15 +76,16 @@ public class Model {
 		Double a = .206;
 		Double b = .45;
 		Double c = .625;
-		this.shoreLineObj = new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
+		this.shoreLine = new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
 		//System.out.println(this.shoreLineObj.getShoreTop());
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
 		initPlayer();//Same comment as above ^
 		initBoxes();
 		initWaves();
 		initBeachObjs();
-		shoreLine = (2*view.View.viewWidth)/3;
-		minShoreLine = shoreLine - HB.getHeight()+ 100; 
+	//	shoreLine = (2*view.View.viewWidth)/3;
+   // minShoreLine = shoreLine - HB.getHeight()+ 100; 
+		 shoreLine.setLoosingCoordinate(shoreLine.getShoreBottom().x - HB.getHeight() + 100);
 		initGameObjsArr();	
 
 		System.out.println("Instantiating new game");
@@ -93,7 +93,7 @@ public class Model {
 		System.out.println(this.boxes.size() + " Boxes.");
 		System.out.println(this.waves.size() + " Waves.");
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
-		System.out.println("Shoreline = " + getShoreLine());
+		//System.out.println("Shoreline = " + getShoreLine());
 	}
 	public Model(Dimension d){
 		super();
@@ -111,7 +111,7 @@ public class Model {
 		 */
 			Wave w = waves.get(a);
 			Point startPos = new Point(View.viewWidth - Wave.waveWidth, a * Wave.waveSpawnSpacing);
-			Point newDest = new Point(getShoreLine(), w.getDestination().y);
+			Point newDest = new Point(getShoreLine().findCorrespondingX(w.getPosition().y), w.getDestination().y);
 			w.reset(startPos, newDest);
 	}
 
@@ -123,7 +123,7 @@ public class Model {
 	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){
-			Point newDest = new Point(this.shoreLineObj.findCorrespondingX(w.getInitialPos().y), w.getDestination().y);
+			Point newDest = new Point(this.shoreLine.findCorrespondingX(w.getInitialPos().y), w.getDestination().y);
 			w.setDestination(newDest);
 		}		
 	}
@@ -137,8 +137,8 @@ public class Model {
 	
 	public void updateShoreLine(int damage) {
 		
-		this.shoreLineObj.setShoreTop(new Point(this.shoreLineObj.getShoreTop().x -= damage,this.shoreLineObj.getShoreTop().y));
-		this.shoreLineObj.setShoreBottom(new Point(this.shoreLineObj.getShoreBottom().x -= damage,this.shoreLineObj.getShoreBottom().y));
+		this.shoreLine.setShoreTop(new Point(this.shoreLine.getShoreTop().x -= damage,this.shoreLine.getShoreTop().y));
+		this.shoreLine.setShoreBottom(new Point(this.shoreLine.getShoreBottom().x -= damage,this.shoreLine.getShoreBottom().y));
 	}
 
 	/**
@@ -210,7 +210,7 @@ public class Model {
 		gameObjs.addAll(this.waves);
 		gameObjs.addAll( ( Collection <? extends GameObject>) this.beachObjHM.values());
 		gameObjs.add(this.p);
-		gameObjs.add(this.shoreLineObj);
+		gameObjs.add(this.shoreLine);
 		gameObjs.add(gameScenery);//might not need to save this
 		gameObjs.add(this.HB);
 		System.out.println("\n\nModel's array of game objects contains:\n"+gameObjs+"\n\n");
@@ -249,13 +249,13 @@ public class Model {
 	 * Purpose: initializes Waves
 	 */
 	private void initWaves(){
+
 		int i=0;
 		for( Box b : this.getBoxes().values() ){
 			
-//			(int)(this.gameDi.width*b)
-			
 			Point p = new Point( this.gameDi.width - Wave.waveWidth, b.getPosition().y + Box.boxDimensions/2 /*its own x, but same y as box*/ );
-			Wave w = new Wave(p, pics[11],this.shoreLineObj.findCorrespondingX(p.y));
+			Wave w = new Wave(p, pics[11],this.shoreLine.findCorrespondingX(p.y));
+
 			w.setIndex(i);
 			this.waves.add(w);
 			i++;
@@ -575,13 +575,12 @@ public class Model {
 		this.waves = waves;
 	}
 
-	public int getShoreLine() {
-		return shoreLine;
+	public Shoreline getShoreLine() {
+		return this.shoreLine;
 	}
-	public Shoreline getShoreLineObj(){
-		return shoreLineObj;
-	}
-	public void setShoreLine(int shoreLine) {
+
+	public void setShoreLine(Shoreline shoreLine) {
+
 		this.shoreLine = shoreLine;
 	}
 
@@ -589,9 +588,9 @@ public class Model {
 		return numBoxes;
 	}
 
-	public int getminShoreLine() {
-		return minShoreLine;
-	}
+//	public int getminShoreLine() {
+//		return minShoreLine;
+//	}
 	
 	public static ArrayList<GameObject> getGameObjs(){
 		return gameObjs;

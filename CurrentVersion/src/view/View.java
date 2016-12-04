@@ -55,6 +55,7 @@ public class View extends JFrame {
 	private int totalShoreDecrement = 0;
 	
 	public SaveButton sb;
+	public LoadButton lb;
    
 	/*
 	 * View Constructor
@@ -139,7 +140,10 @@ public class View extends JFrame {
 //		jP.setLayout(b);
 		
 		initSaveBtn();
+
+		initLoadBtn();
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
+
 						// Thanks!
 		getContentPane().add(jP);
 		pack();
@@ -155,7 +159,13 @@ public void initSaveBtn(){
 		sb.setText("Save Game");
 		jP.add(sb);
 	}
+public void initLoadBtn(){
 	
+	lb=new LoadButton();	
+	lb.setBounds(1100,50, 100, 50);
+	lb.setText("Load Game");
+	jP.add(lb);
+}
 	
 /**
  * @author Eaviles
@@ -278,6 +288,9 @@ public void initSaveBtn(){
 	public class SaveButton extends JButton {
 		
         }
+	public class LoadButton extends JButton {
+		
+    }
 	public class button extends JButton {
 		private HoldingType h = HoldingType.EMPTY;
 		private HoldingType type;
