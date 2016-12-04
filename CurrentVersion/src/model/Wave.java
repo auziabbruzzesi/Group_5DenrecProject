@@ -18,8 +18,7 @@ public class Wave extends GameObject {
 	public static final int waveHeight = 50; // wave height
 	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
 	public static final int waveToWaveInterval = 100;// distance between created waves
-	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
-	public Model model;
+	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen
 	private int velocity;
 	//private int shorelineX = 360;//TODO:
 	private Point initialPos;
@@ -35,10 +34,11 @@ public class Wave extends GameObject {
 	 * @author Eaviles
 	 * @param p - wave position/initial position
 	 * @param k - wave icon
+	 * @param shorelineDest - wave's current shoreline destination, since it is constantly being updated 
 	 * Purpose: creates a wave at location p with icon k. 
 	 * Initializes wave values position, initalposition, velocity, destination, objectIcon 
 	 */
-	public Wave(Point p, Icon k, int shorelineX) {
+	public Wave(Point p, Icon k, int shorelineDestX) {
 
 		this.setPosition(p);
 		this.setInitialPos(p);
@@ -47,7 +47,7 @@ public class Wave extends GameObject {
 		int v = randomGenerator.nextInt(2) + 1;
 		this.setVelocity(v);
 
-		Point d = new Point((shorelineX), this.getPosition().y);
+		Point d = new Point((shorelineDestX), this.getPosition().y);
 		this.setDestination(d);
 		
 		setObjIcon(k);
@@ -112,12 +112,4 @@ public class Wave extends GameObject {
 	}
 
 
-	public Model getModel() {
-		return model;
-	}
-
-
-	public void setModel(Model model) {
-		this.model = model;
-	}
 }
