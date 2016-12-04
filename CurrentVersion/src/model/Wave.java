@@ -19,10 +19,12 @@ public class Wave extends GameObject {
 	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
 	public static final int waveToWaveInterval = 100;// distance between created waves
 	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
+	public Model model;
 	private int velocity;
 	//private int shorelineX = 360;//TODO:
 	private Point initialPos;
 	private Random randomGenerator = new Random();
+	private Shoreline shoreline;
 	
 	
 /*
@@ -90,11 +92,32 @@ public class Wave extends GameObject {
 		this.setVelocity(v);
 	}
 	
-	//sg
+	
 	public int getVelocity() {
 		return velocity;
 	}	
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
+	}
+
+
+	public Shoreline getShoreline() {
+		return this.shoreline;
+	}
+	
+
+
+	public void setShoreline(Shoreline shoreline) {
+		this.shoreline = shoreline;
+	}
+
+
+	public Model getModel() {
+		return model;
+	}
+
+
+	public void setModel(Model model) {
+		this.model = model;
 	}
 }
