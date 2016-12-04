@@ -57,7 +57,11 @@ public class Controller implements MouseListener {
 	private Point putDownBox = new Point();
 
 	int i = 0;
-
+	
+	//save and load variable
+	int saveFileNum=1;
+	String fname=Integer.toString(saveFileNum)+".sav";
+	
 	Boolean tutorial = null;
 	
 	//Tutorial stuff
@@ -141,42 +145,49 @@ public class Controller implements MouseListener {
 		initViewSaveBtnListeners();
 	}
 
-/*
- * Save and load function
- */
-	public void save(Serializable objectToSerializa){
-		FileOutputStream fos=null;//file creation
-		try{
-			fos=new FileOutputStream("game.sav");
-			ObjectOutputStream oos=new ObjectOutputStream(fos);
-			oos.writeObject(objectToSerializa);
-			oos.flush();
-			oos.close();
-		}catch(IOException e){
-			e.printStackTrace();
-		}
+	/*
+	 * Save and load function
+	 */
+		public void save(Serializable objectToSerializa,String filename){
+			FileOutputStream fos=null;//file creation
+			try{
+				fos=new FileOutputStream(filename);
+				ObjectOutputStream oos=new ObjectOutputStream(fos);
+				oos.writeObject(objectToSerializa);
+				oos.flush();
+				oos.close();
+				//System.out.println("save game"+filename);
+
+				//System.out.println(objectToSerializa.toString());
+			}catch(IOException e){
+				e.printStackTrace();
+			}
 		
 	}
 
-	public static void load(){
-		if(checkFileExists()){
-			FileInputStream fis=null;
-		
-		try{
-			fis=new FileInputStream("game.sav");
-			ObjectInputStream ois=new ObjectInputStream(fis);
-			GameObject loadedObject=(GameObject)ois.readObject();
-			ois.close();
-		}catch(ClassNotFoundException|IOException e){
-			e.printStackTrace();
-		}
-	}
-	}
+		public static void load(String loadName){
+			if(checkFileExists()){
+				FileInputStream fis=null;
+			
+			try{
+				fis=new FileInputStream(loadName);
 
-	private static boolean checkFileExists() {
-		// TODO Auto-generated method stub
-		return new File("game.sav").isFile();
-	}
+				ObjectInputStream ois=new ObjectInputStream(fis);
+				GameObject loadedObject=(GameObject)ois.readObject();
+
+				ois.close();
+				//System.out.println("load game");
+				//System.out.println(loadedObject.toString());
+			}catch(ClassNotFoundException|IOException e){
+				e.printStackTrace();
+			}
+		}
+		}
+
+		private static boolean checkFileExists() {
+			// TODO Auto-generated method stub
+			return new File("game.sav").isFile();
+		}
 
 /*
  * General functions
@@ -474,7 +485,10 @@ public class Controller implements MouseListener {
 			// TODO Auto-generated method stub
 			
 			for(GameObject go:m.getGameObjs()){
-				save(go);
+				save(go,fname);
+				saveFileNum=saveFileNum+1;
+				fname=Integer.toString(saveFileNum)+".sav";
+				//System.out.println("click"+fname);
 			}
 			
 		}
@@ -484,22 +498,22 @@ public class Controller implements MouseListener {
 	}
 	
 	private void initViewLoadBtnListeners() {
-	v.sb.addActionListener(new ActionListener(){
+	v.lb.addActionListener(new ActionListener(){
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
 			
-			for(GameObject go:m.getGameObjs()){
-				load();
-			}
+	for(int loadNum=saveFileNum-1;loadNum>0;loadNum--){
+		fname=Integer.toString(loadNum)+".sav";
+        //System.out.println("load"+fname);
+				load(fname);
+	}
 			
 		}
 		
 	});
-	System.out.println("Load works");	
+	
 	}
-
 /*
  * Setters & Getters
  */
