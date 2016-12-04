@@ -239,6 +239,8 @@ public class Controller implements MouseListener {
 		String type = "";
 		// check player is holding something
 		if (m.getP().getHT() != HoldingType.EMPTY) {
+			//what's in the box is stored in a variable
+			
 			HoldingType boxContains = m.getBoxes().get(putDownBox).getContains();
 
 			// check type of obj matches box type, or box is empty
@@ -248,15 +250,17 @@ public class Controller implements MouseListener {
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
 					m.getBoxes().get(putDownBox).incrementCount();
 					// set box type in model if this is 1st item placed in box
-					if (boxContains == HoldingType.EMPTY) {
+				
+					
 						Box currBox = m.getBoxes().get(putDownBox);
 						currBox.setContains(m.getP().getHT());
 						if(m.getP().getHT() == HoldingType.CONCRETE){
-							currBox.setObjIcon(m.concreteImages[currBox.getCount() -1]);
+							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
 						}
 						else if(m.getP().getHT() == HoldingType.OYSTER){
-							currBox.setObjIcon(m.getGabionImages()[currBox.getCount() -1]);
-						}
+							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
+							v.updateViewObjs();
+						
 						
 					}
 
@@ -265,7 +269,7 @@ public class Controller implements MouseListener {
 //					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
 					m.getP().setHT(HoldingType.EMPTY);
 				}
-				v.updateViewObjs();
+				//v.updateViewObjs();
 			}
 		 
 		else {
@@ -307,7 +311,7 @@ public class Controller implements MouseListener {
 //				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
 				m.getHB().damage(healthDamage);
-				
+				//v.updateViewObjs();
 				m.resetWave(a);
 				
 //				System.out.println("\nwave start positions post-reset:");
@@ -370,6 +374,8 @@ public class Controller implements MouseListener {
 				decrement = 3;
 			}
 			b.setCount(b.getCount() - 1);
+			//
+			//b.setObjIcon(m.getGabionImages()[b.getCount()]);
 			break;
 		case CONCRETE:
 			if(b.isfull()){
