@@ -44,9 +44,7 @@ public abstract class GameObject implements Serializable {
     }
 	private int index;
 
-	public Icon setObjIcon(){
-		return myIcon;
-	}
+
 	public void setPosition(Point p){
 		this.position = p;
 	}

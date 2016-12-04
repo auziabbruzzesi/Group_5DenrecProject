@@ -150,6 +150,7 @@ public class View extends JFrame {
 				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
 				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
 				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
+				
 			}
 		}
 	}
@@ -234,9 +235,9 @@ public void initLoadBtn(){
 				scenery = Model.getGameObjs().get(i).getScenery();
 			} else {
 				button j = new button();
-				j.setMargin(new Insets(0, 0, 0, 0));
-				j.setBorder(BorderFactory.createEmptyBorder());
-				j.setContentAreaFilled(false);
+//				j.setMargin(new Insets(0, 0, 0, 0));
+//				j.setBorder(BorderFactory.createEmptyBorder());
+//				j.setContentAreaFilled(false);
 
 				// PLAYER
 				if ( Model.getGameObjs().get(i) instanceof Player ) {
