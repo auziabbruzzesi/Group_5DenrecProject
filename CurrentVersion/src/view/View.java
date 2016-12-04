@@ -67,6 +67,11 @@ public class View extends JFrame {
 	/*
 	 * General functions
 	 */
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: look at each GameObject in Model's array and update corresponding buttons/images/panels
+	 */
 	public void updateViewObjs() {
 		// for each item in the Model array, look at the type,
 		// look at the item's current position in Model, and update the View
@@ -75,37 +80,33 @@ public class View extends JFrame {
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 
 			// SHORELINE
-			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
-				this.totalShoreDecrement = ( (Shoreline)(Model.getGameObjs().get(i)) ).getTotalDecrement();
-//				System.out.println("model's shoreline in objarray = "+  (Integer) Model.getGameObjs().get(i));
-//				System.out.println("shorelinetop updated. slt = " + shoreLineTop);
+			if ( Model.getGameObjs().get(i) instanceof Shoreline ) {
+				shoreLineTop = Model.getGameObjs().get(i).getShoreTop().x;
+				this.totalShoreDecrement = Model.getGameObjs().get(i).getTotalDecrement();
 			}
 			// HEATLH BAR
-				else if (Model.getGameObjs().get(i) instanceof HealthBar) {
-				healthBar.setHealthHeight(( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight());
-				healthBar.startingY = ( (HealthBar)( Model.getGameObjs().get(i) ) ).getStartingY();
-//				System.out.println("health in model's array = "+ ( (HealthBar)( Model.getGameObjs().get(i) ) ).getInsideHeight() );
-//				System.out.println("health in view's data = "+ healthBar.getHealthHeight() );
+				else if ( Model.getGameObjs().get(i) instanceof HealthBar ) {
+				healthBar.setHealthHeight( Model.getGameObjs().get(i).getInsideHeight());
+				healthBar.startingY =  Model.getGameObjs().get(i).getStartingY();
 			}
 			// PLAYER
-			else if (Model.getGameObjs().get(i) instanceof Player) {
-				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
-				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
+			else if ( Model.getGameObjs().get(i) instanceof Player ) {
+				gameObjBtns.get(i).setLocation( Model.getGameObjs().get(i).getPosition() );
+				gameObjBtns.get(i).setIcon( Model.getGameObjs().get(i).getObjIcon() ) ;
 			}
 			// WAVE
-			else if (Model.getGameObjs().get(i) instanceof Wave) {
-				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
+			else if ( Model.getGameObjs().get(i) instanceof Wave ) {
+				gameObjBtns.get(i).setLocation( Model.getGameObjs().get(i).getPosition() );
 			}
 			// BEACHOBJ
-			else if (Model.getGameObjs().get(i) instanceof BeachObject) {
+			else if ( Model.getGameObjs().get(i) instanceof BeachObject ) {
 
-				if ((Model.getGameObjs().get(i)).getObjIcon() == null) {
+				if ( Model.getGameObjs().get(i).getObjIcon() == null) {
 					gameObjBtns.get(i).setVisible(false);
 				}
 			}
 			// BOX
-			else if (Model.getGameObjs().get(i) instanceof Box) {
+			else if ( Model.getGameObjs().get(i) instanceof Box ) {
 				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
 				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
 				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
@@ -139,8 +140,10 @@ public class View extends JFrame {
 //		jP.setLayout(b);
 		
 		initSaveBtn();
+
 		initLoadBtn();
-		initGameObjBtns();// DO NOT MOVE - dependent on lines of code above&below.
+		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
+
 						// Thanks!
 		getContentPane().add(jP);
 		pack();
@@ -164,20 +167,22 @@ public void initLoadBtn(){
 	jP.add(lb);
 }
 	
-
-	public void initGameObjBtns() {
+/**
+ * @author Eaviles
+ * Purpose: look at each GameObject in Model's array and initialize corresponding buttons/images/panels
+ */
+	public void initGameObjs() {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
 			if (Model.getGameObjs().get(i) instanceof Shoreline) {
-				shoreLineTop = (((Shoreline)(Model.getGameObjs().get(i))).getShoreTop().x);
+				shoreLineTop = Model.getGameObjs().get(i).getShoreTop().x;
 			}
 			// HEATLH BAR
-			//NOT IN VIEW'S ARRAY
 			if (Model.getGameObjs().get(i) instanceof HealthBar) {
-				int totalHeight = ((HealthBar) (Model.getGameObjs().get(i))).getHeight();
-				double startHeight = ((HealthBar) (Model.getGameObjs().get(i))).getInsideHeight();
-				int width = ((HealthBar) (Model.getGameObjs().get(i))).getWidth();
+				int totalHeight = Model.getGameObjs().get(i).getHeight();
+				double startHeight = Model.getGameObjs().get(i).getInsideHeight();
+				int width = Model.getGameObjs().get(i).getWidth();
 
 				healthBar = new HealthPanel(totalHeight, startHeight, width);
 
@@ -185,8 +190,8 @@ public void initLoadBtn(){
 
 			}
 			// SCENERY
-			else if (Model.getGameObjs().get(i) instanceof Scenery) {
-				scenery = ( (Scenery)( Model.getGameObjs().get(i) ) ).getScenery();
+			else if ( Model.getGameObjs().get(i) instanceof Scenery ) {
+				scenery = Model.getGameObjs().get(i).getScenery();
 			} else {
 				button j = new button();
 				j.setMargin(new Insets(0, 0, 0, 0));
@@ -194,7 +199,7 @@ public void initLoadBtn(){
 				j.setContentAreaFilled(false);
 
 				// PLAYER
-				if (Model.getGameObjs().get(i) instanceof Player) {
+				if ( Model.getGameObjs().get(i) instanceof Player ) {
 					j.setSize(new Dimension(Player.playerDimensions, Player.playerDimensions));
 					j.setHoldingType(HoldingType.EMPTY);
 					j.setType(null);
@@ -204,7 +209,7 @@ public void initLoadBtn(){
 
 				}
 				// WAVE
-				else if (Model.getGameObjs().get(i) instanceof Wave) {
+				else if ( Model.getGameObjs().get(i) instanceof Wave ) {
 					j.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
 					j.setHoldingType(null);
 					j.setType(null);
@@ -213,7 +218,7 @@ public void initLoadBtn(){
 					j.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
 				}
 				// BEACHOBJ
-				if (Model.getGameObjs().get(i) instanceof BeachObject) {
+				if ( Model.getGameObjs().get(i) instanceof BeachObject ) {
 					j.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
 					j.setHoldingType(((BeachObject) Model.getGameObjs().get(i)).getH());
 					j.setType(j.getHoldingType());
@@ -225,7 +230,7 @@ public void initLoadBtn(){
 //					System.out.println("instanceof = "+Model.getGameObjs().get(i).getClass());
 				}
 				// BOX
-				else if (Model.getGameObjs().get(i) instanceof Box) {
+				else if ( Model.getGameObjs().get(i) instanceof Box ) {
 					j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
 					j.setHoldingType((((Box) ((Model.getGameObjs()).get(i))).getContains()));
 					j.setType(HoldingType.BOX);

@@ -32,12 +32,13 @@ public class Model {
 	
 	//Variables related to initialization
 	public static final int numBoxes = 4;
-	public static final int numWaves = 4;
 	public static final int numBOS = 20;
+
 	private static int score = 0;
 	public final Double a = .206;
 	public final Double b = .45;
 	public final Double c = .625;
+
 	
 	//RITA
 	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
@@ -249,14 +250,18 @@ public class Model {
 	 * Purpose: initializes Waves
 	 */
 	private void initWaves(){
-		for (int i = 0; i < numWaves; i++) {
-			Point p = new Point(View.viewWidth - Wave.waveWidth, i * Wave.waveSpawnSpacing);
+
+		int i=0;
+		for( Box b : this.getBoxes().values() ){
+			
+			Point p = new Point( this.gameDi.width - Wave.waveWidth, b.getPosition().y + Box.boxDimensions/2 /*its own x, but same y as box*/ );
 			Wave w = new Wave(p, pics[11],this.shoreLine.findCorrespondingX(p.y));
-//			System.out.println("wave "+ i + " position: " + w.getPosition().x + ", " + w.getPosition().y);
-//			System.out.println("wave " + i + " destination: " + w.getDestination().x + ", " + w.getDestination().y );
+
 			w.setIndex(i);
 			this.waves.add(w);
+			i++;
 		}
+		
 	}
 	/**
 	 * @author Eaviles
@@ -530,13 +535,6 @@ public class Model {
 /*
  * Setters and Getters
  */
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
 
 	public Player getP() {
 		return p;
@@ -581,7 +579,6 @@ public class Model {
 	public Shoreline getShoreLine() {
 		return shoreLine;
 	}
-
 
 	public void setShoreLine(Shoreline shoreLine) {
 			this.shoreLine = shoreLine;
