@@ -33,6 +33,12 @@ public class Model {
 	//Variables related to initialization
 	public static final int numBoxes = 4;
 	public static final int numBOS = 20;
+
+	private static int score = 0;
+	public final Double a = .206;
+	public final Double b = .45;
+	public final Double c = .625;
+
 	
 	//RITA
 	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
@@ -44,10 +50,8 @@ public class Model {
 	private HashMap<Point, Box> boxes = new HashMap<Point, Box>();
 	private ArrayList<Wave> waves = new ArrayList<Wave>();
 	private HealthBar HB = new HealthBar(50, 200);
-
 	private Shoreline shoreLine;
-	//private Shoreline shoreLineObj;
-	private int losingShorelineCoord;// TODO: m's & v's shores & minshores in-sync
+
 
 	public Dimension gameDi = new Dimension(1200,650);
 
@@ -73,19 +77,15 @@ public class Model {
  */
 	public Model() {
 		this.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
-		Double a = .206;
-		Double b = .45;
-		Double c = .625;
-		this.shoreLine = new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
-		//System.out.println(this.shoreLineObj.getShoreTop());
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
 		initPlayer();//Same comment as above ^
+		initShoreline();
 		initBoxes();
 		initWaves();
 		initBeachObjs();
-	//	shoreLine = (2*view.View.viewWidth)/3;
-   // minShoreLine = shoreLine - HB.getHeight()+ 100; 
-		 shoreLine.setLoosingCoordinate(shoreLine.getShoreBottom().x - HB.getHeight() + 100);
+		
+		
+		shoreLine.setLoosingCoordinate(shoreLine.getShoreBottom().x - HB.getHeight() + 100);
 		initGameObjsArr();	
 
 		System.out.println("Instantiating new game");
@@ -123,8 +123,9 @@ public class Model {
 	 */
 	public void updateWavesDestinations() {
 		for(Wave w: waves){
-			Point newDest = new Point(this.shoreLine.findCorrespondingX(w.getInitialPos().y), w.getDestination().y);
+			Point newDest = new Point(getShoreLine().findCorrespondingX(w.getInitialPos().y), w.getDestination().y);
 			w.setDestination(newDest);
+				
 		}		
 	}
 
@@ -576,12 +577,23 @@ public class Model {
 	}
 
 	public Shoreline getShoreLine() {
-		return this.shoreLine;
+		return shoreLine;
 	}
+<<<<<<< HEAD
+=======
+
+>>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 
 	public void setShoreLine(Shoreline shoreLine) {
+<<<<<<< HEAD
 
 		this.shoreLine = shoreLine;
+=======
+			this.shoreLine = shoreLine;
+	}
+	public void initShoreline(){
+		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
+>>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
 	}
 
 	public int getNumBoxes() {

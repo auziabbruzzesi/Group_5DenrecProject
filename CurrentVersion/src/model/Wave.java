@@ -24,6 +24,7 @@ public class Wave extends GameObject {
 
 	private Point initialPos;
 	private Random randomGenerator = new Random();
+	private Shoreline shoreline;
 	
 	
 /*
@@ -91,11 +92,20 @@ public class Wave extends GameObject {
 		this.setVelocity(v);
 	}
 	
-	//sg
+	
 	public int getVelocity() {
 		return velocity;
 	}	
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
+	}
+
+
+	public Shoreline getShoreline() {
+		return this.shoreline;
+	}
+	
+	public void setShoreline(Shoreline shoreline) {
+		this.shoreline = shoreline;
 	}
 }

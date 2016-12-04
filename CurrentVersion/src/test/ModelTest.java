@@ -175,15 +175,15 @@ public class ModelTest {
 	public void updateWaveDestinationsTest(){
 		// assumes view is a box with dimensions 100, 100 for simplicity 
 		Wave w1 = new Wave(new Point(90, 5), null, 5);
-		Wave w2 = new Wave(new Point(90, 10), null, 6);
-		Shoreline sl = new Shoreline(new Point(0,0), new Point (100,100));
+		Wave w2 = new Wave(new Point(90, 10), null, 70);
+	
 		waves.add(w1);
 		waves.add(w2);
 		
 		model.updateWavesDestinations();
 		
-		assertEquals(w2.getDestination().getX(), sl.findCorrespondingX(100), 0);
-		
+		assertEquals(w2.getDestination().getX(), 70, 0);
+		assertEquals(w1.getDestination().getX(), 5, 0);
 		
 	}
 

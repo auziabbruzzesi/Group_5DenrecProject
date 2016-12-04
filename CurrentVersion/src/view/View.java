@@ -35,8 +35,8 @@ import model.GameObject;
 import view.View.HealthPanel;
 
 public class View extends JFrame {
-	public static int viewHeight = 650;
-	public static int viewWidth = 1200;
+   public static int viewHeight = 650;
+   public static int viewWidth = 1200;
 
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 	Point playerPos = (new Point(0, 0));
