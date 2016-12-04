@@ -89,7 +89,7 @@ public class View extends JFrame {
 	}
 
 	public void playTutorial(){
-		screenTimer.start();
+		//screenTimer.start();
 		
 		JOptionPane.showMessageDialog(null, "Welcome to Estuary Quest!");
 		JOptionPane.showMessageDialog(null, "Oh no, the estuary is being eroded away by BIG waves! Let's protect it!");

@@ -125,8 +125,9 @@ public class Controller implements MouseListener {
 	public Controller(Model m, View v) {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor
-		v.setSize(m.gameDi);
-		v.getJPanel().setSize(m.gameDi);
+		v.viewHeight = m.gameDi.height;
+		v.viewWidth = m.gameDi.width;
+		//v.getJPanel().setSize(m.gameDi);
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewSaveBtnListeners();
