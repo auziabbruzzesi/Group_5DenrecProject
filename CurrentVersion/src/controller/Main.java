@@ -19,6 +19,10 @@ import view.*;
 
 public class Main {
 
+//	static Model fromSaveFile = new Model("filename.someExtension");
+	//view
+	//controller
+	
 	static Model m = new Model(/*State tutorial*/);
 	static View v = new View("t"/*State tutorial*/);
 	static Controller c = new Controller(m,v /*, State tutorial*/);

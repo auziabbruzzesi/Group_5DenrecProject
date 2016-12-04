@@ -176,8 +176,8 @@ public class Controller implements MouseListener {
 				GameObject loadedObject=(GameObject)ois.readObject();
 
 				ois.close();
-				//System.out.println("load game");
-				//System.out.println(loadedObject.toString());
+				System.out.println("load game");
+				System.out.println(loadedObject.toString());
 			}catch(ClassNotFoundException|IOException e){
 				e.printStackTrace();
 			}
