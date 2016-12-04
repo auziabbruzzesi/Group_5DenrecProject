@@ -58,14 +58,21 @@ public class Controller implements MouseListener {
 
 	int i = 0;
 
+	Boolean tutorial = null;
 	
 	//Tutorial stuff
 	
+/**
+ * @author Eaviles
+ * Purpose: calls the necessary functions for the game tutorial to execute. 
+ * Regulates the flow of the tutorial.
+ */
 	public void playTutorial(){
 		//everything will display - model & view initialized as normal
-		//display a welcome dialog (view init) 
-		v.playTutorial();
-		
+		//display a welcome dialog (view init)
+		tutorial = true;
+		v.playTutorialSequence(1);
+		v.getK().addMouseListener(this);	
 	}
 	
 
@@ -93,7 +100,7 @@ public class Controller implements MouseListener {
 			//m.initSprites();
 			
 			moveWaves();
-			v.updateViewObjs();
+//			v.updateViewObjs();
 			
 			v.repaint();
 			checkGameStatus();
@@ -102,18 +109,19 @@ public class Controller implements MouseListener {
 	});
 
 	/**
-	 * @Auzi
+	 * @author Auzi
 	 */
 	Timer pTimer = new Timer(10, new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
+//			System.out.println("ptimer");
 			m.getP().updateDirection();
 			m.updatePlayerSprite();
 //			player.setBorder(BorderFactory.createEmptyBorder());
 			
 			m.getP().move();
-			updatePlayerMV();
+			handlePlayerAction();
 		}
 	});
 
@@ -169,10 +177,17 @@ public class Controller implements MouseListener {
 		// TODO Auto-generated method stub
 		return new File("game.sav").isFile();
 	}
+
 /*
  * General functions
  */
-	public void updatePlayerMV() {
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: dictates what should happen when a player tries to pickup or putdown
+	 * a BeachObject.
+	 */
+	public void handlePlayerAction() {
 
 		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {
 			
@@ -182,11 +197,16 @@ public class Controller implements MouseListener {
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
 
-				System.out.println("topickup = "+objToPickUp);
+//				System.out.println("Pickuprequest true. Topickup = "+objToPickUpHT);
 				
 				//try to pickup the object. If we are successful, remove that object from jpanel
 				if (m.getP().pickUp(objToPickUpHT)) {
 					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix?
+					m.updatePlayerSprite();
+					
+//					if(tutorial){
+//						v.playTutorialSequence(2);
+//					}
 				}
 				m.updatePlayerSprite();
 				pickUpRequest = false;
@@ -355,16 +375,20 @@ public class Controller implements MouseListener {
 //		}
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
-			
+//			System.out.println("button clicked");
 			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
 			
+			//if a box was clicked
 			if ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.BOX) {
 				putDownRequest = true;
 				putDownBox = e.getComponent().getLocation();
-			} else {
+			} 
+			//if anything else was clicked
+			else {
+//				System.out.println("button with type "+ ( (View.button)(e.getComponent()) ).getType() + " clicked");
 				pickUpRequest = true;
 				objToPickUp = e.getComponent().getLocation();
-				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getHoldingType();
+				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getType();
 			}
 		}
 

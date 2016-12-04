@@ -137,10 +137,11 @@ public class ModelTest {
 		b2.setIsfull(true);
     	b3.setIsfull(true);
     	b4.setIsfull(true);
-    	b1.setHT(HoldingType.CONCRETE);
-    	b2.setHT(HoldingType.OYSTER);
-    	b3.setHT(HoldingType.CONCRETE);
-    	b4.setHT(HoldingType.OYSTER);
+//    	@Mayah
+//    	b1.setHT(HoldingType.CONCRETE);
+//    	b2.setHT(HoldingType.OYSTER);
+//    	b3.setHT(HoldingType.CONCRETE);
+//    	b4.setHT(HoldingType.OYSTER);
 		assertFalse(model.boxesCorrect());
 
 	}

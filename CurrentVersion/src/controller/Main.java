@@ -28,7 +28,7 @@ public class Main {
 		//tutorial
 //		v.screenTimer.start();
 		
-		c.playTutorial();
+//		c.playTutorial();
 		
 		
 		v.setLayout(null);

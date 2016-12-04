@@ -12,7 +12,7 @@ public class Player extends GameObject implements MoveObjects {
 	private Point destination;
 	private int velocity;
 	Direction direction = Direction.EAST;//default
-	
+	private HoldingType hT;
 	// Constructor
 	public Player(Point p) {
 		this.setPosition(p);
@@ -35,6 +35,7 @@ public class Player extends GameObject implements MoveObjects {
 	public boolean pickUp(HoldingType boType) {
 		if (this.getHT() == HoldingType.EMPTY) {
 			if (boType == HoldingType.OYSTER || boType == HoldingType.CONCRETE) {
+				
 				this.setHT(boType);
 				return true;
 			}
@@ -260,6 +261,9 @@ public class Player extends GameObject implements MoveObjects {
 		this.velocity = velocity;
 	}
 
+	public void setHT(HoldingType h) {
+		this.hT = h;
+	}
 	public int getHealth() {
 		return health;
 	}
@@ -268,6 +272,9 @@ public class Player extends GameObject implements MoveObjects {
 		this.health = health;
 	}
 
+	public HoldingType getHT() {
+		return hT;
+	}
 	public Point getDestination() {
 		return destination;
 	}

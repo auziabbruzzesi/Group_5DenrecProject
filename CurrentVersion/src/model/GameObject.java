@@ -27,8 +27,7 @@ public abstract class GameObject implements Serializable {
 	
 	private Point position;
 	private transient Icon myIcon;
-	private HoldingType hT;
-	//private HoldingType myType;
+	private HoldingType myType;
 	private int width;
 	private int height;
 	private Point destination;
@@ -44,9 +43,7 @@ public abstract class GameObject implements Serializable {
     }
 	private int index;
 
-	public Icon setObjIcon(){
-		return myIcon;
-	}
+
 	public void setPosition(Point p){
 		this.position = p;
 	}
@@ -54,9 +51,7 @@ public abstract class GameObject implements Serializable {
 		position.x = x;
 		position.y = y;
 	}
-	public void setHT(HoldingType h){
-		this.hT = h;
-	}
+
 	public void setDestination(Point d){
 		this.destination = d;
 	}
@@ -67,9 +62,7 @@ public abstract class GameObject implements Serializable {
 	public Point getPosition(){
 		return position;
 	}
-	public HoldingType getHT(){
-		return hT;
-	}
+
 	public Icon getObjIcon(){
 		return myIcon;
 	}
@@ -124,6 +117,12 @@ public abstract class GameObject implements Serializable {
 	}
 	public BufferedImage[] getScenery(){
 		return null;
+	}
+	public HoldingType getMyType() {
+		return myType;
+	}
+	public void setMyType(HoldingType myType) {
+		this.myType = myType;
 	}
 	
 }
