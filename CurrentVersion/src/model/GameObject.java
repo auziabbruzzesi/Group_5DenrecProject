@@ -24,7 +24,6 @@ public abstract class GameObject implements Serializable {
 	 */
 	private static final long serialVersionUID = 571534261898920559L;
 	
-	
 	private Point position;
 	private transient Icon myIcon;
 	private HoldingType myType;
@@ -35,7 +34,7 @@ public abstract class GameObject implements Serializable {
 	private int totalDecrement = 0;
 	private double insideHeight = height;
 	private double startingY = 0;
-//	private int width = 100;
+
 	BufferedImage[] scenery;
 	
     public GameObject(){

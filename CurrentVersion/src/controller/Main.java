@@ -28,12 +28,12 @@ public class Main {
 		//tutorial
 //		v.screenTimer.start();
 		
-//		c.playTutorial();
+		c.playTutorial();
 		
 		
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
-		c.wTimer.start();
+//		c.wTimer.start();
 		v.repaint();
 	}
 
