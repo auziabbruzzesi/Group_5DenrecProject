@@ -18,12 +18,10 @@ public class Wave extends GameObject {
 	public static final int waveHeight = 50; // wave height
 	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
 	public static final int waveToWaveInterval = 100;// distance between created waves
-<<<<<<< HEAD
-	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen
-=======
+
 	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
 	public static final int waveToTopSpacing = 100;
->>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
+
 	private int velocity;
 
 	private Point initialPos;
@@ -113,10 +111,6 @@ public class Wave extends GameObject {
 	public void setShoreline(Shoreline shoreline) {
 		this.shoreline = shoreline;
 	}
-<<<<<<< HEAD
-
 
 }
-=======
-}
->>>>>>> branch 'master' of https://github.com/auziabbruzzesi/Group_5DenrecProject.git
+
