@@ -1,6 +1,7 @@
 package model;
 
 import java.awt.Point;
+import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 import javax.swing.Icon;
@@ -29,7 +30,13 @@ public abstract class GameObject implements Serializable {
 	private int width;
 	private int height;
 	private Point destination;
-
+	private Point shoreTop;
+	private int totalDecrement = 0;
+	private double insideHeight = height;
+	private double startingY = 0;
+//	private int width = 100;
+	BufferedImage[] scenery;
+	
     public GameObject(){
     	
     }
@@ -74,5 +81,46 @@ public abstract class GameObject implements Serializable {
 	public void setIndex(int index) {
 		this.index = index;
 	}
-	
+	public Point getShoreTop() {
+		return shoreTop;
+	}
+	public void setShoreTop(Point shoreTop) {
+		this.shoreTop = shoreTop;
+	}
+	public void updateTotalDecrement(int dec){
+		this.totalDecrement -= dec;
+	}
+	public int getTotalDecrement() {
+		return totalDecrement;
+	}
+	public void setTotalDecrement(int totalDecrement) {
+		this.totalDecrement = totalDecrement;
+	}
+	public double getInsideHeight(){
+		return this.insideHeight;
+	}
+	public void setInsideHeight(double insideHeight){
+		this.insideHeight = insideHeight;
+	}
+	public double getStartingY() {
+		return startingY;
+	}
+	public void setStartingY(double y) {
+		startingY = y;
+	}
+	public void setHeight(int height){
+		this.height = height;
+	}
+	public int getHeight(){
+		return this.height;
+	}
+	public void setWidth(int width){
+		this.width = width;
+	}
+	public int getWidth(){
+		return this.width;
+	}
+	public BufferedImage[] getScenery(){
+		return null;
+	}
 }

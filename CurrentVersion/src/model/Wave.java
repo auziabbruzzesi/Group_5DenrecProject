@@ -19,8 +19,9 @@ public class Wave extends GameObject {
 	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
 	public static final int waveToWaveInterval = 100;// distance between created waves
 	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
+	public static final int waveToTopSpacing = 100;
 	private int velocity;
-	//private int shorelineX = 360;//TODO:
+
 	private Point initialPos;
 	private Random randomGenerator = new Random();
 	
