@@ -84,8 +84,8 @@ public class View extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			setSize(Toolkit.getDefaultToolkit().getScreenSize());
-			viewHeight = getContentPane().getHeight();
-			viewWidth = getContentPane().getWidth();
+//			viewHeight = getContentPane().getHeight();
+//			viewWidth = getContentPane().getWidth();
 			updateViewObjs();
 			// m.gameDi = v.getContentPane().getSize();
 
