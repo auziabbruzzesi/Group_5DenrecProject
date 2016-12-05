@@ -77,64 +77,7 @@ public class Model {
 		Scenery gameScenery = new Scenery();
 	
 		
-		
-		/**
-		 * @author Eaviles
-		 * Purpose: handles Model's role in the game tutorial. Allows tutorial to
-		 * demonstrate the effects of a wave hitting a box/the shore
-		 */
-		public void playTutorialWaveCollision(char t, Box tBox){
-			
-			switch(t){
-			case 'b':
-				//create a wave that corresponds to the box the player put something in
-				int x = this.shoreLine.findCorrespondingX(tBox.getPosition().y) + 100;
-				int y = tBox.getPosition().y + Box.boxDimensions/2;
-				System.out.println("tbwave at "+x+", "+y);
-				tBWave = new TutorialWave( new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(tBox.getPosition().y) );
-			break;
-			case 's':
-//				tSWave = new Wave( tPt, pics[11], this.shoreLine.findCorrespondingX(tPt.y) );
-			break;
-			default:
-				System.out.println("Error in Model.playTutorial(): incorrect parameter");
-			break;
-			}
-			
-			gameObjs.add(this.tBWave);
-			System.out.println("\n\ngameobs model array: "+this.gameObjs);
-		}
-	
-		/**
-		 * @author Eaviles
-		 * Purpose: removes the tutorialwaves from gameobjs array after tutorial is done with them.
-		 * This is nice for the update function, as it won't have to process unused objects. It also
-		 * keeps the array clean/consisting of only objects that are being used by the game. 
-		 */
-		
-		public void removeTutorialWave(){
-			Iterator<GameObject> myIt = gameObjs.iterator();
-			while( myIt.hasNext() ){
-				if(myIt.next() instanceof TutorialWave){
-					myIt.remove();
-				}
-			}
-			System.out.println(gameObjs);
-		}
-		public void resetGameObjsArray(){
 
-			for(Box b: boxes.values()){
-				b.setContains(HoldingType.EMPTY);
-				b.setCount(0);
-				b.setObjIcon(concreteImages[b.getCount()]);
-			}
-			
-			this.gameObjs.clear();
-			this.initGameObjsArr();
-			
-			System.out.println("reset game objs array:");
-			System.out.println(gameObjs);
-		}
 /*
  * Model Constructor
  */
@@ -159,6 +102,7 @@ public class Model {
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
 		//System.out.println("Shoreline = " + getShoreLine());
 	}
+	//TODO: what is this?
 	public Model(Dimension d){
 		super();
 		
@@ -259,6 +203,73 @@ public class Model {
 			correct = false;
 		}
 		return correct;
+	}
+	
+	
+	
+/*
+ * Tutorial-related functions
+ */
+	
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: handles Model's role in the game tutorial. Allows tutorial to
+	 * demonstrate the effects of a wave hitting a box/the shore
+	 */
+	public void playTutorialWaveCollision(char t, Box tBox){
+		
+		switch(t){
+		case 'b':
+			//create a wave that corresponds to the box the player put something in
+			int x = this.shoreLine.findCorrespondingX(tBox.getPosition().y) + 100;
+			int y = tBox.getPosition().y + Box.boxDimensions/2;
+			System.out.println("tbwave at "+x+", "+y);
+			tBWave = new TutorialWave( new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(tBox.getPosition().y) );
+		break;
+		case 's':
+//			tSWave = new Wave( tPt, pics[11], this.shoreLine.findCorrespondingX(tPt.y) );
+		break;
+		default:
+			System.out.println("Error in Model.playTutorial(): incorrect parameter");
+		break;
+		}
+		
+		gameObjs.add(this.tBWave);
+		System.out.println("\n\ngameobs model array: "+this.gameObjs);
+	}
+
+	/**
+	 * @author Eaviles
+	 * Purpose: removes the tutorialwaves from gameobjs array after tutorial is done with them.
+	 * This is nice for the update function, as it won't have to process unused objects. It also
+	 * keeps the array clean/consisting of only objects that are being used by the game. 
+	 */
+	
+	public void removeTutorialWave(){
+		Iterator<GameObject> myIt = gameObjs.iterator();
+		while( myIt.hasNext() ){
+			if(myIt.next() instanceof TutorialWave){
+				myIt.remove();
+			}
+		}
+		System.out.println(gameObjs);
+	}
+	public void resetGameObjsArray(){
+
+		initShoreline();
+		
+		for(Box b: boxes.values()){
+			b.setContains(HoldingType.EMPTY);
+			b.setCount(0);
+			b.setObjIcon(concreteImages[b.getCount()]);
+		}
+		
+		this.gameObjs.clear();
+		this.initGameObjsArr();
+		
+		System.out.println("reset game objs array:");
+		System.out.println(gameObjs);
 	}
 	
 /*

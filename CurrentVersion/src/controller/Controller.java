@@ -66,27 +66,11 @@ public class Controller implements MouseListener {
 	
 	//Tutorial vars
 	Boolean tutorial = false;
-	HoldingType tutorialPickUp = HoldingType.EMPTY;
-	
-/**
- * @author Eaviles
- * Purpose: calls the necessary functions for the game tutorial to execute. 
- * Regulates the flow of the tutorial.
- */
-	public void startTutorial(){
-		//everything will display - model & view initialized as normal
-		//display a welcome dialog (view init)
-		tutorial = true;
-		v.playTutorialSequence(1);
-		v.getOTBtn().addMouseListener(this);
-		v.getCTBtn().addMouseListener(this);
-	}
-	
-
+	HoldingType tutorialPickUp = HoldingType.EMPTY;	
 	
 	
 /*
- * Timers (2)
+ * Game Timers (2)
  *   wTimer - handles waves
  *   pTimer - handles player movement
  */
@@ -97,9 +81,9 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("running wtimer");
+			m.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
 			moveWaves();
-			v.updateViewObjs();
+//			v.updateViewObjs();
 //			v.repaint();
 			checkGameStatus();
 			
@@ -113,74 +97,13 @@ public class Controller implements MouseListener {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
-//			System.out.println("ptimer");
 			m.getP().updateDirection();
-			m.updatePlayerSprite();
-//			player.setBorder(BorderFactory.createEmptyBorder());
-			
+			m.updatePlayerSprite();			
 			m.getP().move();
 			handlePlayerAction();
 		}
 	});
 
-	/**
-	 * @author Eaviles
-	 * Purpose: regulate waves in the tutorial
-	 */
-	Timer wTutorialTimer = new Timer(30, new ActionListener() {
-		
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			if(m.gettBWave().getPosition().x > m.gettBWave().getDestination().x){
-				m.gettBWave().move();
-			}
-			else{
-				
-				int shoreDamage = determineDamage( m.gettBWave() );				
-				System.out.println("shoredamage = "+shoreDamage);
-				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
-				
-				m.updateShoreLine(shoreDamage);
-				m.getShoreLine().updateTotalDecrement(shoreDamage);				
-				m.getHB().damage(healthDamage);
-				
-				v.gettWave().setLocation( 1000, 400 );//this is a hack, but it works when nothing else does
-				Point wLoc = new Point( v.gettWave().getLocation() );
-				v.getJPanel().getComponentAt( wLoc ).setVisible(false);
-				m.removeTutorialWave();
-				v.updateViewObjs();
-
-				switch(tutorialPickUp){
-				case TUTORIAL_O:
-					v.playTutorialSequence(5);
-				break;
-				case TUTORIAL_C:
-					v.playTutorialSequence(6);	
-				break;
-				default:
-					System.out.println("error in Controller.tutorialWTimer: tutorialPickUp invalid type");
-				break;
-				}
-				
-				v.playTutorialSequence(7);
-				tutorial = false;
-				resetAll();
-				initViewBtnListeners();
-				initViewLoadBtnListeners();
-				initViewSaveBtnListeners();
-				wTimer.start();
-				wTutorialTimer.stop();
-			}
-			v.updateViewObjs();
-		}
-	});
-	
-	public void resetAll(){
-		m.resetGameObjsArray();
-		v.resetGameObjBtnsArray();
-	}
-	
 	/**
 	 * Constructor
 	 */
@@ -195,6 +118,7 @@ public class Controller implements MouseListener {
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewSaveBtnListeners();
+//		System.out.println("shoreline start = "+m.getShoreLine().getTotalDecrement());
 	}
 
 	/*
@@ -310,19 +234,15 @@ public class Controller implements MouseListener {
 						switch( m.getP().getHT() ){
 						case CONCRETE:
 							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
-							v.updateViewObjs();	
 						break;
 						case OYSTER:
-							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
-							v.updateViewObjs();						
+							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);					
 						break;
 						case TUTORIAL_C:
 							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
-							v.updateViewObjs();
 						break;
 						case TUTORIAL_O:
 							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
-							v.updateViewObjs();
 						break;
 						default:
 							System.out.println("error in Controller.putDown(): incorrect conditions.");
@@ -384,6 +304,7 @@ public class Controller implements MouseListener {
 				
 				m.getHB().damage(healthDamage);
 				m.resetWave(a);
+				System.out.println("game: "+m.getShoreLine().getTotalDecrement());
 				
 //				System.out.println("################################################################################");
 //				for(Box b : m.getBoxes().values()){
@@ -403,20 +324,6 @@ public class Controller implements MouseListener {
 		v.updateViewObjs();
 	}
 
-	public void moveTutorialWave(){
-		if ( m.gettBWave().getPosition().x  > m.gettBWave().getDestination().x ) {
-			m.gettBWave().move();		
-		}
-		else{
-			int shoreDamage = determineDamage(m.gettBWave());
-			int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
-			m.updateShoreLine(shoreDamage);
-			m.getShoreLine().updateTotalDecrement(shoreDamage);
-			m.getHB().damage(healthDamage);
-			this.wTutorialTimer.stop();
-		}
-	}
-
 	/**
 	 * @author Eaviles
 	 * @param w - wave that hit shoreline
@@ -427,7 +334,6 @@ public class Controller implements MouseListener {
 	private int determineDamage(Wave w) {
 		int decrement = 0;
 		Box b = null;
-		Point p;
 		
 		for( Box k : m.getBoxes().values() ){
 			if(k.getIndex() == w.getIndex()){
@@ -438,45 +344,45 @@ public class Controller implements MouseListener {
 			System.out.println("error in Controller: determineDamage: no box with index matching wave");
 		}
 		
-		//set decrement based box contents
-		switch (b.getContains()) {
-		case EMPTY:
-			decrement = 5;		
-			//b.setCount(b.getCount() -1);
-			//b.setObjIcon(m.concreteImages[b.getCount() - 1]);
-			break;
-		case OYSTER:
-			if(b.isfull()){
-				decrement = 1;
-				
-			}
-			else{
-				decrement = 3;
-			}
-			b.setCount(b.getCount() - 1);
-			b.setObjIcon(m.getGabionImages()[b.getCount()]);
-			break;
-		case CONCRETE:
-			if(b.isfull()){
-				decrement = 3;
+		if (!b.isfull()) {
+			// set decrement based box contents
+			switch (b.getContains()) {
+			case EMPTY:
+				decrement = 5;
+				// b.setCount(b.getCount() -1);
+				// b.setObjIcon(m.concreteImages[b.getCount() - 1]);
+				break;
+			case OYSTER:
+				if (b.isfull()) {
+					decrement = 1;
 
+				} else {
+					decrement = 3;
+				}
+				b.setCount(b.getCount() - 1);
+				b.setObjIcon(m.getGabionImages()[b.getCount()]);
+				break;
+			case CONCRETE:
+				if (b.isfull()) {
+					decrement = 3;
+
+				} else {
+					decrement = 4;
+				}
+				b.setCount(b.getCount() - 1);
+				b.setObjIcon(m.concreteImages[b.getCount()]);
+				break;
+			case TUTORIAL_C:
+				decrement = 4;
+				break;
+
+			case TUTORIAL_O:
+				decrement = 4;
+				break;
+			default:
+				System.out.println("Error: Box contains = " + b.getContains());
+				break;
 			}
-			else{
-				decrement = 4;
-			}
-			b.setCount(b.getCount() - 1);
-			b.setObjIcon(m.concreteImages[b.getCount()]);
-			break;
-		case TUTORIAL_C:
-				decrement = 4;
-		break;
-			
-		case TUTORIAL_O:
-				decrement = 4;
-		break;
-		default:
-			System.out.println("Error: Box contains = " + b.getContains());
-			break;
 		}
 		return decrement;
 	}
@@ -564,6 +470,86 @@ public class Controller implements MouseListener {
 		
 	}
 	
+/*
+ * Tutorial-related functions
+ */
+	/**
+	 * @author Eaviles
+	 * Purpose: calls the necessary functions for the game tutorial to execute. 
+	 * Regulates the flow of the tutorial.
+	 */
+		public void startTutorial(){
+			//everything will display - model & view initialized as normal
+			//display a welcome dialog (view init)
+			tutorial = true;
+			v.playTutorialSequence(1);
+			v.getOTBtn().addMouseListener(this);
+			v.getCTBtn().addMouseListener(this);
+		}
+		
+		/**
+		 * @author Eaviles
+		 * Purpose: regulate waves in the tutorial
+		 */
+		Timer wTutorialTimer = new Timer(30, new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				m.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
+				moveTutorialWave();
+				v.updateViewObjs();
+			}
+		});
+		
+		public void resetAll(){
+			m.resetGameObjsArray();
+			v.resetGameObjBtnsArray();
+		}
+		
+		public void moveTutorialWave(){
+			
+			if ( m.gettBWave().getPosition().x  > m.gettBWave().getDestination().x ) {
+				m.gettBWave().move();		
+			}
+			else{
+				
+				int shoreDamage = determineDamage( m.gettBWave() );
+				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
+				m.updateShoreLine(shoreDamage);
+				m.getShoreLine().updateTotalDecrement(shoreDamage);
+				m.getHB().damage(healthDamage);
+				
+				v.gettWave().setLocation( 1000, 400 );//this is a hack, but it works when nothing else does
+				Point wLoc = new Point( v.gettWave().getLocation() );
+				v.getJPanel().getComponentAt( wLoc ).setVisible(false);
+				m.removeTutorialWave();
+				v.updateViewObjs();
+								
+				switch(tutorialPickUp){
+				case TUTORIAL_O:
+					v.playTutorialSequence(5);
+				break;
+				case TUTORIAL_C:
+					v.playTutorialSequence(6);	
+				break;
+				default:
+					System.out.println("error in Controller.tutorialWTimer: tutorialPickUp invalid type");
+				break;
+				}
+				
+				v.playTutorialSequence(7);
+				tutorial = false;
+				
+				resetAll();
+				initViewBtnListeners();
+				initViewLoadBtnListeners();
+				initViewSaveBtnListeners();
+				System.out.println("tutorial: "+m.getShoreLine());
+				wTimer.start();
+				wTutorialTimer.stop();
+			}
+		}
+		
 /*
  * Initialization functions
  */
