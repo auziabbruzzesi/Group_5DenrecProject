@@ -19,6 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -36,7 +37,6 @@ import javax.swing.plaf.synth.SynthSeparatorUI;
 
 import controller.status;
 import model.*;
-import model.GameObject;
 import view.View.HealthPanel;
 
 public class View extends JFrame {
@@ -45,6 +45,14 @@ public class View extends JFrame {
 
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 	Point playerPos = (new Point(0, 0));
+	
+	public button gettWave() {
+		return tWave;
+	}
+
+//	public void settWave(button tWave) {
+//		this.tWave = tWave;
+//	}
 	Point playerDest = (new Point(200, 200));
 
 	String playerDir = "";
@@ -59,10 +67,17 @@ public class View extends JFrame {
 
 	private int totalShoreDecrement = 0;
 
+	private button tWave = new button();
+	private int tWaveZIndex;
+	
+	private boolean tWaveAdded = false;
+	
 	public SaveButton sb;
 	public LoadButton lb;
 	
-	button k = new button();
+
+	button oTBtn = new button();
+	button cTBtn = new button();
 
 	Timer screenTimer = new Timer(1, new ActionListener() {
 
@@ -77,6 +92,28 @@ public class View extends JFrame {
 		}
 	});
 
+//	public button removeTutorialWave(){
+//		button tW = new button();
+//		Iterator<button> myIt = gameObjBtns.iterator();
+//		while( myIt.hasNext() ){
+//			tW = myIt.next();
+//			System.out.println(tW.getType());
+//			if(tW.getType() == HoldingType.TUTORIAL_WAVE ){						
+////				myIt.remove();
+//				System.out.println("v.removed");
+//				break;
+//			}
+//		}
+//		return tW;
+//	}
+	
+	public void resetGameObjBtnsArray(){
+		this.gameObjBtns.clear();
+		this.jP.removeAll();
+		this.initGameObjs();
+		System.out.println( gameObjBtns.size() +" game obj btns in array\n\n\n");
+	}
+	
 	/*
 	 * View Constructor
 	 */
@@ -84,12 +121,17 @@ public class View extends JFrame {
 		initView();
 	}
 
-	public View(String s) {
-		if (s == "t") {
-			initView();
-		}
-	}
+	public void initTWave(){
+		tWave.setMargin(new Insets(0, 0, 0, 0));
+		tWave.setBorder(BorderFactory.createEmptyBorder());
+		tWave.setContentAreaFilled(false);
 
+		tWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+		tWave.setType(HoldingType.TUTORIAL_WAVE);
+		tWave.setLocation(0,0);
+		tWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+	}
+	
 	public void playTutorialSequence(int n) {
 		// screenTimer.start();
 
@@ -98,40 +140,30 @@ public class View extends JFrame {
 			JOptionPane.showMessageDialog(null, "Welcome to Estuary Quest!");
 			JOptionPane.showMessageDialog(null,
 					"Oh no, the estuary is being eroded away by BIG waves! Let's protect it!");
-			JOptionPane.showMessageDialog(null, "Click on an oyster to pick it up!");
+			JOptionPane.showMessageDialog(null, "Click on an oyster or a piece of concrete to pick it up!");
 			initPickupTutorial();	
 		break;
 		case 2:
 			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building a Gabion...");
 		break;
-		}
-		
-		
-		
-		
-		
-	}
-	public void initPickupTutorial(){
-		for (int i=0; i< Model.getGameObjs().size(); i++) {
-
-			if (Model.getGameObjs().get(i) instanceof BeachObject && Model.getGameObjs().get(i).getMyType() == HoldingType.OYSTER) {
-
-				k.setMargin(new Insets(0, 0, 0, 0));
-				k.setContentAreaFilled(false);
-				k.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
-				k.setType(Model.getGameObjs().get(i).getMyType());
-//				k.setType( HoldingType.OYSTER );
-				k.setLocation(new Point(200, 200));
-				k.setBounds(k.getLocation().x, k.getLocation().y, BeachObject.beachObjDimensions,
-						BeachObject.beachObjDimensions);
-				k.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
-
-				Border oystBorder = new LineBorder(Color.green, 4);
-				k.setBorder(oystBorder);
-				jP.add(k);
-				break;
-			}
-		}	
+		case 3:
+			JOptionPane.showMessageDialog(null, "You've started building a Gabion! Let's see what happens when a wave hits it...");
+			//animation			
+		break;
+		case 4:
+			JOptionPane.showMessageDialog(null, "You've started building a Sea Wall! Let's see what happens when a wave hits it...");
+			//animation			
+		break;
+		case 5:
+			JOptionPane.showMessageDialog(null, "The Estuary didn't erode as much! But we lost an oyster from our Gabion. Use lots of oysters to make it stronger!");
+		break;
+		case 6:
+			JOptionPane.showMessageDialog(null, "The Estuary didn't erode as much! But we lost an piece of our Sea Wall. Use lots of concrete to make it stronger!");
+		break;
+		case 7:
+			JOptionPane.showMessageDialog(null, "Ready to play?" + "\n~ Tip: different materials will protect the estuary better ~");
+		break;
+		}			
 	}
 
 	/*
@@ -165,8 +197,19 @@ public class View extends JFrame {
 				gameObjBtns.get(i).setIcon(Model.getGameObjs().get(i).getObjIcon());
 			}
 			// WAVE
-			else if (Model.getGameObjs().get(i) instanceof Wave) {
-				gameObjBtns.get(i).setLocation(Model.getGameObjs().get(i).getPosition());
+			else if ( Model.getGameObjs().get(i) instanceof Wave ) {
+				if( !( Model.getGameObjs().get(i) instanceof TutorialWave ) ){
+					gameObjBtns.get(i).setLocation( Model.getGameObjs().get(i).getPosition() );
+				}
+				else{
+					if( tWaveAdded == false){
+						initTWave();
+						jP.add(tWave);
+						tWaveAdded = true;
+					}
+					tWave.setLocation( Model.getGameObjs().get(i).getPosition() );
+					tWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+				}
 			}
 			// BEACHOBJ
 			else if (Model.getGameObjs().get(i) instanceof BeachObject) {
@@ -181,8 +224,6 @@ public class View extends JFrame {
 				gameObjBtns.get(i).setLocation( ( Model.getGameObjs().get(i) ).getPosition() );
 				gameObjBtns.get(i).setIcon( ( ( Model.getGameObjs().get(i) ) ).getObjIcon() ) ;
 				gameObjBtns.get(i).setSize(Box.boxDimensions,Box.boxDimensions);
-				
-
 			}
 		}
 	}
@@ -244,18 +285,19 @@ public class View extends JFrame {
 	}
 
 	/**
-	 * @author Eaviles Purpose: look at each GameObject in Model's array and
+	 * @author Eaviles 
+	 * Purpose: look at each GameObject in Model's array and
 	 *         initialize corresponding buttons/images/panels
 	 */
 	public void initGameObjs() {
 
 		for (int i = 0; i < Model.getGameObjs().size(); i++) {
 			// SHORELINE
-			if (Model.getGameObjs().get(i) instanceof Shoreline) {
+			if ( Model.getGameObjs().get(i) instanceof Shoreline ) {
 				shoreLineTop = Model.getGameObjs().get(i).getShoreTop().x;
 			}
 			// HEATLH BAR
-			if (Model.getGameObjs().get(i) instanceof HealthBar) {
+			if ( Model.getGameObjs().get(i) instanceof HealthBar ) {
 				int totalHeight = Model.getGameObjs().get(i).getHeight();
 				double startHeight = Model.getGameObjs().get(i).getInsideHeight();
 				int width = Model.getGameObjs().get(i).getWidth();
@@ -266,37 +308,34 @@ public class View extends JFrame {
 
 			}
 			// SCENERY
-			else if (Model.getGameObjs().get(i) instanceof Scenery) {
+			else if ( Model.getGameObjs().get(i) instanceof Scenery ) {
 				scenery = Model.getGameObjs().get(i).getScenery();
 			} else {
 				button j = new button();
-//				j.setMargin(new Insets(0, 0, 0, 0));
-//				j.setBorder(BorderFactory.createEmptyBorder());
-//				j.setContentAreaFilled(false);
+				j.setMargin(new Insets(0, 0, 0, 0));
+				j.setBorder(BorderFactory.createEmptyBorder());
+				j.setContentAreaFilled(false);
 
 				// PLAYER
-				if (Model.getGameObjs().get(i) instanceof Player) {
+				if ( Model.getGameObjs().get(i) instanceof Player ) {
 					j.setSize(new Dimension(Player.playerDimensions, Player.playerDimensions));
-//					j.setHoldingType(HoldingType.EMPTY);
 					j.setType(null);
 					j.setLocation((Point) (((Player) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Player.playerDimensions, Player.playerDimensions);
 					j.setIcon((Icon) ((Player) (Model.getGameObjs().get(i))).getObjIcon());
 
 				}
-				// WAVE
-				else if (Model.getGameObjs().get(i) instanceof Wave) {
+				// WAVE TODO: init wave tuto here
+				else if ( Model.getGameObjs().get(i) instanceof Wave && !(Model.getGameObjs().get(i) instanceof TutorialWave)) {
 					j.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
-//					j.setHoldingType(null);
 					j.setType(null);
 					j.setLocation((Point) (((Wave) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Wave.waveWidth, Wave.waveHeight);
 					j.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
 				}
 				// BEACHOBJ
-				if (Model.getGameObjs().get(i) instanceof BeachObject) {
+				if ( Model.getGameObjs().get(i) instanceof BeachObject ) {
 					j.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
-//					j.setHoldingType(((BeachObject) Model.getGameObjs().get(i)).getHT());
 					j.setType( Model.getGameObjs().get(i).getMyType() );
 					j.setLocation((Point) (((BeachObject) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, BeachObject.beachObjDimensions,
@@ -308,7 +347,7 @@ public class View extends JFrame {
 					// "+Model.getGameObjs().get(i).getClass());
 				}
 				// BOX
-				else if (Model.getGameObjs().get(i) instanceof Box) {
+				else if ( Model.getGameObjs().get(i) instanceof Box ) {
 					j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
 //					j.setHoldingType((((Box) ((Model.getGameObjs()).get(i))).getContains()));
 					j.setType(HoldingType.BOX);
@@ -318,10 +357,58 @@ public class View extends JFrame {
 				}
 
 				gameObjBtns.add(j);
-				jP.add(gameObjBtns.get(i));
+				
+//				System.out.println(Model.getGameObjs().get(i));
+				if( !( Model.getGameObjs().get(i) instanceof TutorialWave ) ){
+					jP.add(gameObjBtns.get(i));
+				}
 			}
 		}
 	}
+	
+	public void initPickupTutorial(){
+		boolean haveAnOyst = false;
+		boolean haveAConc = false;
+		for (int i=0; i< Model.getGameObjs().size(); i++) {
+
+			if ( Model.getGameObjs().get(i) instanceof BeachObject && Model.getGameObjs().get(i).getMyType() == HoldingType.OYSTER 
+					&& !haveAnOyst) {
+
+				oTBtn.setMargin(new Insets(0, 0, 0, 0));
+				oTBtn.setContentAreaFilled(false);
+				oTBtn.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
+				oTBtn.setType( HoldingType.TUTORIAL_O );
+				oTBtn.setLocation(new Point(200, 200));
+				oTBtn.setBounds(oTBtn.getLocation().x, oTBtn.getLocation().y, BeachObject.beachObjDimensions,
+						BeachObject.beachObjDimensions);
+				oTBtn.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
+
+				Border oystBorder = new LineBorder(Color.green, 4);
+				oTBtn.setBorder(oystBorder);
+				jP.add(oTBtn);
+				haveAnOyst = true;
+			}
+			
+			if( Model.getGameObjs().get(i) instanceof BeachObject && Model.getGameObjs().get(i).getMyType() == HoldingType.CONCRETE 
+					&& !haveAConc ){
+				cTBtn.setMargin(new Insets(0, 0, 0, 0));
+				cTBtn.setContentAreaFilled(false);
+				cTBtn.setSize(new Dimension(BeachObject.beachObjDimensions, BeachObject.beachObjDimensions));
+				cTBtn.setType( HoldingType.TUTORIAL_C );
+				cTBtn.setLocation(new Point(200, 280));
+				cTBtn.setBounds(cTBtn.getLocation().x, cTBtn.getLocation().y, BeachObject.beachObjDimensions,
+						BeachObject.beachObjDimensions);
+				cTBtn.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
+
+				Border oystBorder = new LineBorder(Color.green, 4);
+				cTBtn.setBorder(oystBorder);
+				jP.add(cTBtn);
+				haveAConc = true;
+			}
+		}	
+	}
+
+
 
 	/*
 	 * Inner Classes
@@ -335,20 +422,10 @@ public class View extends JFrame {
 
 		@Override
 		protected void paintComponent(Graphics g) {
-			// g.drawImage(scenery[0], 0, 0, this);
-			// draws scenery image starting at 0,0, up to width/height
-			// need to change x variable to equal shoreline's coordinate
+
 			g.drawImage(scenery[0], 0, 0, viewWidth, viewHeight, this);
 			g.drawImage(scenery[1], 0 + totalShoreDecrement, 0, viewWidth, viewHeight, this);
 			// g.drawImage(scenery[1], 0, 0, this);
-			//
-
-			// g.setColor(Color.BLUE);
-			//// System.out.println("painting. shoreline = " + shoreLine);
-			// g.fillRect(shoreLine, 0, viewHeight, viewWidth);
-			//
-			// g.setColor(Color.yellow);
-			// g.fillRect(0, 0, shoreLine, viewHeight);
 
 			g.setColor(Color.red);
 			Double a = .206;
@@ -490,7 +567,10 @@ public class View extends JFrame {
 		return shoreLineTop;
 	}
 	
-	public button getK(){
-		return k;
+	public button getOTBtn(){
+		return oTBtn;
+	}
+	public button getCTBtn(){
+		return cTBtn;
 	}
 }// end View class

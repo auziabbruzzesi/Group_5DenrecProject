@@ -56,27 +56,30 @@ public class Controller implements MouseListener {
 	private HoldingType objToPickUpHT = null;
 	private Point putDownBox = new Point();
 
+	Box currBox = new Box();//this may cause problems
+	
 	int i = 0;
 	
 	//save and load variable
 	int saveFileNum=1;
 	String fname=Integer.toString(saveFileNum)+".sav";
 	
-	Boolean tutorial = null;
-	
-	//Tutorial stuff
+	//Tutorial vars
+	Boolean tutorial = false;
+	HoldingType tutorialPickUp = HoldingType.EMPTY;
 	
 /**
  * @author Eaviles
  * Purpose: calls the necessary functions for the game tutorial to execute. 
  * Regulates the flow of the tutorial.
  */
-	public void playTutorial(){
+	public void startTutorial(){
 		//everything will display - model & view initialized as normal
 		//display a welcome dialog (view init)
 		tutorial = true;
 		v.playTutorialSequence(1);
-		v.getK().addMouseListener(this);	
+		v.getOTBtn().addMouseListener(this);
+		v.getCTBtn().addMouseListener(this);
 	}
 	
 
@@ -87,10 +90,6 @@ public class Controller implements MouseListener {
  *   wTimer - handles waves
  *   pTimer - handles player movement
  */
-
-	
-
-	
 	
 	/**
 	 * @author Eaviles
@@ -98,15 +97,10 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-		//	m.initSprites();
-			//v.updateViewObjs();
-			//m.initSprites();
-			
+//			System.out.println("running wtimer");
 			moveWaves();
-//			v.updateViewObjs();
-			
-			v.repaint();
+			v.updateViewObjs();
+//			v.repaint();
 			checkGameStatus();
 			
 		}
@@ -129,6 +123,64 @@ public class Controller implements MouseListener {
 		}
 	});
 
+	/**
+	 * @author Eaviles
+	 * Purpose: regulate waves in the tutorial
+	 */
+	Timer wTutorialTimer = new Timer(30, new ActionListener() {
+		
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(m.gettBWave().getPosition().x > m.gettBWave().getDestination().x){
+				m.gettBWave().move();
+			}
+			else{
+				
+				int shoreDamage = determineDamage( m.gettBWave() );				
+				System.out.println("shoredamage = "+shoreDamage);
+				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
+				
+				m.updateShoreLine(shoreDamage);
+				m.getShoreLine().updateTotalDecrement(shoreDamage);				
+				m.getHB().damage(healthDamage);
+				
+				v.gettWave().setLocation( 1000, 400 );//this is a hack, but it works when nothing else does
+				Point wLoc = new Point( v.gettWave().getLocation() );
+				v.getJPanel().getComponentAt( wLoc ).setVisible(false);
+				m.removeTutorialWave();
+				v.updateViewObjs();
+
+				switch(tutorialPickUp){
+				case TUTORIAL_O:
+					v.playTutorialSequence(5);
+				break;
+				case TUTORIAL_C:
+					v.playTutorialSequence(6);	
+				break;
+				default:
+					System.out.println("error in Controller.tutorialWTimer: tutorialPickUp invalid type");
+				break;
+				}
+				
+				v.playTutorialSequence(7);
+				tutorial = false;
+				resetAll();
+				initViewBtnListeners();
+				initViewLoadBtnListeners();
+				initViewSaveBtnListeners();
+				wTimer.start();
+				wTutorialTimer.stop();
+			}
+			v.updateViewObjs();
+		}
+	});
+	
+	public void resetAll(){
+		m.resetGameObjsArray();
+		v.resetGameObjBtnsArray();
+	}
+	
 	/**
 	 * Constructor
 	 */
@@ -200,14 +252,12 @@ public class Controller implements MouseListener {
 	 */
 	public void handlePlayerAction() {
 
-		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {
-			
+		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {	
 			pTimer.stop();
 //			 System.out.println("we've reached our destination");
 
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
-
 //				System.out.println("Pickuprequest true. Topickup = "+objToPickUpHT);
 				
 				//try to pickup the object. If we are successful, remove that object from jpanel
@@ -215,9 +265,10 @@ public class Controller implements MouseListener {
 					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix?
 					m.updatePlayerSprite();
 					
-//					if(tutorial){
-//						v.playTutorialSequence(2);
-//					}
+					if(tutorial){
+						tutorialPickUp = objToPickUpHT;
+						v.playTutorialSequence(2);
+					}
 				}
 				m.updatePlayerSprite();
 				pickUpRequest = false;
@@ -225,7 +276,6 @@ public class Controller implements MouseListener {
 
 			else if (putDownRequest) {
 				putDown();
-				
 				putDownRequest = false;
 			}
 		} // end if(pickup)
@@ -237,41 +287,74 @@ public class Controller implements MouseListener {
 	 */
 	public String putDown() {
 		String type = "";
+
 		// check player is holding something
 		if (m.getP().getHT() != HoldingType.EMPTY) {
-			//what's in the box is stored in a variable
+		
+			//what's in the box is stored in a variable		
+			HoldingType boxContains = m.getBoxes().get(putDownBox).getContains();			
 			
-			HoldingType boxContains = m.getBoxes().get(putDownBox).getContains();
-
 			// check type of obj matches box type, or box is empty
 			if (m.getP().getHT() == boxContains || boxContains == HoldingType.EMPTY) {
 
+				
 				// check box not full
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
+			
 					m.getBoxes().get(putDownBox).incrementCount();
+					
 					// set box type in model if this is 1st item placed in box
-						Box currBox = m.getBoxes().get(putDownBox);
+						currBox = m.getBoxes().get(putDownBox);
 						currBox.setContains(m.getP().getHT());
-						if(m.getP().getHT() == HoldingType.CONCRETE){
+					
+						switch( m.getP().getHT() ){
+						case CONCRETE:
 							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
 							v.updateViewObjs();	
-						}
-						else if(m.getP().getHT() == HoldingType.OYSTER){
+						break;
+						case OYSTER:
 							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
-							v.updateViewObjs();					
-					}
-
-					
-					
-//					System.out.println("\n\nbox count = " + m.getBoxes().get(putDownBox).getCount() + " isfull = "+ m.getBoxes().get(putDownBox).isfull());
+							v.updateViewObjs();						
+						break;
+						case TUTORIAL_C:
+							currBox.setObjIcon(m.concreteImages[currBox.getCount()]);
+							v.updateViewObjs();
+						break;
+						case TUTORIAL_O:
+							currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
+							v.updateViewObjs();
+						break;
+						default:
+							System.out.println("error in Controller.putDown(): incorrect conditions.");
+						break;
+						}						
+						
 					m.getP().setHT(HoldingType.EMPTY);
 				}
-				//v.updateViewObjs();
 			}
 		 
-		else {
-			System.out.println("Can't put that down in this box. It is a " + m.getBoxes().get(putDownBox).getContains() +" box and you are holding "+ m.getP().getHT());
-		}
+			else {
+				System.out.println("Can't put that down in this box. It is a "
+						+ m.getBoxes().get(putDownBox).getContains() + " box and you are holding " + m.getP().getHT());
+			}
+
+			//TODO: put this in a separate function
+			if(tutorial){
+				switch(currBox.getContains()){
+				case TUTORIAL_O:
+					v.playTutorialSequence(3);
+				break;
+				case TUTORIAL_C:
+					v.playTutorialSequence(4);
+				break;
+				default:
+					System.out.println("error in tutorial switch: Controller.putDown()");
+				break;
+				}
+				
+				m.playTutorialWaveCollision('b', currBox);
+				this.wTutorialTimer.start();
+			}
 	}
 		type = m.getBoxes().get(putDownBox).getContains().name() + " " + m.getBoxes().get(putDownBox).getCount();
 		return type;
@@ -292,40 +375,26 @@ public class Controller implements MouseListener {
 			}
 			
 			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
-			else {
-//				System.out.println("in controller's movewaves(). have not reset wave. startpos = "+w.getInitialPos());							
-
-//				System.out.println("\nwave start positions:");
-//				for(Wave v:m.getWaves()){
-//					System.out.println(v.getInitialPos());
-//				}
-				
+			else {		
 				int shoreDamage = determineDamage(w);				
-
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
+				
 				m.updateShoreLine(shoreDamage);
 				m.getShoreLine().updateTotalDecrement(shoreDamage);
-//				System.out.println("shoreline updated (model). shoreline = "+ m.getShoreLine());
 				
 				m.getHB().damage(healthDamage);
-				//v.updateViewObjs();
 				m.resetWave(a);
 				
-//				System.out.println("\nwave start positions post-reset:");
-//				for(Wave v:m.getWaves()){
-//					System.out.println(v.getInitialPos());
+//				System.out.println("################################################################################");
+//				for(Box b : m.getBoxes().values()){
+//				
+//					System.out.println("box index: " + b.getIndex());
+//					System.out.println("box Type: " + b.getContains());
+//					System.out.println("box IconImage: " + b.getObjIcon());
+//					System.out.println("Box Count: "+ b.getCount());
+//					
 //				}
-//				System.out.println("in model's movewaves(). have reset. startpos = "+w.getInitialPos()+"\n");
-				System.out.println("################################################################################");
-				for(Box b : m.getBoxes().values()){
-				
-					System.out.println("box index: " + b.getIndex());
-					System.out.println("box Type: " + b.getContains());
-					System.out.println("box IconImage: " + b.getObjIcon());
-					System.out.println("Box Count: "+ b.getCount());
-					
-				}
-				System.out.println("###############################################################################");
+//				System.out.println("###############################################################################");
 				checkGameStatus();//we call this here bc shoreline was updated (above)
 			}
 			a++;	
@@ -334,6 +403,19 @@ public class Controller implements MouseListener {
 		v.updateViewObjs();
 	}
 
+	public void moveTutorialWave(){
+		if ( m.gettBWave().getPosition().x  > m.gettBWave().getDestination().x ) {
+			m.gettBWave().move();		
+		}
+		else{
+			int shoreDamage = determineDamage(m.gettBWave());
+			int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
+			m.updateShoreLine(shoreDamage);
+			m.getShoreLine().updateTotalDecrement(shoreDamage);
+			m.getHB().damage(healthDamage);
+			this.wTutorialTimer.stop();
+		}
+	}
 
 	/**
 	 * @author Eaviles
@@ -385,6 +467,13 @@ public class Controller implements MouseListener {
 			b.setCount(b.getCount() - 1);
 			b.setObjIcon(m.concreteImages[b.getCount()]);
 			break;
+		case TUTORIAL_C:
+				decrement = 4;
+		break;
+			
+		case TUTORIAL_O:
+				decrement = 4;
+		break;
 		default:
 			System.out.println("Error: Box contains = " + b.getContains());
 			break;
@@ -395,7 +484,7 @@ public class Controller implements MouseListener {
 	
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
+
 		//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
 		if(pickUpRequest){
 			pickUpRequest = false;
@@ -411,20 +500,28 @@ public class Controller implements MouseListener {
 //		}
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
-//			System.out.println("button clicked");
+
 			m.getP().setDestination( ((View.button) (e.getComponent())).getLocationOnScreen() );
 			
 			//if a box was clicked
-			if ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.BOX) {
+			if ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.BOX ) {
 				putDownRequest = true;
 				putDownBox = e.getComponent().getLocation();
 			} 
-			//if anything else was clicked
-			else {
-//				System.out.println("button with type "+ ( (View.button)(e.getComponent()) ).getType() + " clicked");
+			else if( tutorial && ( ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.TUTORIAL_O
+						|| ( (View.button) ( e.getComponent() ) ).getType() == HoldingType.TUTORIAL_C ) ){
 				pickUpRequest = true;
 				objToPickUp = e.getComponent().getLocation();
 				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getType();
+			}
+			//if anything else was clicked
+			else if(!tutorial) {
+				pickUpRequest = true;
+				objToPickUp = e.getComponent().getLocation();
+				objToPickUpHT = ( ( View.button )( e.getComponent() ) ).getType();
+			}
+			else{
+				System.out.println("error in Controller:mousePressed: incorrect conditions:");
 			}
 		}
 

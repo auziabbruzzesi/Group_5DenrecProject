@@ -22,22 +22,23 @@ public class Main {
 //	static Model fromSaveFile = new Model("filename.someExtension");
 	//view
 	//controller
-	
-	static Model m = new Model(/*State tutorial*/);
-	static View v = new View("t"/*State tutorial*/);
+	private static boolean playTutorial = false; //change to true to play tutorial before game starts
+	static Model m = new Model();
+	static View v = new View();
 	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
 	public static void main(String[] args) {
 		
-		//tutorial
-//		v.screenTimer.start();
-		
-//		c.playTutorial();
-		
+
+		if(playTutorial){
+			c.startTutorial();
+		}
+		else{
+			c.wTimer.start();
+		}		
 		
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
-		c.wTimer.start();
 		v.repaint();
 	}
 

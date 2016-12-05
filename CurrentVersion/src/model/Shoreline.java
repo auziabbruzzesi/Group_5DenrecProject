@@ -11,7 +11,6 @@ public class Shoreline extends GameObject{
 	private int loosingCoordinate;
 	private int totalDecrement = 0;
 
-	//will switch to this
 	public Shoreline(Point t, Point b){
 		setShoreTop(t);
 		setShoreBottom(b);

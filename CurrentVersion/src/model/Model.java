@@ -28,6 +28,7 @@ import javax.swing.ImageIcon;
 import java.util.Random;
 import java.util.Set;
 import model.BeachObject;
+import model.*;
 import view.View;
 public class Model {	
 	
@@ -52,6 +53,8 @@ public class Model {
 	private HealthBar HB = new HealthBar(50, 200);
 	private Shoreline shoreLine;
 
+	private TutorialWave tBWave;
+	private TutorialWave tSWave;
 
 	public Dimension gameDi = new Dimension(1200,650);
 
@@ -73,6 +76,65 @@ public class Model {
 		transient BufferedImage[] scenery = new BufferedImage[2];	
 		Scenery gameScenery = new Scenery();
 	
+		
+		
+		/**
+		 * @author Eaviles
+		 * Purpose: handles Model's role in the game tutorial. Allows tutorial to
+		 * demonstrate the effects of a wave hitting a box/the shore
+		 */
+		public void playTutorialWaveCollision(char t, Box tBox){
+			
+			switch(t){
+			case 'b':
+				//create a wave that corresponds to the box the player put something in
+				int x = this.shoreLine.findCorrespondingX(tBox.getPosition().y) + 100;
+				int y = tBox.getPosition().y + Box.boxDimensions/2;
+				System.out.println("tbwave at "+x+", "+y);
+				tBWave = new TutorialWave( new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(tBox.getPosition().y) );
+			break;
+			case 's':
+//				tSWave = new Wave( tPt, pics[11], this.shoreLine.findCorrespondingX(tPt.y) );
+			break;
+			default:
+				System.out.println("Error in Model.playTutorial(): incorrect parameter");
+			break;
+			}
+			
+			gameObjs.add(this.tBWave);
+			System.out.println("\n\ngameobs model array: "+this.gameObjs);
+		}
+	
+		/**
+		 * @author Eaviles
+		 * Purpose: removes the tutorialwaves from gameobjs array after tutorial is done with them.
+		 * This is nice for the update function, as it won't have to process unused objects. It also
+		 * keeps the array clean/consisting of only objects that are being used by the game. 
+		 */
+		
+		public void removeTutorialWave(){
+			Iterator<GameObject> myIt = gameObjs.iterator();
+			while( myIt.hasNext() ){
+				if(myIt.next() instanceof TutorialWave){
+					myIt.remove();
+				}
+			}
+			System.out.println(gameObjs);
+		}
+		public void resetGameObjsArray(){
+
+			for(Box b: boxes.values()){
+				b.setContains(HoldingType.EMPTY);
+				b.setCount(0);
+				b.setObjIcon(concreteImages[b.getCount()]);
+			}
+			
+			this.gameObjs.clear();
+			this.initGameObjsArr();
+			
+			System.out.println("reset game objs array:");
+			System.out.println(gameObjs);
+		}
 /*
  * Model Constructor
  */
@@ -80,12 +142,13 @@ public class Model {
 		this.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
 		initPlayer();//Same comment as above ^
+		
 		initShoreline();
 		initBoxes();
 		initWaves();
 		initBeachObjs();
 		
-		
+		tBWave = new TutorialWave(new Point(1100,650),  pics[11], 500);
 		shoreLine.setLoosingCoordinate(shoreLine.getShoreBottom().x - HB.getHeight() + 100);
 		initGameObjsArr();	
 
@@ -216,7 +279,7 @@ public class Model {
 		gameObjs.add(this.shoreLine);
 		gameObjs.add(gameScenery);//might not need to save this
 		gameObjs.add(this.HB);
-		System.out.println("\n\nModel's array of game objects contains:\n"+gameObjs+"\n\n");
+//		System.out.println("\n\nModel's array of game objects contains:\n"+gameObjs+"\n\n");
 	}
 	/**
 	 * @author Eaviles
@@ -607,5 +670,21 @@ public class Model {
 
 	public static ArrayList<GameObject> getGameObjs(){
 		return gameObjs;
+	}
+
+	public Wave gettBWave() {
+		return tBWave;
+	}
+
+	public void settBWave(TutorialWave tBWave) {
+		this.tBWave = tBWave;
+	}
+
+	public Wave gettSWave() {
+		return tSWave;
+	}
+
+	public void settSWave(TutorialWave tSWave) {
+		this.tSWave = tSWave;
 	}	
 }
