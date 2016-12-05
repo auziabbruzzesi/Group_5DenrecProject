@@ -270,9 +270,9 @@ public class View extends JFrame {
 				scenery = Model.getGameObjs().get(i).getScenery();
 			} else {
 				button j = new button();
-//				j.setMargin(new Insets(0, 0, 0, 0));
-//				j.setBorder(BorderFactory.createEmptyBorder());
-//				j.setContentAreaFilled(false);
+				j.setMargin(new Insets(0, 0, 0, 0));
+				j.setBorder(BorderFactory.createEmptyBorder());
+				j.setContentAreaFilled(false);
 
 				// PLAYER
 				if (Model.getGameObjs().get(i) instanceof Player) {
