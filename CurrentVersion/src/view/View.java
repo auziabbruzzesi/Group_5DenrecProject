@@ -58,6 +58,8 @@ public class View extends JFrame {
 	String playerDir = "";
 
 	JPanel jP = new jpanel();
+	exitJframe eJf=new exitJframe();
+	
 	private HealthPanel healthBar;
 	Dimension frameDimensions = new Dimension(Toolkit.getDefaultToolkit().getScreenSize());
 
@@ -74,6 +76,7 @@ public class View extends JFrame {
 	
 	public SaveButton sb;
 	public LoadButton lb;
+	public ExitButton eb;
 	
 
 	button oTBtn = new button();
@@ -233,6 +236,15 @@ public class View extends JFrame {
 		System.exit(0);
 
 	}
+	
+	public void exitWindow(){
+		eJf.setBounds(500, 250, 300, 300);
+		eJf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		eJf.getContentPane().setLayout(null);
+		eJf.setVisible(true);
+		initSaveBtn();
+		
+	}
 
 	public void updateShoreline(int damage) {
 		shoreLineTop -= damage;
@@ -253,8 +265,8 @@ public class View extends JFrame {
 		jP = new jpanel();
 		// jP.setLayout(b);
 
-		initSaveBtn();
-
+		//initSaveBtn();
+		initExitBtn();
 		initLoadBtn();
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 
@@ -271,9 +283,16 @@ public class View extends JFrame {
 	public void initSaveBtn() {
 
 		sb = new SaveButton();
-		sb.setBounds(1100, 0, 100, 50);
+		sb.setBounds(100, 100, 100, 50);
 		sb.setText("Save Game");
-		jP.add(sb);
+		eJf.add(sb);
+	}
+	public void initExitBtn() {
+
+		eb = new ExitButton();
+		eb.setBounds(1100, 100, 100, 50);
+		eb.setText("Exit Game");
+		jP.add(eb);
 	}
 
 	public void initLoadBtn() {
@@ -413,9 +432,16 @@ public class View extends JFrame {
 	/*
 	 * Inner Classes
 	 */
+	public class exitJframe extends JFrame{
+		//comment   // test test
+		
+		
+		
+	}
 	public class jpanel extends JPanel {
 
 		public jpanel() {
+			setLayout(null);
 			setLayout(null);
 			setPreferredSize(frameDimensions);
 		}
@@ -449,6 +475,9 @@ public class View extends JFrame {
 	}
 
 	public class LoadButton extends JButton {
+
+	}
+	public class ExitButton extends JButton {
 
 	}
 
