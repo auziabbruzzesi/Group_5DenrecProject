@@ -1,20 +1,8 @@
 package controller;
 
-import java.awt.Dimension;
-import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-//GITHUB SUCKS PLEASE WORK THOUGH SERIOUSLY
-import java.awt.Point;
-import java.awt.Toolkit;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-//hello
-import javax.swing.JButton;
-import javax.swing.Timer;
 
-import model.HoldingType;
+
 import model.Model;
-import model.Player;
 import view.*;
 
 public class Main {
@@ -39,7 +27,7 @@ public class Main {
 		
 		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
-		v.repaint();
+		//v.repaint();
 	}
 
 }

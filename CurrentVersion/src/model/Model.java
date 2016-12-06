@@ -68,9 +68,9 @@ public class Model {
 		final int oystSprite = 9;
 		final int concSprite = 8;
 		int picNum = 0;
-		ImageIcon[] pics;// holds all sprites for all characters
-		ImageIcon[] oysterBoxes;
-		ImageIcon[] crabPics;
+		public ImageIcon[] pics;// holds all sprites for all characters
+		public ImageIcon[] oysterBoxes;
+		public ImageIcon[] crabPics;
 		public ImageIcon[] concreteImages;
 		private ImageIcon[] gabionImages;
 		transient BufferedImage[] scenery = new BufferedImage[2];	

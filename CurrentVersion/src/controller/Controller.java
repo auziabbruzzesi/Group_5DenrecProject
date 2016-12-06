@@ -121,7 +121,7 @@ public class Controller implements MouseListener {
 		//v.getJPanel().setSize(m.gameDi);
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
-		initViewSaveBtnListeners();
+		initViewExitBtnListeners();
 //		System.out.println("shoreline start = "+m.getShoreLine().getTotalDecrement());
 	}
 
@@ -577,6 +577,8 @@ public class Controller implements MouseListener {
 				//System.out.println("click"+fname);
 			}
 			
+			
+			
 		}
 		
 	});
@@ -594,6 +596,22 @@ public class Controller implements MouseListener {
         //System.out.println("load"+fname);
 				load(fname);
 	}
+			
+		}
+		
+	});
+	
+	}
+	
+	private void initViewExitBtnListeners() {
+	v.eb.addActionListener(new ActionListener(){
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			v.exitWindow();
+			initViewSaveBtnListeners();
+
 			
 		}
 		
