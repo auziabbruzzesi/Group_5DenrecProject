@@ -357,16 +357,17 @@ public class Controller implements MouseListener {
 				// b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 				break;
 			case OYSTER:
-			if(!b.isfull()){
+			
 				if (b.isfull()) {
 					decrement = 1;
 
 				} else {
 					decrement = 3;
 				}
+				if(!b.isfull()){
 				b.setCount(b.getCount() - 1);
 				b.setObjIcon(m.getGabionImages()[b.getCount()]);
-			}
+				}
 				break;
 			case CONCRETE:
 				if (b.isfull()) {
