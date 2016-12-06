@@ -85,9 +85,6 @@ public class ModelTest {
 	@Test 
 	public void initBeachObjTest(){
 		
-		
-		
-		
 		BeachObject bo = new BeachObject(new Point(1,1), null, null);
 		beachObjHM.put(new Point(1,1), bo);
 		model.setBeachObject(beachObjHM);
@@ -95,6 +92,7 @@ public class ModelTest {
 		model.initBeachObjs();
 		assertNotNull(model.getBeachObject());
 	}
+ 
 
 	@Test
 	public void playerOverlapTest() {
