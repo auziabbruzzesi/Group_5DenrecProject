@@ -229,9 +229,11 @@ public class Controller implements MouseListener {
 				
 				// check box not full
 				if (!(m.getBoxes().get(putDownBox).isfull())) {
-			
-					m.getBoxes().get(putDownBox).incrementCount();
+			 
 					
+					m.getBoxes().get(putDownBox).incrementCount();
+					//System.out.println("*************** CURRENT BOX TYPE " + m.getBoxes().get(putDownBox).getContains());
+					//System.out.println("*************** CURRENT BOX COUNT " + m.getBoxes().get(putDownBox).getCount());
 					// set box type in model if this is 1st item placed in box
 						currBox = m.getBoxes().get(putDownBox);
 						currBox.setContains(m.getP().getHT());
@@ -336,7 +338,7 @@ public class Controller implements MouseListener {
 	 * Purpose: waves will damage the shoreline by different amounts, depending on the contents
 	 * of the box they hit. This function determines how much damage will be done.
 	 */
-	private int determineDamage(Wave w) {
+	public int determineDamage(Wave w) {
 		int decrement = 0;
 		Box b = null;
 		
@@ -348,7 +350,7 @@ public class Controller implements MouseListener {
 		if(b == null){
 			System.out.println("error in Controller: determineDamage: no box with index matching wave");
 		}
-		
+		if(!b.isfull()){
 			// set decrement based box contents
 			switch (b.getContains()) {
 			case EMPTY:
@@ -364,15 +366,15 @@ public class Controller implements MouseListener {
 				} else {
 					decrement = 3;
 				}
-				if(!b.isfull()){
+			
 				b.setCount(b.getCount() - 1);
 				b.setObjIcon(m.getGabionImages()[b.getCount()]);
-				}
+				
 				break;
 			case CONCRETE:
+				
 				if (b.isfull()) {
 					decrement = 3;
-
 				} else {
 					decrement = 4;
 				}
@@ -390,7 +392,7 @@ public class Controller implements MouseListener {
 				System.out.println("Error: Box contains = " + b.getContains());
 				break;
 			}
-		
+		}
 		return decrement;
 	}
 
