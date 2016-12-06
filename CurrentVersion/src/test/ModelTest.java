@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 
@@ -55,10 +56,45 @@ public class ModelTest {
 		assertTrue(Model.getGameObjs().contains(model.getShoreLine()));
 		assertTrue(Model.getGameObjs().contains(model.getHB()));
 		assertTrue(Model.getGameObjs().contains(model.getGameScenery()));
-		
-		
 	}
+	@Test 
+	public void initPlayerTest(){
+		model.initPlayer();
+		assertEquals(model.getP().getPosition(),new Point(Player.startPosition));
+		assertNotNull(model.getP().getObjIcon());
+	}
+	@Test 
+	public void initBoxesTest(){
+		Box b = new Box();
+		model.initBoxes();
 	
+		assertNotNull(model.getBoxes());
+		assertTrue(b.getCount() == 0);
+		assertTrue(b.getCapacity() == 3);
+		assertEquals(b.getContains(), HoldingType.EMPTY);
+	}
+	@Test
+	public void initWavesTest(){
+		
+		model.initWaves();
+		assertNotNull(model.getWaves());
+		assertEquals(model.getWaves().get(0).getPosition(), new Point(1390,230));
+		assertEquals(model.getWaves().get(0).getIndex(), 0);
+		assertEquals(model.getWaves().get(0).getDestination().x, model.getShoreLine().findCorrespondingX(model.getWaves().get(0).getPosition().y));
+	}
+	@Test 
+	public void initBeachObjTest(){
+		
+		
+		
+		
+		BeachObject bo = new BeachObject(new Point(1,1), null, null);
+		beachObjHM.put(new Point(1,1), bo);
+		model.setBeachObject(beachObjHM);
+		
+		model.initBeachObjs();
+		assertNotNull(model.getBeachObject());
+	}
 
 	@Test
 	public void playerOverlapTest() {
@@ -75,17 +111,7 @@ public class ModelTest {
 		assertTrue(model.checkPlayerOverlap(farPoint));
 
 	}
-	@Test 
-	public void initPlayerTest(){
-		model.initPlayer();
-		assertEquals(model.getP().getPosition(),new Point(Player.startPosition));
-		assertNotNull(model.getP().getObjIcon());
-	
-		
-	}
- 
-
-	@Test
+ 	@Test
 	public void boxOverlapTest() {
 		Box testBox = new Box();
 		testBox.setPosition(playerPos);

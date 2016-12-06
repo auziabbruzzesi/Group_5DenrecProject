@@ -305,7 +305,7 @@ public class Model {
 	 * @author @Auzi
 	 * Purpose: initializes Boxes 
 	 */
-	private void initBoxes(){
+	public void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
 			//Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
 			System.out.println(((this.gameDi.width*.36)+(i*47)));
@@ -319,7 +319,7 @@ public class Model {
 			box.setCount(0);
 			box.setContains(HoldingType.EMPTY);
 			box.setIndex(i);
-			this.boxes.put(p, box);
+			boxes.put(p, box);
 //			System.out.println("ht (not contains) for this box = "+box.getH());
 		}
 	}
@@ -327,7 +327,7 @@ public class Model {
 	 * @author Eaviles
 	 * Purpose: initializes Waves
 	 */
-	private void initWaves(){
+	public void initWaves(){
 
 		int i=0;
 		for( Box b : this.getBoxes().values() ){
@@ -347,7 +347,7 @@ public class Model {
 	 * Purpose: initializes BeachObjects within their spawn zone (area they're allowed to spawn in)
 	 * and makes sure they are not created with positions that would overlap with player/boxes
 	 */
-	private void initBeachObjs(){
+	public void initBeachObjs(){
 		BeachObject.spawnZoneHeight = (int) (this.gameDi.height*.88);
 		BeachObject.spawnZoneWidth = (int) (this.gameDi.width*.45);
 		Random r = new Random();
