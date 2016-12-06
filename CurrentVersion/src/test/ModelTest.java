@@ -4,8 +4,11 @@ import static org.junit.Assert.*;
 
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
+
+import javax.swing.ImageIcon;
 
 import org.junit.After;
 import org.junit.Before;
@@ -32,12 +35,30 @@ public class ModelTest {
 	ArrayList<Wave> waves = new ArrayList<Wave>();
 	int numWaves = 6;
 	int shoreLine = 840;
-	// 
+	
+	String[] crabFiles = {"crabN.png", "crabS.png", "crabE.png", "crabW.png", "crabNE.png","crabNW.png", 
+			"crabSE.png","crabSW.png","ConcretecrabN.png", "ConcretecrabS.png", "ConcretecrabE.png", "ConcretecrabW.png", "ConcretecrabNE.png","ConcretecrabNW.png", 
+			"ConcretecrabSE.png","ConcretecrabSW.png","OystercrabN.png", "OystercrabS.png", "OystercrabE.png", "OystercrabW.png", "OystercrabNE.png","OystercrabNW.png", 
+			"OystercrabSE.png","OystercrabSW.png"};
+	ImageIcon[] crabPics = new ImageIcon[crabFiles.length];
 	Box b1 = new Box();  
 	Box b2 = new Box();
 	Box b3 = new Box();
 	Box b4 = new Box();
-
+	@Test 
+	public void initGameObjArrayTest(){
+		model.initGameObjsArr();
+		assertTrue(Model.getGameObjs().containsAll(( Collection <? extends GameObject>) model.getBoxes().values()));
+		assertTrue(Model.getGameObjs().containsAll(( Collection <? extends GameObject>) model.getWaves()));
+		assertTrue(Model.getGameObjs().containsAll(( Collection <? extends GameObject>) model.getBeachObject().values()));
+		assertTrue(Model.getGameObjs().contains(model.getP()));
+		assertTrue(Model.getGameObjs().contains(model.getShoreLine()));
+		assertTrue(Model.getGameObjs().contains(model.getHB()));
+		assertTrue(Model.getGameObjs().contains(model.getGameScenery()));
+		
+		
+	}
+	
 
 	@Test
 	public void playerOverlapTest() {
@@ -54,6 +75,15 @@ public class ModelTest {
 		assertTrue(model.checkPlayerOverlap(farPoint));
 
 	}
+	@Test 
+	public void initPlayerTest(){
+		model.initPlayer();
+		assertEquals(model.getP().getPosition(),new Point(Player.startPosition));
+		assertNotNull(model.getP().getObjIcon());
+	
+		
+	}
+ 
 
 	@Test
 	public void boxOverlapTest() {

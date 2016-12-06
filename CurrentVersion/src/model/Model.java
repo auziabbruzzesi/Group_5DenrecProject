@@ -74,7 +74,7 @@ public class Model {
 		public ImageIcon[] concreteImages;
 		private ImageIcon[] gabionImages;
 		transient BufferedImage[] scenery = new BufferedImage[2];	
-		Scenery gameScenery = new Scenery();
+		private Scenery gameScenery = new Scenery();
 	
 		
 
@@ -274,6 +274,7 @@ public class Model {
 	
 /*
  * Functions required for Model initialization
+ * Note: these functions were made public solely for testing purposes
  */
 
 	/**
@@ -281,7 +282,7 @@ public class Model {
 	 * Purpose: initialize gameObjsArr to contain all game objects needed for 
 	 * saving the game and updating View.
 	 */
-	private void initGameObjsArr() {
+	public void initGameObjsArr() {
 
 		gameObjs.addAll(( Collection <? extends GameObject>) this.boxes.values());
 		gameObjs.addAll(this.waves);
@@ -296,7 +297,7 @@ public class Model {
 	 * @author Eaviles
 	 * Purpose: initializes Player 
 	 */
-	private void initPlayer(){
+	public void initPlayer(){
 		p = new Player(new Point(Player.startPosition));
 		updatePlayerSprite();
 	}
@@ -698,5 +699,11 @@ public class Model {
 
 	public void settSWave(TutorialWave tSWave) {
 		this.tSWave = tSWave;
+	}
+	public Scenery getGameScenery() {
+		return gameScenery;
+	}
+	public void setGameScenery(Scenery gameScenery) {
+		this.gameScenery = gameScenery;
 	}	
 }
