@@ -287,4 +287,8 @@ public class Player extends GameObject implements MoveObjects {
 	public Direction getDirection() {
 		return direction;
 	}
+	
+	public void setDirection(Direction d){
+		this.direction = d;
+	}
 }
