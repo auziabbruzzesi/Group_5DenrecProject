@@ -308,7 +308,8 @@ public class Model {
 		for (int i = 0; i < numBoxes; i++) {
 			//Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
 			System.out.println(((this.gameDi.width*.36)+(i*47)));
-			Point p = new Point((int) ((this.gameDi.width*.36)+(i*47)),73+(i*131));
+			System.out.println("game height: " + this.gameDi.height);
+			Point p = new Point((int) ((this.gameDi.width*.40)+(i*47)),(int) ((.2)*this.gameDi.height+(i*131)));
 			//Box.boxDimensions = (int) (.3*this.gameDi.height);
 			//pics[10].setImage(pics[10].getImage());
 			
