@@ -82,14 +82,14 @@ public class View extends JFrame {
 	button oTBtn = new button();
 	button cTBtn = new button();
 
-	Timer screenTimer = new Timer(1, new ActionListener() {
+	public Timer screenTimer = new Timer(1, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			setSize(Toolkit.getDefaultToolkit().getScreenSize());
+			//setSize(Toolkit.getDefaultToolkit().getScreenSize());
 //			viewHeight = getContentPane().getHeight();
 //			viewWidth = getContentPane().getWidth();
-			updateViewObjs();
+			//updateViewObjs();
 			// m.gameDi = v.getContentPane().getSize();
 
 		}
@@ -122,6 +122,9 @@ public class View extends JFrame {
 	 */
 	public View() {
 		initView();
+		
+		
+		
 	}
 
 	public void initTWave(){
@@ -274,7 +277,7 @@ public class View extends JFrame {
 		getContentPane().add(jP);
 		pack();
 		setVisible(true);
-		screenTimer.start();
+		//screenTimer.start();
 		// System.out.println("\n\nView's array of buttons
 		// contains:\n"+this.gameObjBtns+"\n\n");
 
@@ -505,6 +508,7 @@ public class View extends JFrame {
 			this.type = type;
 		}
 	}
+	
 
 	public class HealthPanel extends JPanel {
 		public int overallHeight;
