@@ -349,7 +349,6 @@ public class Controller implements MouseListener {
 			System.out.println("error in Controller: determineDamage: no box with index matching wave");
 		}
 		
-		if (!b.isfull()) {
 			// set decrement based box contents
 			switch (b.getContains()) {
 			case EMPTY:
@@ -358,6 +357,7 @@ public class Controller implements MouseListener {
 				// b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 				break;
 			case OYSTER:
+			if(!b.isfull()){
 				if (b.isfull()) {
 					decrement = 1;
 
@@ -366,6 +366,7 @@ public class Controller implements MouseListener {
 				}
 				b.setCount(b.getCount() - 1);
 				b.setObjIcon(m.getGabionImages()[b.getCount()]);
+			}
 				break;
 			case CONCRETE:
 				if (b.isfull()) {
@@ -388,7 +389,7 @@ public class Controller implements MouseListener {
 				System.out.println("Error: Box contains = " + b.getContains());
 				break;
 			}
-		}
+		
 		return decrement;
 	}
 

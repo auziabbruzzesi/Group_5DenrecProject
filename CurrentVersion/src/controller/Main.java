@@ -16,7 +16,7 @@ public class Main {
 	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
 	public static void main(String[] args) {
-		Menu m = new Menu();
+	//	Menu m = new Menu();
 		v.screenTimer.start();
 		c.pTimer.start();
 		c.wTimer.start();
