@@ -46,7 +46,6 @@ public class PlayerTest {
 		player.setDestination(new Point(10, 5));
 		
 		player.moveNorth();
-		System.out.print(player.getPosition()); // x = 15 instead of x remaining constant and y becoming 5
 		assertEquals(player.getPosition(), player.getDestination());
 	}
 	@Test 
@@ -133,6 +132,25 @@ public class PlayerTest {
 		player.setDestination(new Point(50, 150));
 		player.updateDirection();
 		assertEquals(player.getDirection(), Direction.SOUTHWEST);
+	}
+	@Test 
+	public void findIndexTest(){
+		// player default direction is east, so should return 2 because 3rd image in array is crab at east direction
+		player.findIndex();
+		assertEquals(player.findIndex(), 2);
+		
+		// switch direction to north,so corresponding index should be 0
+		player.setDirection(Direction.NORTH);
+		player.findIndex();
+		assertEquals(player.findIndex(), 0);
+		
+		player.setDirection(Direction.SOUTH);
+		player.findIndex();
+		assertEquals(player.findIndex(), 1);
+		
+		player.setDirection(Direction.WEST);
+		player.findIndex();
+		assertEquals(player.findIndex(), 3);
 	}
 	
 	
