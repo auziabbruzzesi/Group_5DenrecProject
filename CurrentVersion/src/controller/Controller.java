@@ -204,6 +204,7 @@ public class Controller implements MouseListener {
 
 			else if (putDownRequest) {
 				putDown();
+				m.getP().setObjIcon(m.crabPics[m.getP().findIndex()]);
 				putDownRequest = false;
 			}
 		} // end if(pickup)
