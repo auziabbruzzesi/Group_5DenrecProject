@@ -93,7 +93,7 @@ public class View extends JFrame {
 	
 	/**
 	 * @author Eaviles
-	 * Purpose: regularly update View. This timer became necessary after
+	 * Purpose: regularly updates View. This timer became necessary after
 	 * integrating the tutorial.
 	 */
 
@@ -102,12 +102,12 @@ public class View extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			// setSize(Toolkit.getDefaultToolkit().getScreenSize());
-			// viewHeight = getContentPane().getHeight();
-			// viewWidth = getContentPane().getWidth();
-			 updateViewObjs();
-			 repaint();
+			viewHeight = getContentPane().getHeight();
+			viewWidth = getContentPane().getWidth();
+			getJPanel().setSize(getContentPane().getSize());
 
+			updateViewObjs();
+			repaint();
 		}
 	});
 

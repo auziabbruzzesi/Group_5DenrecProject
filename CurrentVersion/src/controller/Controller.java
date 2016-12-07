@@ -77,14 +77,12 @@ public class Controller implements MouseListener {
 	
 	/**
 	 * @author Eaviles
+	 * @Purpose regulate waves in the game
 	 */
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			
-			View.viewHeight = v.getContentPane().getHeight();
-			View.viewWidth = v.getContentPane().getWidth();
-			v.getJPanel().setSize(v.getContentPane().getSize());
+		
 			
 			m.gameDi = v.getContentPane().getSize();
 			moveWaves();
@@ -166,7 +164,6 @@ public class Controller implements MouseListener {
 		}
 
 		private static boolean checkFileExists() {
-			// TODO Auto-generated method stub
 			return new File("game.sav").isFile();
 		}
 
@@ -176,7 +173,7 @@ public class Controller implements MouseListener {
 	
 	/**
 	 * @author Eaviles
-	 * Purpose: dictates what should happen when a player tries to pickup or putdown
+	 * @Purpose dictates what should happen when a player tries to pickup or putdown
 	 * a BeachObject.
 	 */
 	public void handlePlayerAction() {
@@ -190,7 +187,7 @@ public class Controller implements MouseListener {
 				
 				//try to pickup the object. If we are successful, remove that object from jpanel
 				if (m.getP().pickUp(objToPickUpHT)) {
-					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);//TODO: fix?
+					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);
 					m.updatePlayerSprite();
 					
 					if(tutorial){
@@ -212,6 +209,7 @@ public class Controller implements MouseListener {
 	/**
 	 * @author 
 	 * @return String type
+	 * @Purpose
 	 */
 	public String putDown() {
 		String type = "";
@@ -269,9 +267,11 @@ public class Controller implements MouseListener {
 			if(tutorial){
 				switch(currBox.getContains()){
 				case TUTORIAL_O:
+					v.getCTBtn().removeMouseListener(this);
 					v.playTutorialSequence(4);
 				break;
 				case TUTORIAL_C:
+					v.getOTBtn().removeMouseListener(this);
 					v.playTutorialSequence(5);
 				break;
 				default:
@@ -291,7 +291,7 @@ public class Controller implements MouseListener {
 	
 	/**
 	 * @author Eaviles
-	 * Purpose: move all waves by one increment of their respective velocities. This is done by
+	 * @Purpose move all waves by one increment of their respective velocities. This is done by
 	 * calling Wave.move() on each wave.
 	 */
 	public void moveWaves() {
@@ -329,7 +329,7 @@ public class Controller implements MouseListener {
 	 * @author Eaviles
 	 * @param w - wave that hit shoreline
 	 * @return int decrement - the amount to decrement the shoreline by
-	 * Purpose: waves will damage the shoreline by different amounts, depending on the contents
+	 * @Purpose waves will damage the shoreline by different amounts, depending on the contents
 	 * of the box they hit. This function determines how much damage will be done.
 	 */
 	public int determineDamage(Wave w) {
@@ -394,7 +394,7 @@ public class Controller implements MouseListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 
-		//NOTE: the line of code below fixes the box pickup bug we had 11/12-11/13. Do not remove.
+		//NOTE: the if statement below fixes the box pickup bug we had 11/12-11/13. Do not remove.
 		if(pickUpRequest){
 			pickUpRequest = false;
 		}
@@ -440,7 +440,7 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author Eaviles
-	 * Purpose: check whether the game has ended. If ended, pause all timers,
+	 * @Purpose check whether the game has ended. If ended, pause all timers,
 	 * determine the game outcome, craft message communicating the outcome, 
 	 * and tell View to display it.
 	 */
@@ -476,13 +476,11 @@ public class Controller implements MouseListener {
 	/**
 	 * @author Eaviles
 	 * @param w: the wave that collided with the shore
-	 * Purpose: handle actions related to collision shared by tutorial and regular waves.
+	 * @Purpose handle actions related to collision shared by tutorial and regular waves.
 	 * This was created to remove some repeated code.
 	 */
 	public void waveCollision(Wave w){
-		System.out.println("here00");
 		int shoreDamage = determineDamage(w);
-		System.out.println("shoredamage = "+shoreDamage);
 		int healthDamage = shoreDamage;// this is redundant in terms of code, but makes it more
 										// obvious what's going on. Leaving for improved readability.
 		m.updateShoreLine(shoreDamage);
@@ -494,24 +492,27 @@ public class Controller implements MouseListener {
  */
 	/**
 	 * @author Eaviles 
-	 * Purpose: calls the necessary functions for the game
+	 * @Purpose calls the necessary functions for the game
 	 * tutorial to execute. Regulates the flow of the tutorial.
 	 */
 	public void startTutorial() {
-		// everything will display - model & view initialized as normal
-		// display a welcome dialog (view init)
 		tutorial = true;
+		
 		v.playTutorialSequence(1);
+		
 		m.playTutorialWaveAnimation();
+		
 		this.waveAnimation++;
+		
 		this.wTutorialTimer.start();
+		
 		v.getOTBtn().addMouseListener(this);
 		v.getCTBtn().addMouseListener(this);
 	}
 
 	/**
 	 * @author Eaviles 
-	 * Purpose: regulate waves in the tutorial
+	 * @Purpose regulate waves in the tutorial
 	 */
 	Timer wTutorialTimer = new Timer(30, new ActionListener() {
 
@@ -524,7 +525,7 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author Eaviles 
-	 * Purpose: reset model and view after tutorial executes
+	 * @Purpose reset model and view after tutorial executes
 	 */
 	public void resetAll() {
 		m.resetGameObjsArray();
@@ -534,14 +535,12 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author Eaviles
-	 * Purpose: handle moving the tutorial waves for both animations
+	 * @Purpose handle moving the tutorial waves for both animations
 	 */
 	public void moveTutorialWave() {
 		if (this.waveAnimation == 1) {
 
 			if(m.gettSWave1().getPosition().x > m.gettSWave1().getDestination().x){
-//				System.out.println("pos1 x = "+m.gettSWave1().getPosition().x);
-//				System.out.println("des1 x = "+m.gettSWave1().getDestination().x);
 				m.gettSWave1().move();
 			} else{
 				if (!tW1Collided) {
@@ -582,9 +581,13 @@ public class Controller implements MouseListener {
 
 				switch (tutorialPickUp) {
 				case TUTORIAL_O:
+					currBox.setCount(currBox.getCount()-1);
+					currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
 					v.playTutorialSequence(6);
 					break;
 				case TUTORIAL_C:
+					currBox.setCount(currBox.getCount()-1);
+					currBox.setObjIcon(m.getGabionImages()[currBox.getCount()]);
 					v.playTutorialSequence(7);
 					break;
 				default:
@@ -598,7 +601,7 @@ public class Controller implements MouseListener {
 				resetAll();
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
-				// initViewSaveBtnListeners();
+
 				System.out.println("tutorial: " + m.getShoreLine());
 				wTimer.start();
 				wTutorialTimer.stop();
@@ -611,67 +614,57 @@ public class Controller implements MouseListener {
 /*
  * Initialization functions
  */
+	/**
+	 * @author Eaviles
+	 * @Purpose adds listeners to buttons in View
+	 */
 	private void initViewBtnListeners() {
 		for(button b : v.gameObjBtns){
 			b.addMouseListener(this);
-		}	
-		
+		}			
 	}
-	private void initViewSaveBtnListeners() {
-	v.sb.addActionListener(new ActionListener(){
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			
-			for(GameObject go:m.getGameObjs()){
-				save(go,fname);
-				saveFileNum=saveFileNum+1;
-				fname=Integer.toString(saveFileNum)+".sav";
-				//System.out.println("click"+fname);
+	private void initViewSaveBtnListeners() {
+		v.sb.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+				for (GameObject go : m.getGameObjs()) {
+					save(go, fname);
+					saveFileNum = saveFileNum + 1;
+					fname = Integer.toString(saveFileNum) + ".sav";
+				}
 			}
-			
-			
-			
-		}
-		
-	});
-		
+		});
 	}
 	
 	private void initViewLoadBtnListeners() {
-	v.lb.addActionListener(new ActionListener(){
+		v.lb.addActionListener(new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-	for(int loadNum=saveFileNum-1;loadNum>0;loadNum--){
-		fname=Integer.toString(loadNum)+".sav";
-        //System.out.println("load"+fname);
-				load(fname);
-	}
-			
-		}
-		
-	});
-	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				for (int loadNum = saveFileNum - 1; loadNum > 0; loadNum--) {
+					fname = Integer.toString(loadNum) + ".sav";
+					load(fname);
+				}
+			}
+		});
 	}
 	
 	private void initViewExitBtnListeners() {
-	v.eb.addActionListener(new ActionListener(){
+		v.eb.addActionListener(new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			
-			v.exitWindow();
-			initViewSaveBtnListeners();
-
-			
-		}
-		
-	});
-	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				v.exitWindow();
+				initViewSaveBtnListeners();
+			}
+		});
 	}
+	
 	private void initMenu(){
 		//System.out.println(v.getMenu);
 		((JButton)v.getMenu().getContentPane().getComponent(0)).addActionListener(new ActionListener(){
@@ -683,13 +676,9 @@ public class Controller implements MouseListener {
 				v.getMenu().dispose();
 				startTutorial();
 				
-				v.getMenu().dispose();
-				
+				v.getMenu().dispose();	
 			}
-			
-		});
-		
-		
+		});	
 	}
 /*
  * Setters & Getters
@@ -715,27 +704,14 @@ public class Controller implements MouseListener {
  * Unused mouse listener functions (these are required to implement MouseListener, even if they're not used)
  */
 	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseClicked(MouseEvent e) {}
 
 	@Override
-	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseReleased(MouseEvent e) {}
 
 	@Override
-	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
+	public void mouseEntered(MouseEvent e) {}
 
 	@Override
-	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void mouseExited(MouseEvent e) {}
 }

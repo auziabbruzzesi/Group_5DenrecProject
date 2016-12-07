@@ -132,14 +132,9 @@ public class Model {
 	 * and recalculating its destination.
 	 */
 	public void resetWave(int a) {
-		/*
-		 *  get the wave with this position, calculate what its new start position/destination
-		 *  should be based on where shoreline currently is, and reset it based on that. 
-		 */
 			Wave w = waves.get(a);
 			Point startPos = new Point( this.gameDi.width - Wave.waveWidth, w.getPosition().y );
 			Point newDest = new Point( ( getShoreLine().findCorrespondingX(w.getInitialPos().y) ), w.getDestination().y);
-//			System.out.println("calculated destination = "+newDest);
 			w.reset(startPos, newDest);
 	}
 
