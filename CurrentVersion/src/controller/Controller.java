@@ -87,7 +87,7 @@ public class Controller implements MouseListener {
 			
 			//m.gameDi = v.getContentPane().getSize();
 			moveWaves();
-			//v.updateViewObjs();
+			v.updateViewObjs();
 			v.repaint();
 			checkGameStatus();
 			
@@ -211,7 +211,7 @@ public class Controller implements MouseListener {
 	}
 
 	/**
-	 * @author ?
+	 * @author 
 	 * @return String type
 	 */
 	public String putDown() {
@@ -328,7 +328,7 @@ public class Controller implements MouseListener {
 			a++;	
 		}
 		m.updateWavesDestinations();
-		v.updateViewObjs();
+//		v.updateViewObjs();
 	}
 
 	/**
@@ -510,11 +510,19 @@ public class Controller implements MouseListener {
 			}
 		});
 		
+		/**
+		 * @author Eaviles
+		 * Purpose: reset model and view after tutorial executes
+		 */
 		public void resetAll(){
 			m.resetGameObjsArray();
 			v.resetGameObjBtnsArray();
 		}
 		
+		/**
+		 * @author Eaviles
+		 * Purpose: handle moving the tutorial wave
+		 */
 		public void moveTutorialWave(){
 			
 			if ( m.gettBWave().getPosition().x  > m.gettBWave().getDestination().x ) {

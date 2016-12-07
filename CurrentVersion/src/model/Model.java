@@ -112,6 +112,12 @@ public class Model {
 /*
  * General Functions
  */
+	/**
+	 * @author Eaviles
+	 * @param a the index of the wave to be reset
+	 * Purpose: resets one wave (specified by parameter) by changing its position to its initial position
+	 * and recalculating its destination.
+	 */
 	public void resetWave(int a) {
 		/*
 		 *  get the wave with this position, calculate what its new start position/destination
