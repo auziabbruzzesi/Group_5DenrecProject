@@ -111,7 +111,7 @@ public abstract class GameObject implements Serializable {
 		return this.width;
 	}
 	public BufferedImage[] getScenery(){
-		return scenery;
+		return null;
 	}
 	public HoldingType getMyType() {
 		return myType;

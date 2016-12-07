@@ -42,14 +42,6 @@ public class HealthBarTest {
 //		assertTrue(HP.getInsideHeight() == 17.0);
 		
  	}
-	@Test 
-	public void damageTest(){
-		HP.damage(10);
-		assertEquals(HP.getHeight(), 20);
-		assertEquals(HP.getInsideHeight(), 18, 1);
-		assertEquals(HP.getHealth(), 90);
-		assertEquals(HP.getStartingY(), 2, .5);
-	}
 	
 	
 	
