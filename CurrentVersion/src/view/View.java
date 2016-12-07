@@ -50,9 +50,7 @@ public class View extends JFrame {
 		return buildingTWave;
 	}
 
-	// public void settWave(button tWave) {
-	// this.tWave = tWave;
-	// }
+	
 	Point playerDest = (new Point(200, 200));
 
 	String playerDir = "";
@@ -69,17 +67,22 @@ public class View extends JFrame {
 
 	private int totalShoreDecrement = 0;
 
-	private button buildingTWave = new button();
-
-	private boolean tWaveAdded = false;
-
 	public SaveButton sb;
 	public LoadButton lb;
 	public ExitButton eb;
 
+	//tutorial vars
 	button oTBtn = new button();
 	button cTBtn = new button();
-
+	private button buildingTWave = new button();
+	private boolean tWaveAdded = false;
+	
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: regularly update View. This timer became necessary after
+	 * integrating the tutorial.
+	 */
 	public Timer screenTimer = new Timer(60, new ActionListener() {
 
 		@Override
@@ -94,21 +97,10 @@ public class View extends JFrame {
 		}
 	});
 
-	// public button removeTutorialWave(){
-	// button tW = new button();
-	// Iterator<button> myIt = gameObjBtns.iterator();
-	// while( myIt.hasNext() ){
-	// tW = myIt.next();
-	// System.out.println(tW.getType());
-	// if(tW.getType() == HoldingType.TUTORIAL_WAVE ){
-	//// myIt.remove();
-	// System.out.println("v.removed");
-	// break;
-	// }
-	// }
-	// return tW;
-	// }
-
+	/**
+	 * @author Eaviles
+	 * Purpose: reset View's button array after tutorial, so user can start with a fresh game.
+	 */
 	public void resetGameObjBtnsArray() {
 		this.gameObjBtns.clear();
 		this.jP.removeAll();
@@ -139,6 +131,11 @@ public class View extends JFrame {
 		buildingTWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
 	}
 
+	/**
+	 * @author Eaviles
+	 * @param n: dictates which part of the tutorial sequence to execute.
+	 * Purpose: display relevant messages/animations during tutorial.
+	 */
 	public void playTutorialSequence(int n) {
 		// screenTimer.start();
 
@@ -156,12 +153,10 @@ public class View extends JFrame {
 		case 3:
 			JOptionPane.showMessageDialog(null,
 					"You've started building a Gabion! Let's see what happens when a wave hits it...");
-			// animation
 			break;
 		case 4:
 			JOptionPane.showMessageDialog(null,
 					"You've started building a Sea Wall! Let's see what happens when a wave hits it...");
-			// animation
 			break;
 		case 5:
 			JOptionPane.showMessageDialog(null,

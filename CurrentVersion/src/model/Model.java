@@ -53,11 +53,11 @@ public class Model {
 	private HealthBar HB = new HealthBar(50, 200);
 	private Shoreline shoreLine;
 
+	public Dimension gameDi = new Dimension(1200,650);
+	
+	//tutorial vars
 	private TutorialWave tBWave;
 	private TutorialWave tSWave;
-
-	public Dimension gameDi = new Dimension(1200,650);
-
 
 	//Sprite-related variables
 		ImageIcon oystIcon;
