@@ -535,8 +535,8 @@ public class Controller implements MouseListener {
 				m.getShoreLine().updateTotalDecrement(shoreDamage);
 				m.getHB().damage(healthDamage);
 				
-				v.gettWave().setLocation( 1000, 400 );//this is a hack, but it works when nothing else does
-				Point wLoc = new Point( v.gettWave().getLocation() );
+				v.getBuildingTWave().setLocation( 1000, 400 );//this is a hack, but it works when nothing else does
+				Point wLoc = new Point( v.getBuildingTWave().getLocation() );
 				v.getJPanel().getComponentAt( wLoc ).setVisible(false);
 				m.removeTutorialWave();
 //				v.updateViewObjs();
