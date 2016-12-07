@@ -12,7 +12,7 @@ public class Scenery extends GameObject{
 	
 	@Override
 	public BufferedImage[] getScenery(){
-		return scenery;
+		return this.scenery;
 	}
 
 	public void setScenery(BufferedImage[] s) {

@@ -1,21 +1,60 @@
-//package test;
-//
-//import static org.junit.Assert.*;
-//
-//import java.awt.Point;
-//
-//import org.junit.Before;
-//import org.junit.Test;
-//
-//import controller.Controller;
-//import model.HoldingType;
-//import model.Model;
-//import model.Player;
-//import view.View;
-//
-//public class ControllerTest {
+package test;
+
+import static org.junit.Assert.*;
+
+import java.awt.Point;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
+import controller.Controller;
+import model.Box;
+import model.HoldingType;
+import model.Model;
+import model.Player;
+import model.Wave;
+import view.View;
+
+public class ControllerTest {
 //	
-//	
+//	Model model  = new Model();
+//	View view = new View();
+//	Controller controller = new Controller(model, view);
+//	@Before
+//	public void setUp(){
+//		 model = new Model();
+//		 view = new View();
+//		 controller = new Controller(model, view);
+		
+	
+//		Point gc = new Point(100, 5);
+//		Point cc = new Point(100, 10);
+//		Wave w1 = new Wave(gc, null, 0);
+//		Wave w2 = new Wave(cc, null, 0);
+//		ArrayList<Wave> waves = new ArrayList<Wave>();
+//		waves.add(w1);
+//		waves.add(w2);
+//		
+//		Box g = new Box();
+//		Box c = new Box();
+//		
+//		g.setPosition(gc);
+//		c.setPosition(cc);
+//		
+//		LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
+//		
+//		
+//		boxes.put(gc, g);
+//		boxes.put(cc, c);
+//		
+//		assertEquals(controller.getM().getBoxes().get(gc).getPosition(), gc);
+//		
+	
+//	}
+	
 //	
 //	@Test 
 //	public void updatePlayerMVTest(){
@@ -76,14 +115,60 @@
 //		
 //	}
 //	
-//	// takes in wave, seems like it belongs in wave
-//	@Test 
-//	public void determineDamageTest(){
-//		
-//		
-//	}
-//	
-//	
-//
-//	
-//}
+	// takes in wave, seems like it belongs in wave
+	@Test 
+	public void determineDamageTest(){
+		Model model  = new Model();
+		View view = new View();
+		Controller controller = new Controller(model, view);
+		controller.setM(model);
+		controller.setV(view);
+		
+	Point gc = new Point(100, 5);
+	Point cc = new Point(100, 10);
+	Wave w1 = new Wave(gc, null, 1);
+	Wave w2 = new Wave(cc, null, 1);
+	ArrayList<Wave> waves = new ArrayList<Wave>();
+	waves.add(w1);
+	waves.add(w2);
+	w1.setIndex(0);
+	w1.setIndex(1);
+	model.setWaves(waves);
+	
+	Box g = new Box();
+	Box c = new Box();
+	
+	
+	g.setPosition(gc);
+	c.setPosition(cc);
+	g.setIndex(0);
+	c.setIndex(1);
+	
+	
+	LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
+	
+	
+	boxes.put(gc, g);
+	boxes.put(cc, c);
+	model.setBoxes(boxes);
+	
+	g.setCapacity(100);
+	g.setCount(100);
+	g.setContains(HoldingType.OYSTER);
+	c.setContains(HoldingType.CONCRETE);
+	//controller.determineDamage(w1);
+	System.out.println("HELLO: " + controller.getM().getBoxes().get(gc).getIndex());
+	System.out.println("HELLO CONCRETE: " + controller.getM().getBoxes().get(cc).getIndex());
+	assertEquals(controller.getM().getBoxes().get(gc).getIndex(), 0);
+	assertEquals(controller.getM().getBoxes().get(cc).getIndex(), 1);
+	
+	
+	//assertEquals(controller.determineDamage(w2), 1);
+	//System.out.println(controller.getM().getBoxes().get(cc));
+		
+	}
+	
+	
+
+	
+}
