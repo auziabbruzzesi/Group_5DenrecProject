@@ -57,7 +57,8 @@ public class Controller implements MouseListener {
 	private Point objToPickUp = new Point();
 	private HoldingType objToPickUpHT = null;
 	private Point putDownBox = new Point();
-
+	private int movedObjs = 0;
+	
 	Box currBox = new Box();//this may cause problems
 	
 	int i = 0;
@@ -179,7 +180,7 @@ public class Controller implements MouseListener {
 
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
-				
+				v.setResetBOs(false);
 				//try to pickup the object. If we are successful, remove that object from jpanel
 				if (m.getP().pickUp(objToPickUpHT)) {
 					v.getJPanel().getComponentAt(objToPickUp).setVisible(false);
@@ -197,6 +198,11 @@ public class Controller implements MouseListener {
 			else if (putDownRequest) {
 				putDown();
 				putDownRequest = false;
+				this.movedObjs++;
+				
+				if(movedObjs >= 10){
+					v.setResetBOs(true);
+				}
 			}
 		}
 	}
@@ -662,6 +668,14 @@ public class Controller implements MouseListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				
+				tutorial = true;
+
+				resetAll();
+				
+				initViewBtnListeners();
+				initViewLoadBtnListeners();
+
 				
 				v.getMenu().setAlwaysOnTop(false);
 				v.getMenu().dispose();
