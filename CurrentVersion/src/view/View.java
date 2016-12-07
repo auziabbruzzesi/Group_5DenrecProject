@@ -47,8 +47,8 @@ public class View extends JFrame {
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 	Point playerPos = (new Point(0, 0));
 
-	public button gettWave() {
-		return tWave;
+	public button getBuildingTWave() {
+		return buildingTWave;
 	}
 
 	// public void settWave(button tWave) {
@@ -71,8 +71,7 @@ public class View extends JFrame {
 
 	private int totalShoreDecrement = 0;
 
-	private button tWave = new button();
-	private int tWaveZIndex;
+	private button buildingTWave = new button();
 
 	private boolean tWaveAdded = false;
 
@@ -95,7 +94,6 @@ public class View extends JFrame {
 			// viewWidth = getContentPane().getWidth();
 			 updateViewObjs();
 			 repaint();
-			// m.gameDi = v.getContentPane().getSize();
 
 		}
 	});
@@ -139,14 +137,14 @@ public class View extends JFrame {
 	 *         of the tutorial
 	 */
 	public void initTWave() {
-		tWave.setMargin(new Insets(0, 0, 0, 0));
-		tWave.setBorder(BorderFactory.createEmptyBorder());
-		tWave.setContentAreaFilled(false);
+		buildingTWave.setMargin(new Insets(0, 0, 0, 0));
+		buildingTWave.setBorder(BorderFactory.createEmptyBorder());
+		buildingTWave.setContentAreaFilled(false);
 
-		tWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
-		tWave.setType(HoldingType.TUTORIAL_WAVE);
-		tWave.setLocation(0, 0);
-		tWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+		buildingTWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+		buildingTWave.setType(HoldingType.TUTORIAL_WAVE);
+		buildingTWave.setLocation(0, 0);
+		buildingTWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
 	}
 
 	public void playTutorialSequence(int n) {
@@ -225,11 +223,11 @@ public class View extends JFrame {
 				} else {
 					if (tWaveAdded == false) {
 						initTWave();
-						jP.add(tWave);
+						jP.add(buildingTWave);
 						tWaveAdded = true;
 					}
-					tWave.setLocation(Model.getGameObjs().get(i).getPosition());
-					tWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+					buildingTWave.setLocation(Model.getGameObjs().get(i).getPosition());
+					buildingTWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
 				}
 			}
 			// BEACHOBJ
