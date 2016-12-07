@@ -83,7 +83,7 @@ public class View extends JFrame {
 	button cTBtn = new button();
 
 
-	public Timer screenTimer = new Timer(60, new ActionListener() {
+	public Timer screenTimer = new Timer(10, new ActionListener() {
 
 
 		@Override
