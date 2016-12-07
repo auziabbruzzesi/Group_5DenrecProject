@@ -122,6 +122,7 @@ public class Controller implements MouseListener {
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewExitBtnListeners();
+		initMenu();
 //		System.out.println("shoreline start = "+m.getShoreLine().getTotalDecrement());
 	}
 
@@ -629,6 +630,25 @@ public class Controller implements MouseListener {
 		
 	});
 	
+	}
+	private void initMenu(){
+		//System.out.println(v.getMenu);
+		((JButton)v.getMenu().getContentPane().getComponent(0)).addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				System.out.println("i'm here");
+				v.getMenu().setAlwaysOnTop(false);
+				v.getMenu().dispose();
+				startTutorial();
+				
+				v.getMenu().dispose();
+				
+			}
+			
+		});
+		
+		
 	}
 /*
  * Setters & Getters

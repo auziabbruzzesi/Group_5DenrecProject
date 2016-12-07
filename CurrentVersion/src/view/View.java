@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -34,10 +35,9 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import controller.status;
 import model.*;
-import view.View.HealthPanel;
+//import view.View.HealthPanel;
 
 public class View extends JFrame {
 	public static int viewHeight = 650;
@@ -55,7 +55,8 @@ public class View extends JFrame {
 
 	String playerDir = "";
 
-	JPanel jP = new jpanel();
+	private JPanel jP = new jpanel();
+	private Menu menu;
 	exitJframe eJf = new exitJframe();
 
 	private HealthPanel healthBar;
@@ -83,7 +84,10 @@ public class View extends JFrame {
 	 * Purpose: regularly update View. This timer became necessary after
 	 * integrating the tutorial.
 	 */
-	public Timer screenTimer = new Timer(60, new ActionListener() {
+
+	public Timer screenTimer = new Timer(10, new ActionListener() {
+
+
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -112,6 +116,10 @@ public class View extends JFrame {
 	 * View Constructor
 	 */
 	public View() {
+		menu = new Menu();
+
+		
+		
 		initView();
 
 	}
@@ -575,6 +583,14 @@ public class View extends JFrame {
 
 	public JPanel getJPanel() {
 		return this.jP;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 
 	public HealthPanel getHealthBar() {

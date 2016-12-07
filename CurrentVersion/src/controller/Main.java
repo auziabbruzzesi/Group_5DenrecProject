@@ -17,7 +17,7 @@ public class Main {
 	
 	public static void main(String[] args) {
 		if(playTutorial){
-			c.startTutorial();
+			//c.startTutorial();
 		}
 		else{
 			c.wTimer.start();
