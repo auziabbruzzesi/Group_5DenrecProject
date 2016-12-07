@@ -6,12 +6,14 @@ package model;
  */
 public class HealthBar extends GameObject {
 	private int health = 100; //default
-
+	private int startHeight;
+	
 	public HealthBar(int w, int h){
 		this.setWidth(w);
 		this.setHeight(h);	
 		this.setStartingY(0);
 		this.setInsideHeight(h);
+		startHeight = h;
 	}
 	public void damage(int damage){
 		health = health - damage;
@@ -21,7 +23,10 @@ public class HealthBar extends GameObject {
 		
 	}
 	
-
+	public void reset(){
+		setStartingY(0);
+		setInsideHeight(startHeight);
+	}
 
 	public int getHealth(){
 		return this.health;

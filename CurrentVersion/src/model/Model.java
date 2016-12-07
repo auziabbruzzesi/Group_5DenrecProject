@@ -46,6 +46,18 @@ public class Model {
 	
 	//General variables
 	
+	public TutorialWave gettSWave1() {
+		return tSWave1;
+	}
+	public TutorialWave gettSWave2() {
+		return tSWave2;
+	}
+//	public void settSWave1(TutorialWave tSWave1) {
+//		this.tSWave1 = tSWave1;
+//	}
+//	public void settSWave2(TutorialWave tSWave2) {
+//		this.tSWave2 = tSWave2;
+//	}
 	private Player p;
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
@@ -57,7 +69,8 @@ public class Model {
 	
 	//tutorial vars
 	private TutorialWave tBWave;
-	private TutorialWave tSWave;
+	private TutorialWave tSWave1;
+	private TutorialWave tSWave2;
 
 	//Sprite-related variables
 		ImageIcon oystIcon;
@@ -91,7 +104,7 @@ public class Model {
 		initWaves();
 		initBeachObjs();
 		
-		tBWave = new TutorialWave(new Point(1100,650),  pics[11], 500);
+		tBWave = new TutorialWave(new Point(1100,650),  pics[11], 500, 3);
 		shoreLine.setLoosingCoordinate(shoreLine.getShoreBottom().x - HB.getHeight() + 100);
 		initGameObjsArr();	
 
@@ -223,28 +236,40 @@ public class Model {
 	 * Purpose: handles Model's role in the game tutorial. Allows tutorial to
 	 * demonstrate the effects of a wave hitting a box/the shore
 	 */
-	public void playTutorialWaveCollision(char t, Box tBox){
-		
-		switch(t){
-		case 'b':
-			//create a wave that corresponds to the box the player put something in
-			int x = this.shoreLine.findCorrespondingX(tBox.getPosition().y) + 100;
-			int y = tBox.getPosition().y + Box.boxDimensions/2;
-			System.out.println("tbwave at "+x+", "+y);
-			tBWave = new TutorialWave( new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(tBox.getPosition().y) );
-		break;
-		case 's':
-//			tSWave = new Wave( tPt, pics[11], this.shoreLine.findCorrespondingX(tPt.y) );
-		break;
-		default:
-			System.out.println("Error in Model.playTutorial(): incorrect parameter");
-		break;
-		}
-		
+	public void playTutorialWaveCollision(Box tBox) {
+		int x, y;
+		// create a wave that corresponds to the box the player put something in
+		x = this.shoreLine.findCorrespondingX(tBox.getPosition().y) + 100;
+		y = tBox.getPosition().y + Box.boxDimensions / 2;
+
+		tBWave = new TutorialWave(new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(tBox.getPosition().y), 3);
 		gameObjs.add(this.tBWave);
-		System.out.println("\n\ngameobs model array: "+this.gameObjs);
 	}
 
+	/**
+	 * @author Eaviles
+	 * Purpose: handles Model's role in playing the first wave animation for the tutorial
+	 */
+	public void playTutorialWaveAnimation(){
+		int x, y;
+		int i=0;
+		for(Box b : this.boxes.values()){
+			if(i==1){
+				x = this.shoreLine.findCorrespondingX(b.getPosition().y) + 50;
+				y = b.getPosition().y + Box.boxDimensions/2;
+				tSWave1 = new TutorialWave(new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(b.getPosition().y), 1);
+				gameObjs.add(this.tSWave1);
+			}
+			else if(i==2){
+				x = this.shoreLine.findCorrespondingX(b.getPosition().y) + 100;
+				y = b.getPosition().y + Box.boxDimensions/2;
+				tSWave2 = new TutorialWave(new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(b.getPosition().y), 2);
+				gameObjs.add(this.tSWave2);
+			}
+			i++;
+		}
+	}
+	
 	/**
 	 * @author Eaviles
 	 * Purpose: removes the tutorialwaves from gameobjs array after tutorial is done with them.
@@ -252,14 +277,17 @@ public class Model {
 	 * keeps the array clean/consisting of only objects that are being used by the game. 
 	 */
 	
-	public void removeTutorialWave(){
+	public void removeTutorialWave(int anim){
 		Iterator<GameObject> myIt = gameObjs.iterator();
 		while( myIt.hasNext() ){
-			if(myIt.next() instanceof TutorialWave){
-				myIt.remove();
+			GameObject g = myIt.next();
+			if(g instanceof TutorialWave){
+				if(((TutorialWave)g).getAnimationNumber() == anim){
+					myIt.remove();
+				}
 			}
 		}
-		System.out.println(gameObjs);
+//		System.out.println(gameObjs);
 	}
 	public void resetGameObjsArray(){
 
@@ -270,12 +298,12 @@ public class Model {
 			b.setCount(0);
 			b.setObjIcon(concreteImages[b.getCount()]);
 		}
-		
+		this.HB.reset();
 		this.gameObjs.clear();
 		this.initGameObjsArr();
 		
 		System.out.println("reset game objs array:");
-		System.out.println(gameObjs);
+//		System.out.println(gameObjs);
 	}
 	
 /*
@@ -699,13 +727,6 @@ public class Model {
 		this.tBWave = tBWave;
 	}
 
-	public Wave gettSWave() {
-		return tSWave;
-	}
-
-	public void settSWave(TutorialWave tSWave) {
-		this.tSWave = tSWave;
-	}
 	public Scenery getGameScenery() {
 		return gameScenery;
 	}
