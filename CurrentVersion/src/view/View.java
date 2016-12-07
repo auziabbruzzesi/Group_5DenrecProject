@@ -233,6 +233,14 @@ public class View extends JFrame {
 	 * General functions
 	 */
 
+	public ArrayList<button> getGameObjBtns() {
+		return gameObjBtns;
+	}
+
+	public void setGameObjBtns(ArrayList<button> gameObjBtns) {
+		this.gameObjBtns = gameObjBtns;
+	}
+
 	/**
 	 * @author Eaviles Purpose: look at each GameObject in Model's array and
 	 *         update corresponding buttons/images/panels

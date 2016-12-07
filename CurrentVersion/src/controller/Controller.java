@@ -90,7 +90,7 @@ public class Controller implements MouseListener {
 			moveWaves();
 			
 			
-			checkGameStatus();
+//			checkGameStatus();
 		}
 	});
 
@@ -449,7 +449,8 @@ public class Controller implements MouseListener {
 	private void checkGameStatus() {
 
 		String endMessage = "";
-		
+//		System.out.println("current shoreline x = " + m.getShoreLine().getShoreBottom().x );
+//		System.out.println("min shoreline x = " + m.getShoreLine().getLoosingCoordinate() + "\n");
 		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
 			System.out.println("SHORELINE TOP COORD: " + m.getShoreLine().getShoreBottom().getX());
 			System.out.println("SHORELINE LOOSING COORD: " + m.getShoreLine().getLoosingCoordinate());
