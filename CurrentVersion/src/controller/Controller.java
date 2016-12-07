@@ -681,9 +681,12 @@ public class Controller implements MouseListener {
 				tutorial = false;
 
 				resetAll();
+				v.updateViewObjs();
+				
 				
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
+				
 
 				wTimer.start();
 				wTutorialTimer.stop();

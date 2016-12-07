@@ -309,6 +309,7 @@ public class View extends JFrame {
 				gameObjBtns.get(i).setLocation((Model.getGameObjs().get(i)).getPosition());
 				gameObjBtns.get(i).setIcon(((Model.getGameObjs().get(i))).getObjIcon());
 				gameObjBtns.get(i).setSize(Box.boxDimensions, Box.boxDimensions);
+				
 			}
 		}
 	}

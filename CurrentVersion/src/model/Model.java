@@ -288,6 +288,7 @@ public class Model {
 		initShoreline();
 		
 		for(Box b: boxes.values()){
+			b.setIsfull(false);
 			b.setContains(HoldingType.EMPTY);
 			b.setCount(0);
 			b.setObjIcon(concreteImages[b.getCount()]);
