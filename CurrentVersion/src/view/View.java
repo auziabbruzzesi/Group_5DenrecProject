@@ -307,7 +307,7 @@ public class View extends JFrame {
 
 	public void gameEnd(String m) {
 		JOptionPane.showMessageDialog(null, m);
-		System.exit(0);
+		
 	}
 
 	public void exitWindow() {
