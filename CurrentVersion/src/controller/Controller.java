@@ -87,8 +87,8 @@ public class Controller implements MouseListener {
 			
 			m.gameDi = v.getContentPane().getSize();
 			moveWaves();
-			v.updateViewObjs();
-			v.repaint();
+			
+			
 			checkGameStatus();
 		}
 	});
@@ -557,7 +557,7 @@ public class Controller implements MouseListener {
 				resetAll();
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
-				initViewSaveBtnListeners();
+				//initViewSaveBtnListeners();
 				System.out.println("tutorial: "+m.getShoreLine());
 				wTimer.start();
 				wTutorialTimer.stop();

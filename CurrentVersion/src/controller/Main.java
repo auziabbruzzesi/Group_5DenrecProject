@@ -16,7 +16,6 @@ public class Main {
 	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
 	public static void main(String[] args) {
-
 		if(playTutorial){
 			c.startTutorial();
 		}
@@ -24,7 +23,11 @@ public class Main {
 			c.wTimer.start();
 		}		
 		
-		v.setLayout(null);
+
+		v.screenTimer.start();
+		c.pTimer.start();
+		//c.wTimer.start();
+
 		v.getJPanel().addMouseListener(c);
 		v.repaint();
 	}

@@ -6,13 +6,14 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
+import javax.swing.AbstractButton;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Menu extends JFrame {
-	
+	JButton tutorial = new JButton();
 	JButton newGame = new JButton();
 	JButton saveGame = new JButton();
 	JButton loadGame = new JButton();
@@ -31,22 +32,27 @@ public class Menu extends JFrame {
 		add(b);
 		
 		setVisible(true);
+		this.setAlwaysOnTop(true);
 		
 	}
 	class buttonPanel extends JPanel{
 		public buttonPanel(){
+			
+			tutorial.setText("Tutorial");
+			
 			newGame.setText("New Game!");
+			
 			//newGame.setBounds(300,75, 0, 0);
 			saveGame.setText("Save Game");
 			loadGame.setText("LoadGame");
 			quit.setText("quit");
-			
+			add(tutorial);
 			add(newGame);
 			add(saveGame);
 			add(loadGame);
 			add(quit);
 			
-			this.setLayout(new GridLayout(4,1));
+			this.setLayout(new GridLayout(5,1));
 			
 			this.setVisible(true);
 		}
