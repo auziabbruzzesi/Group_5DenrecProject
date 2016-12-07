@@ -16,17 +16,17 @@ public class Main {
 	static Controller c = new Controller(m,v /*, State tutorial*/);
 	
 	public static void main(String[] args) {
-	//	Menu m = new Menu();
-		
+
 		if(playTutorial){
 			c.startTutorial();
 		}
+		else{
+			c.wTimer.start();
+		}		
 		
-		v.screenTimer.start();
-		c.pTimer.start();
-		c.wTimer.start();
+		v.setLayout(null);
 		v.getJPanel().addMouseListener(c);
-		
+		v.repaint();
 	}
 
 }

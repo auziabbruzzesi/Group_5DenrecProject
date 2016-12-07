@@ -81,16 +81,15 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			//View.viewHeight = v.getContentPane().getHeight();
-			//View.viewWidth = v.getContentPane().getWidth();
-			//v.getJPanel().setSize(v.getContentPane().getSize());
+			View.viewHeight = v.getContentPane().getHeight();
+			View.viewWidth = v.getContentPane().getWidth();
+			v.getJPanel().setSize(v.getContentPane().getSize());
 			
-			//m.gameDi = v.getContentPane().getSize();
+			m.gameDi = v.getContentPane().getSize();
 			moveWaves();
 			v.updateViewObjs();
 			v.repaint();
 			checkGameStatus();
-			
 		}
 	});
 
@@ -186,7 +185,6 @@ public class Controller implements MouseListener {
 
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
-//				System.out.println("Pickuprequest true. Topickup = "+objToPickUpHT);
 				
 				//try to pickup the object. If we are successful, remove that object from jpanel
 				if (m.getP().pickUp(objToPickUpHT)) {
@@ -204,10 +202,9 @@ public class Controller implements MouseListener {
 
 			else if (putDownRequest) {
 				putDown();
-				m.getP().setObjIcon(m.crabPics[m.getP().findIndex()]);
 				putDownRequest = false;
 			}
-		} // end if(pickup)
+		}
 	}
 
 	/**
