@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -57,7 +58,8 @@ public class View extends JFrame {
 
 	String playerDir = "";
 
-	JPanel jP = new jpanel();
+	private JPanel jP = new jpanel();
+	private Menu menu;
 	exitJframe eJf = new exitJframe();
 
 	private HealthPanel healthBar;
@@ -81,6 +83,9 @@ public class View extends JFrame {
 	button oTBtn = new button();
 	button cTBtn = new button();
 
+	
+	
+	
 	public Timer screenTimer = new Timer(1, new ActionListener() {
 
 		@Override
@@ -122,6 +127,10 @@ public class View extends JFrame {
 	 * View Constructor
 	 */
 	public View() {
+		menu = new Menu();
+
+		
+		
 		initView();
 
 	}
@@ -591,6 +600,14 @@ public class View extends JFrame {
 
 	public JPanel getJPanel() {
 		return this.jP;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 
 	public HealthPanel getHealthBar() {

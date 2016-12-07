@@ -20,7 +20,7 @@ public class Main {
 	
 		
 		if(playTutorial){
-			c.startTutorial();
+			//c.startTutorial();
 		}
 		
 		v.screenTimer.start();
