@@ -83,10 +83,9 @@ public class View extends JFrame {
 	button oTBtn = new button();
 	button cTBtn = new button();
 
-	
-	
-	
-	public Timer screenTimer = new Timer(1, new ActionListener() {
+
+	public Timer screenTimer = new Timer(60, new ActionListener() {
+
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -135,6 +134,10 @@ public class View extends JFrame {
 
 	}
 
+	/**
+	 * @author Eaviles Purpose: initialize wave to be played in second animation
+	 *         of the tutorial
+	 */
 	public void initTWave() {
 		tWave.setMargin(new Insets(0, 0, 0, 0));
 		tWave.setBorder(BorderFactory.createEmptyBorder());
@@ -158,7 +161,7 @@ public class View extends JFrame {
 			initPickupTutorial();
 			break;
 		case 2:
-			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building a Gabion...");
+			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building protection for the Estuary...");
 			break;
 		case 3:
 			JOptionPane.showMessageDialog(null,
@@ -249,7 +252,6 @@ public class View extends JFrame {
 	public void gameEnd(String m) {
 		JOptionPane.showMessageDialog(null, m);
 		System.exit(0);
-
 	}
 
 	public void exitWindow() {
@@ -258,12 +260,10 @@ public class View extends JFrame {
 		eJf.getContentPane().setLayout(null);
 		eJf.setVisible(true);
 		initSaveBtn();
-
 	}
 
 	public void updateShoreline(int damage) {
 		shoreLineTop -= damage;
-		// repaint();
 	}
 
 	/*
@@ -285,14 +285,10 @@ public class View extends JFrame {
 		initLoadBtn();
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 
-		// Thanks!
 		getContentPane().add(jP);
 		pack();
 		setVisible(true);
-		// screenTimer.start();
-		// System.out.println("\n\nView's array of buttons
-		// contains:\n"+this.gameObjBtns+"\n\n");
-
+		screenTimer.start();
 	}
 
 	public void initSaveBtn() {
@@ -376,16 +372,10 @@ public class View extends JFrame {
 					j.setBounds(j.getLocation().x, j.getLocation().y, BeachObject.beachObjDimensions,
 							BeachObject.beachObjDimensions);
 					j.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
-					// System.out.println("button width "+j.getWidth()+" button
-					// height = "+j.getHeight());
-					// System.out.println("instanceof =
-					// "+Model.getGameObjs().get(i).getClass());
 				}
 				// BOX
 				else if (Model.getGameObjs().get(i) instanceof Box) {
 					j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
-					// j.setHoldingType((((Box)
-					// ((Model.getGameObjs()).get(i))).getContains()));
 					j.setType(HoldingType.BOX);
 					j.setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Box.boxDimensions, Box.boxDimensions);
@@ -552,7 +542,7 @@ public class View extends JFrame {
 			if (getHealthHeight() <= 100) {
 				g.setColor(Color.yellow);
 			}
-			if(getHealthHeight() < 50){
+			if (getHealthHeight() < 50) {
 				g.setColor(Color.RED);
 			}
 			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(), (int) healthHeight);
