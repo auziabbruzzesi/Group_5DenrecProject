@@ -82,13 +82,8 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-		
-			
 			m.gameDi = v.getContentPane().getSize();
 			moveWaves();
-			
-			
-//			checkGameStatus();
 		}
 	});
 
