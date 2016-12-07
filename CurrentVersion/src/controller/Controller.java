@@ -444,11 +444,10 @@ public class Controller implements MouseListener {
 	private void checkGameStatus() {
 
 		String endMessage = "";
-//		System.out.println("current shoreline x = " + m.getShoreLine().getShoreBottom().x );
-//		System.out.println("min shoreline x = " + m.getShoreLine().getLoosingCoordinate() + "\n");
+
 		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
 			System.out.println("SHORELINE TOP COORD: " + m.getShoreLine().getShoreBottom().getX());
-			System.out.println("SHORELINE LOOSING COORD: " + m.getShoreLine().getLoosingCoordinate());
+			System.out.println("SHORELINE LOOSING  COORD: " + m.getShoreLine().getLoosingCoordinate());
 			gameStatus = status.LOSE_SHORE;
 			endMessage = "You Lose :( \n Too much of the Estuary eroded away";
 		}
@@ -487,6 +486,9 @@ public class Controller implements MouseListener {
 		m.updateShoreLine(shoreDamage);
 		m.getShoreLine().updateTotalDecrement(shoreDamage);
 		m.getHB().damage(healthDamage);
+		System.out.println("shoreline current bottom = "+ m.getShoreLine().getShoreBottom().x);
+		System.out.println("shoreline losting bottom = "+ m.getShoreLine().getLoosingCoordinate());
+		checkGameStatus();
 	}
 /*
  * Tutorial-related functions
@@ -529,6 +531,7 @@ public class Controller implements MouseListener {
 	 * @Purpose reset model and view after tutorial executes
 	 */
 	public void resetAll() {
+		this.gameStatus = status.IN_PROGRESS;
 		m.resetGameObjsArray();
 		v.resetGameObjBtnsArray();
 	}
@@ -687,7 +690,11 @@ public class Controller implements MouseListener {
 			public void actionPerformed(ActionEvent e) {
 				v.getMenu().setAlwaysOnTop(false);
 				v.getMenu().dispose();
-				//resetAll();
+
+				
+				
+				resetAll();
+				v.updateViewObjs();
 				wTimer.start();
 				pTimer.start();
 				

@@ -15,7 +15,7 @@ public class Shoreline extends GameObject{
 		setShoreTop(t);
 		setShoreBottom(b);
 		this.slope = (  this.getShoreTop().y - this.shoreBottom.y)/(this.getShoreTop().x - this.shoreBottom.x);
-		this.loosingCoordinate = getShoreBottom().x - 50;
+		this.loosingCoordinate = getShoreBottom().x - 30;
 	}
 	
 	public int findCorrespondingX(int y){
