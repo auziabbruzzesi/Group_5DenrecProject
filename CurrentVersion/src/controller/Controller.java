@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Insets;
+
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -39,6 +40,7 @@ import model.HoldingType;
 import model.Model;
 import model.Player;
 import model.Wave;
+import view.Menu;
 import view.View;
 import view.View.SaveButton;
 import view.View.button;
@@ -313,7 +315,7 @@ public class Controller implements MouseListener {
 //					
 //				}
 //				System.out.println("###############################################################################");
-				checkGameStatus();//we call this here bc shoreline was updated (above)
+				//checkGameStatus();//we call this here bc shoreline was updated (above)
 			}
 			a++;	
 		}
@@ -465,6 +467,9 @@ public class Controller implements MouseListener {
 			wTimer.stop();
 			pTimer.stop();
 			v.gameEnd(endMessage);
+			v.setMenu(new Menu());
+			initMenu();
+
 		}
 		
 	}
@@ -595,6 +600,7 @@ public class Controller implements MouseListener {
 				tutorial = false;
 
 				resetAll();
+				
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
 
@@ -667,7 +673,7 @@ public class Controller implements MouseListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-//				System.out.println("i'm here");
+				
 				v.getMenu().setAlwaysOnTop(false);
 				v.getMenu().dispose();
 				startTutorial();
@@ -675,6 +681,19 @@ public class Controller implements MouseListener {
 				v.getMenu().dispose();	
 			}
 		});	
+		((JButton)v.getMenu().getContentPane().getComponent(1)).addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				v.getMenu().setAlwaysOnTop(false);
+				v.getMenu().dispose();
+				//resetAll();
+				wTimer.start();
+				pTimer.start();
+				
+			}
+			
+		});
 	}
 /*
  * Setters & Getters
