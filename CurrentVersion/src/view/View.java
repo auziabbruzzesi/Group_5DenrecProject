@@ -35,7 +35,6 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import controller.status;
 import model.*;
 import view.View.HealthPanel;
@@ -51,9 +50,7 @@ public class View extends JFrame {
 		return buildingTWave;
 	}
 
-	// public void settWave(button tWave) {
-	// this.tWave = tWave;
-	// }
+	
 	Point playerDest = (new Point(200, 200));
 
 	String playerDir = "";
@@ -71,20 +68,36 @@ public class View extends JFrame {
 
 	private int totalShoreDecrement = 0;
 
-	private button buildingTWave = new button();
-
-	private boolean tWaveAdded = false;
-
 	public SaveButton sb;
 	public LoadButton lb;
 	public ExitButton eb;
 
+	//tutorial vars
 	button oTBtn = new button();
 	button cTBtn = new button();
+	private button erosionTWave1 = new button();
+	public button getErosionTWave1() {
+		return erosionTWave1;
+	}
+
+	public button getErosionTWave2() {
+		return erosionTWave2;
+	}
 
 
-	public Timer screenTimer = new Timer(10, new ActionListener() {
+	private button erosionTWave2 = new button();
+	private button buildingTWave = new button();
+	private boolean tWave1Added = false;
+	private boolean tWave2Added = false;
+	private boolean tWave3Added = false;
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: regularly update View. This timer became necessary after
+	 * integrating the tutorial.
+	 */
 
+	public Timer screenTimer = new Timer(30, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -98,21 +111,10 @@ public class View extends JFrame {
 		}
 	});
 
-	// public button removeTutorialWave(){
-	// button tW = new button();
-	// Iterator<button> myIt = gameObjBtns.iterator();
-	// while( myIt.hasNext() ){
-	// tW = myIt.next();
-	// System.out.println(tW.getType());
-	// if(tW.getType() == HoldingType.TUTORIAL_WAVE ){
-	//// myIt.remove();
-	// System.out.println("v.removed");
-	// break;
-	// }
-	// }
-	// return tW;
-	// }
-
+	/**
+	 * @author Eaviles
+	 * Purpose: reset View's button array after tutorial, so user can start with a fresh game.
+	 */
 	public void resetGameObjBtnsArray() {
 		this.gameObjBtns.clear();
 		this.jP.removeAll();
@@ -126,60 +128,101 @@ public class View extends JFrame {
 	public View() {
 		menu = new Menu();
 
-		
-		
 		initView();
-
 	}
 
 	/**
 	 * @author Eaviles Purpose: initialize wave to be played in second animation
 	 *         of the tutorial
 	 */
-	public void initTWave() {
-		buildingTWave.setMargin(new Insets(0, 0, 0, 0));
-		buildingTWave.setBorder(BorderFactory.createEmptyBorder());
-		buildingTWave.setContentAreaFilled(false);
+	public void initTWave(TutorialWave t) {
+		
+		if(t.getAnimationNumber() == 1){
+			if(!tWave1Added){
+				erosionTWave1.setMargin(new Insets(0, 0, 0, 0));
+				erosionTWave1.setBorder(BorderFactory.createEmptyBorder());
+				erosionTWave1.setContentAreaFilled(false);
 
-		buildingTWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
-		buildingTWave.setType(HoldingType.TUTORIAL_WAVE);
-		buildingTWave.setLocation(0, 0);
-		buildingTWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+				erosionTWave1.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+				erosionTWave1.setType(HoldingType.TUTORIAL_WAVE);
+				erosionTWave1.setLocation(0, 0);
+				erosionTWave1.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+				jP.add(erosionTWave1);
+				tWave1Added = true;
+				System.out.println("View added 1st wave");
+			} 
+			else if(!tWave2Added){
+				erosionTWave2.setMargin(new Insets(0, 0, 0, 0));
+				erosionTWave2.setBorder(BorderFactory.createEmptyBorder());
+				erosionTWave2.setContentAreaFilled(false);
+
+				erosionTWave2.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+				erosionTWave2.setType(HoldingType.TUTORIAL_WAVE);
+				erosionTWave2.setLocation(0, 0);
+				erosionTWave2.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+				jP.add(erosionTWave2);
+				tWave2Added = true;
+				System.out.println("View added 2nd wave");
+			}
+			else{
+				System.out.println("error in View.initTWave: booleans incorrect.");
+			}
+		}
+		else if(t.getAnimationNumber() == 2){
+			buildingTWave.setMargin(new Insets(0, 0, 0, 0));
+			buildingTWave.setBorder(BorderFactory.createEmptyBorder());
+			buildingTWave.setContentAreaFilled(false);
+
+			buildingTWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+			buildingTWave.setType(HoldingType.TUTORIAL_WAVE);
+			buildingTWave.setLocation(0, 0);
+			buildingTWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+			jP.add(buildingTWave);
+			tWave3Added = true;
+		}		
+		else{
+			System.out.println("error in View.initTWave: TWave animation numbers incorrect");
+		}
 	}
 
+	/**
+	 * @author Eaviles
+	 * @param n: dictates which part of the tutorial sequence to execute.
+	 * Purpose: display relevant messages/animations during tutorial.
+	 */
 	public void playTutorialSequence(int n) {
 		// screenTimer.start();
 
 		switch (n) {
 		case 1:
 			JOptionPane.showMessageDialog(null, "Welcome to Estuary Quest!");
+			break;
+		case 2:
 			JOptionPane.showMessageDialog(null,
 					"Oh no, the estuary is being eroded away by BIG waves! Let's protect it!");
 			JOptionPane.showMessageDialog(null, "Click on an oyster or a piece of concrete to pick it up!");
 			initPickupTutorial();
 			break;
-		case 2:
-			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building protection for the Estuary...");
-			break;
 		case 3:
-			JOptionPane.showMessageDialog(null,
-					"You've started building a Gabion! Let's see what happens when a wave hits it...");
-			// animation
+			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building protection for the Estuary...");
 			break;
 		case 4:
 			JOptionPane.showMessageDialog(null,
-					"You've started building a Sea Wall! Let's see what happens when a wave hits it...");
-			// animation
+					"You've started building a Gabion! Let's see what happens when a wave hits it...");
 			break;
 		case 5:
 			JOptionPane.showMessageDialog(null,
-					"The Estuary didn't erode as much! But we lost an oyster from our Gabion. Use lots of oysters to make it stronger!");
+					"You've started building a Sea Wall! Let's see what happens when a wave hits it...");
 			break;
 		case 6:
 			JOptionPane.showMessageDialog(null,
-					"The Estuary didn't erode as much! But we lost an piece of our Sea Wall. Use lots of concrete to make it stronger!");
+					"The Estuary didn't erode as much! But we lost an oyster from our Gabion. Use lots of oysters to make it stronger!");
 			break;
 		case 7:
+			JOptionPane.showMessageDialog(null,
+					"The Estuary didn't erode as much! But we lost an piece of our Sea Wall. Use lots of concrete to make it stronger!");
+			break;
+		case 8:
 			JOptionPane.showMessageDialog(null,
 					"Ready to play?" + "\n~ Tip: different materials will protect the estuary better ~");
 			break;
@@ -218,16 +261,30 @@ public class View extends JFrame {
 			}
 			// WAVE
 			else if (Model.getGameObjs().get(i) instanceof Wave) {
+	
 				if (!(Model.getGameObjs().get(i) instanceof TutorialWave)) {
 					gameObjBtns.get(i).setLocation(Model.getGameObjs().get(i).getPosition());
-				} else {
-					if (tWaveAdded == false) {
-						initTWave();
-						jP.add(buildingTWave);
-						tWaveAdded = true;
+				} 
+				else {
+					
+					if (!tWave1Added || !tWave2Added || !tWave3Added) {
+						initTWave((TutorialWave)Model.getGameObjs().get(i));
 					}
-					buildingTWave.setLocation(Model.getGameObjs().get(i).getPosition());
-					buildingTWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+					
+					switch(  ( (TutorialWave) Model.getGameObjs().get(i) ).getAnimationNumber()  ){
+					case 1:
+						erosionTWave1.setLocation(Model.getGameObjs().get(i).getPosition());
+						erosionTWave1.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+						break;
+					case 2:
+						erosionTWave2.setLocation(Model.getGameObjs().get(i).getPosition());
+						erosionTWave2.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+						break;
+					case 3:
+						buildingTWave.setLocation(Model.getGameObjs().get(i).getPosition());
+						buildingTWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+						break;
+					}				
 				}
 			}
 			// BEACHOBJ

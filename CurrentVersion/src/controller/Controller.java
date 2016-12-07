@@ -67,8 +67,8 @@ public class Controller implements MouseListener {
 	//Tutorial vars
 	Boolean tutorial = false;
 	HoldingType tutorialPickUp = HoldingType.EMPTY;	
-	
-	
+	int waveAnimation = 0;
+	boolean tW1Collided = false;
 /*
  * Game Timers (2)
  *   wTimer - handles waves
@@ -97,7 +97,7 @@ public class Controller implements MouseListener {
 	/**
 	 * @author Auzi
 	 */
-	Timer pTimer = new Timer(8, new ActionListener() {
+	Timer pTimer = new Timer(10, new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -195,7 +195,7 @@ public class Controller implements MouseListener {
 					
 					if(tutorial){
 						tutorialPickUp = objToPickUpHT;
-						v.playTutorialSequence(2);
+						v.playTutorialSequence(3);
 					}
 				}
 				m.updatePlayerSprite();
@@ -265,27 +265,29 @@ public class Controller implements MouseListener {
 						+ m.getBoxes().get(putDownBox).getContains() + " box and you are holding " + m.getP().getHT());
 			}
 
-			//TODO: put this in a separate function
+
 			if(tutorial){
 				switch(currBox.getContains()){
 				case TUTORIAL_O:
-					v.playTutorialSequence(3);
+					v.playTutorialSequence(4);
 				break;
 				case TUTORIAL_C:
-					v.playTutorialSequence(4);
+					v.playTutorialSequence(5);
 				break;
 				default:
 					System.out.println("error in tutorial switch: Controller.putDown()");
 				break;
 				}
 				
-				m.playTutorialWaveCollision('b', currBox);
+				m.playTutorialWaveCollision(currBox);
+				this.waveAnimation++;
 				this.wTutorialTimer.start();
 			}
 	}
 		type = m.getBoxes().get(putDownBox).getContains().name() + " " + m.getBoxes().get(putDownBox).getCount();
 		return type;
 	}
+	
 	
 	/**
 	 * @author Eaviles
@@ -302,16 +304,9 @@ public class Controller implements MouseListener {
 			}
 			
 			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
-			else {		
-				int shoreDamage = determineDamage(w);				
-				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
-				
-				m.updateShoreLine(shoreDamage);
-				m.getShoreLine().updateTotalDecrement(shoreDamage);
-				
-				m.getHB().damage(healthDamage);
+			else {						
+				waveCollision(w);
 				m.resetWave(a);
-				System.out.println("game: "+m.getShoreLine().getTotalDecrement());
 				
 //				System.out.println("################################################################################");
 //				for(Box b : m.getBoxes().values()){
@@ -328,7 +323,6 @@ public class Controller implements MouseListener {
 			a++;	
 		}
 		m.updateWavesDestinations();
-//		v.updateViewObjs();
 	}
 
 	/**
@@ -451,8 +445,8 @@ public class Controller implements MouseListener {
 	 * and tell View to display it.
 	 */
 	private void checkGameStatus() {
-		System.out.println("check game status");
-//		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
+
+
 		String endMessage = "";
 		
 		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
@@ -481,93 +475,140 @@ public class Controller implements MouseListener {
 		
 	}
 	
+	/**
+	 * @author Eaviles
+	 * @param w: the wave that collided with the shore
+	 * Purpose: handle actions related to collision shared by tutorial and regular waves.
+	 * This was created to remove some repeated code.
+	 */
+	public void waveCollision(Wave w){
+		System.out.println("here00");
+		int shoreDamage = determineDamage(w);
+		System.out.println("shoredamage = "+shoreDamage);
+		int healthDamage = shoreDamage;// this is redundant in terms of code, but makes it more
+										// obvious what's going on. Leaving for improved readability.
+		m.updateShoreLine(shoreDamage);
+		m.getShoreLine().updateTotalDecrement(shoreDamage);
+		m.getHB().damage(healthDamage);
+	}
 /*
  * Tutorial-related functions
  */
 	/**
-	 * @author Eaviles
-	 * Purpose: calls the necessary functions for the game tutorial to execute. 
-	 * Regulates the flow of the tutorial.
+	 * @author Eaviles 
+	 * Purpose: calls the necessary functions for the game
+	 * tutorial to execute. Regulates the flow of the tutorial.
 	 */
-		public void startTutorial(){
-			//everything will display - model & view initialized as normal
-			//display a welcome dialog (view init)
-			tutorial = true;
-			v.playTutorialSequence(1);
-			v.getOTBtn().addMouseListener(this);
-			v.getCTBtn().addMouseListener(this);
+	public void startTutorial() {
+		// everything will display - model & view initialized as normal
+		// display a welcome dialog (view init)
+		tutorial = true;
+		v.playTutorialSequence(1);
+		m.playTutorialWaveAnimation();
+		this.waveAnimation++;
+		this.wTutorialTimer.start();
+		v.getOTBtn().addMouseListener(this);
+		v.getCTBtn().addMouseListener(this);
+	}
+
+	/**
+	 * @author Eaviles 
+	 * Purpose: regulate waves in the tutorial
+	 */
+	Timer wTutorialTimer = new Timer(30, new ActionListener() {
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			m.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
+			moveTutorialWave();
 		}
+	});
+
+	/**
+	 * @author Eaviles 
+	 * Purpose: reset model and view after tutorial executes
+	 */
+	public void resetAll() {
+		m.resetGameObjsArray();
+		v.resetGameObjBtnsArray();
+	}
 		
-		/**
-		 * @author Eaviles
-		 * Purpose: regulate waves in the tutorial
-		 */
-		Timer wTutorialTimer = new Timer(30, new ActionListener() {
-			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				m.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
-				moveTutorialWave();
-//				v.updateViewObjs();
+
+	/**
+	 * @author Eaviles
+	 * Purpose: handle moving the tutorial waves for both animations
+	 */
+	public void moveTutorialWave() {
+		if (this.waveAnimation == 1) {
+
+			if(m.gettSWave1().getPosition().x > m.gettSWave1().getDestination().x){
+//				System.out.println("pos1 x = "+m.gettSWave1().getPosition().x);
+//				System.out.println("des1 x = "+m.gettSWave1().getDestination().x);
+				m.gettSWave1().move();
+			} else{
+				if (!tW1Collided) {
+					waveCollision(m.gettSWave1());
+
+					v.getErosionTWave1().setVisible(false);
+					m.removeTutorialWave(1);
+					tW1Collided = true;
+				}
 			}
-		});
-		
-		/**
-		 * @author Eaviles
-		 * Purpose: reset model and view after tutorial executes
-		 */
-		public void resetAll(){
-			m.resetGameObjsArray();
-			v.resetGameObjBtnsArray();
-		}
-		
-		/**
-		 * @author Eaviles
-		 * Purpose: handle moving the tutorial wave
-		 */
-		public void moveTutorialWave(){
 			
-			if ( m.gettBWave().getPosition().x  > m.gettBWave().getDestination().x ) {
-				m.gettBWave().move();		
-			}
+			if(m.gettSWave2().getPosition().x > m.gettSWave2().getDestination().x){
+				m.gettSWave2().move();
+			} 
 			else{
+				waveCollision(m.gettSWave2());
 				
-				int shoreDamage = determineDamage( m.gettBWave() );
-				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
-				m.updateShoreLine(shoreDamage);
-				m.getShoreLine().updateTotalDecrement(shoreDamage);
-				m.getHB().damage(healthDamage);
+				v.getErosionTWave2().setVisible(false);
 				
-				v.getBuildingTWave().setLocation( 1000, 400 );//this is a hack, but it works when nothing else does
-				Point wLoc = new Point( v.getBuildingTWave().getLocation() );
-				v.getJPanel().getComponentAt( wLoc ).setVisible(false);
-				m.removeTutorialWave();
-//				v.updateViewObjs();
-								
-				switch(tutorialPickUp){
+				m.removeTutorialWave(2);
+				v.playTutorialSequence(2);
+				wTutorialTimer.stop();
+			}
+			
+			
+		} else if (this.waveAnimation == 2) {
+			
+			if (m.gettBWave().getPosition().x > m.gettBWave().getDestination().x) {
+				m.gettBWave().move();
+			} else {
+
+				waveCollision(m.gettBWave());
+
+				v.getBuildingTWave().setLocation(1000, 400);// this is a hack, but it works when nothing else does
+				Point wLoc = new Point(v.getBuildingTWave().getLocation());
+				v.getJPanel().getComponentAt(wLoc).setVisible(false);
+				m.removeTutorialWave(3);
+
+				switch (tutorialPickUp) {
 				case TUTORIAL_O:
-					v.playTutorialSequence(5);
-				break;
+					v.playTutorialSequence(6);
+					break;
 				case TUTORIAL_C:
-					v.playTutorialSequence(6);	
-				break;
+					v.playTutorialSequence(7);
+					break;
 				default:
 					System.out.println("error in Controller.tutorialWTimer: tutorialPickUp invalid type");
-				break;
+					break;
 				}
-				
-				v.playTutorialSequence(7);
+
+				v.playTutorialSequence(8);
 				tutorial = false;
-				
+
 				resetAll();
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
-				//initViewSaveBtnListeners();
-				System.out.println("tutorial: "+m.getShoreLine());
+				// initViewSaveBtnListeners();
+				System.out.println("tutorial: " + m.getShoreLine());
 				wTimer.start();
 				wTutorialTimer.stop();
 			}
+		} else{
+			System.out.println("error in Controller.moveWave(): waveAnimation set to: " + this.waveAnimation);
 		}
+	}
 		
 /*
  * Initialization functions
@@ -639,7 +680,7 @@ public class Controller implements MouseListener {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("i'm here");
+//				System.out.println("i'm here");
 				v.getMenu().setAlwaysOnTop(false);
 				v.getMenu().dispose();
 				startTutorial();
