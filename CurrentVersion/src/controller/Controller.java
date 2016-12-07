@@ -446,7 +446,6 @@ public class Controller implements MouseListener {
 	 */
 	private void checkGameStatus() {
 
-
 		String endMessage = "";
 		
 		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
@@ -470,7 +469,6 @@ public class Controller implements MouseListener {
 			wTimer.stop();
 			pTimer.stop();
 			v.gameEnd(endMessage);
-			
 		}
 		
 	}
