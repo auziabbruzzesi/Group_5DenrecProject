@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -18,11 +19,14 @@ import org.junit.Test;
 
 import model.BeachObject;
 import model.Box;
+import model.Direction;
 import model.GameObject;
+import model.HealthBar;
 import model.HoldingType;
 import model.Model;
 import model.Player;
 import model.Shoreline;
+import model.TutorialWave;
 import model.Wave;
 
 public class ModelTest {
@@ -69,8 +73,8 @@ public class ModelTest {
 		model.initBoxes();
 	
 		assertNotNull(model.getBoxes());
-		assertTrue(b.getCount() == 0);
-		assertTrue(b.getCapacity() == 3);
+		assertEquals(b.getCount() ,0);
+		assertEquals(b.getCapacity() , 3);
 		assertEquals(b.getContains(), HoldingType.EMPTY);
 	}
 	@Test
@@ -188,6 +192,9 @@ public class ModelTest {
 
 	@Test
 	public void boxesCorrectTest() {
+		
+		
+		
 		b1.setIsfull(true);
 		b2.setIsfull(true);
     	b3.setIsfull(true);
@@ -198,6 +205,29 @@ public class ModelTest {
 //    	b3.setHT(HoldingType.CONCRETE);
 //    	b4.setHT(HoldingType.OYSTER);
 		assertFalse(model.boxesCorrect());
+		
+		b1.setCapacity(1);
+		b1.setCount(1);
+		b2.setCapacity(1);
+		b2.setCount(1);
+		b3.setCapacity(1);
+		b3.setCount(1);
+		b4.setCapacity(1);
+		b4.setCount(1);
+		
+		b1.setContains(HoldingType.OYSTER);
+		b2.setContains(HoldingType.OYSTER);
+		b3.setContains(HoldingType.OYSTER);
+		b4.setContains(HoldingType.OYSTER);
+		boxes.put(b1.getPosition(), b1);
+		boxes.put(b2.getPosition(), b2);
+		boxes.put(b3.getPosition(), b3);
+		boxes.put(b4.getPosition(), b4);
+		model.setBoxes(boxes);
+		assertTrue(model.allBoxesFull());
+		assertTrue(model.boxesCorrect());
+		
+		
 
 	}
 	
@@ -226,6 +256,224 @@ public class ModelTest {
 		assertEquals(sl.getShoreTop().y, 10);
 		assertEquals(sl.getShoreBottom().x, 90);  // decrement 10
 		assertEquals(sl.getShoreBottom().y, 100);  
+	}
+	@Test
+	public void testRemoveTutorialWave(){
+		Iterator<GameObject> myIt = Model.getGameObjs().iterator();
+		model.removeTutorialWave();
+		
+		assertTrue(myIt.hasNext());
+		
+		model.removeTutorialWave();
+		assertTrue(myIt.hasNext());
+		
+		model.removeTutorialWave();
+		assertTrue(myIt.hasNext());
+		
+		
+	}
+	@Test 
+	public void updatePlayerPosTest(){
+		model.updatePlayerPosition(new Point(10,10));
+		assertEquals(model.getP().getPosition(), new Point(10,10));
+	}
+	@Test
+	public void resetGameObjArray(){
+		b1.setPosition(new Point(0,0));
+		b2.setPosition(new Point(1,1));
+		boxes.put(new Point(0,0), b1);
+		boxes.put(new Point(1,1), b2);
+		model.setBoxes(boxes);
+		model.resetGameObjsArray();
+		
+		assertEquals(model.getBoxes().get(b1.getPosition()).getCount() , 0);
+		assertEquals(model.getBoxes().get(b2.getPosition()).getCount() , 0);
+		assertEquals(model.getBoxes().get(b1.getPosition()).getContains() , HoldingType.EMPTY);
+		assertEquals(model.getBoxes().get(b2.getPosition()).getContains() , HoldingType.EMPTY);
+		assertNotNull(model.getBoxes().get(b1.getPosition()).getObjIcon());
+		assertNotNull(model.getBoxes().get(b2.getPosition()).getObjIcon());
+		
+
+	}
+	@Test
+	public void playTutorialWaveCollisionTest(){
+		Shoreline sl = new Shoreline(new Point (0,0), new Point (5,5));
+		model.setShoreLine(sl);
+		Point test = new Point(10,5);
+		Box tbox = new Box();
+		tbox.setPosition(test);
+		char b = 'b';
+		TutorialWave tBWave = new TutorialWave(new Point((model.getShoreLine().findCorrespondingX(tbox.getPosition().y) + 100), tbox.getPosition().y + Box.boxDimensions/2), null, model.getShoreLine().findCorrespondingX(tbox.getPosition().y));
+		model.playTutorialWaveCollision(b, tbox);
+		assertEquals(tBWave.getPosition().y, model.getShoreLine().findCorrespondingX((tBWave.getPosition().y)));
+	}
+	@Test
+	public void healthTest(){
+		HealthBar HB = new HealthBar(10, 20);
+		model.setHB(HB);
+		model.getHB().damage(10);
+		
+		assertEquals(model.getHB().getHeight(), 20);
+		assertEquals(model.getHB().getInsideHeight(), 18, 1);
+		assertEquals(model.getHB().getHealth(), 90);
+		assertEquals(model.getHB().getStartingY(), 2, .5);
+	}
+	@Test 
+	public void shorelineDecrementTest(){
+		Shoreline sl = new Shoreline(new Point(0,0), new Point(5,5));
+		sl.setTotalDecrement(15);
+		model.setShoreLine(sl);
+		model.getShoreLine().updateTotalDecrement(10);
+		assertEquals(model.getShoreLine().getTotalDecrement(), 5);
+	}
+	@Test
+	public void incrementCountBoxTest(){
+		Point p = new Point(1,1);
+		Box b = new Box();
+		b.setPosition(p);
+		b.setCount(0);
+		b.setCapacity(2);
+		b.incrementCount();
+		LinkedHashMap<Point, Box > bb = new LinkedHashMap<Point, Box>();
+		bb.put(p, b);
+		model.setBoxes(bb);
+		assertEquals(model.getBoxes().get(p).getCount(), 1);
+		b.incrementCount();
+		assertTrue(model.getBoxes().get(p).isfull());
+		
+	}
+	@Test
+	public void playerTest(){
+		Point point = new Point(5,5);
+		
+		Player p = new Player(point);
+		p.setDestination(new Point(10,10));
+		model.setP(p);
+		model.getP().moveNorth();
+		
+		assertEquals(model.getP().getPosition().getY() , point.getY(), 0);
+		p.setPosition(point);
+		model.getP().move();
+		
+		assertEquals(model.getP().getPosition(), model.getP().getDestination());
+		
+		assertEquals(model.getP().getHT(), HoldingType.EMPTY);
+		model.getP().pickUp(HoldingType.OYSTER);
+		assertEquals(model.getP().getHT(), HoldingType.OYSTER);
+		
+		assertEquals(model.getP().getDirection(), Direction.EAST);
+		
+		p.setDirection(Direction.SOUTH);
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+		model.getP().moveSouth();
+		assertTrue(model.getP().getPosition().y >= point.y);
+		
+		model.getP().moveWest();
+		assertTrue(model.getP().getPosition().x <= point.x);
+		
+		System.out.println(model.getP().getPosition());
+
+		model.getP().setDestination(new Point(7,7));
+		model.getP().move();
+		System.out.println(model.getP().getPosition());
+		assertEquals(model.getP().getPosition(), new Point(10, 7));
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.WEST);
+		
+		model.getP().move();
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+		model.getP().setHT(HoldingType.EMPTY);
+		model.getP().pickUp(HoldingType.TUTORIAL_C);
+		
+		assertEquals(model.getP().getHT(), HoldingType.TUTORIAL_C);
+		
+		
+		model.getP().setHT(HoldingType.EMPTY);
+		model.getP().pickUp(HoldingType.TUTORIAL_O);
+		
+		assertEquals(model.getP().getHT(), HoldingType.TUTORIAL_O);
+		
+		model.getP().updateSprite();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+		assertEquals(model.getP().getHealth(), 100);
+		
+		model.getP().setDestination(new Point(15,15));
+		model.getP().move();
+		assertEquals(model.getP().getPosition(), new Point(7, 14));
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTHEAST);
+		
+		model.getP().move();
+		assertEquals(model.getP().getPosition(), new Point(14, 15));
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.EAST);
+		
+		model.getP().setHealth(10);
+		assertEquals(model.getP().getHealth(), 10);
+		
+		model.getP().move();
+		assertEquals(model.getP().getPosition(), new Point(15, 15));
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+		model.getP().setPosition(new Point(0,0));
+		model.getP().setDestination(new Point(28,28));
+		
+		model.getP().moveWest();
+		assertEquals(model.getP().getPosition(), new Point(28, 0));
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+		model.getP().moveNorth();
+		assertEquals(model.getP().getPosition(), new Point(28, 28));
+		
+		model.getP().updateDirection();
+		model.getP().setDirection(Direction.NORTHEAST);
+		
+		assertEquals(model.getP().getDirection(), Direction.NORTHEAST);
+		
+		model.getP().setPosition(new Point(0,0));
+		model.getP().setDestination(new Point(100,100));
+		
+		model.getP().move();
+		assertEquals(model.getP().getPosition(), new Point(7, 100));
+		
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.EAST);
+		
+		model.getP().move();
+		assertEquals(model.getP().getPosition(), new Point(14, 100 ));
+		
+		
+		model.getP().moveWest();
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+		model.getP().moveNorth();
+		model.getP().updateDirection();
+		assertEquals(model.getP().getDirection(), Direction.SOUTH);
+		
+	}
+	@Test
+	public void waveTest(){
+		Wave w = new Wave(new Point(5,5), null, 2);
+		w.setDestination(new Point(4, 5));
+		ArrayList<Wave> ww = new ArrayList<Wave>();
+		ww.add(w);
+		model.setWaves(ww);
+		model.getWaves().get(0).move();
+		assertEquals(model.getWaves().get(0).getPosition(), w.getDestination() );
 	}
 	
 }

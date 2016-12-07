@@ -10,7 +10,7 @@ public class Main {
 //	static Model fromSaveFile = new Model("filename.someExtension");
 	//view
 	//controller
-	private static boolean playTutorial = true; //change to true to play tutorial before game starts
+	private static boolean playTutorial = false; //change to true to play tutorial before game starts
 	static Model m = new Model();
 	static View v = new View();
 	static Controller c = new Controller(m,v /*, State tutorial*/);
@@ -20,12 +20,12 @@ public class Main {
 	
 		
 		if(playTutorial){
-			c.startTutorial();
-		}
+				c.startTutorial();
+	}
 		
 		v.screenTimer.start();
 		c.pTimer.start();
-		//c.wTimer.start();
+		c.wTimer.start();
 		v.getJPanel().addMouseListener(c);
 		
 	}

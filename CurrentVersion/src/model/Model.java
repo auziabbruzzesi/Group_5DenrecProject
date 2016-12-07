@@ -103,10 +103,10 @@ public class Model {
 		//System.out.println("Shoreline = " + getShoreLine());
 	}
 	//TODO: what is this?
-	public Model(Dimension d){
-		super();
-		
-	}
+//	public Model(Dimension d){
+//		super();
+//		
+//	}
 
 	
 /*

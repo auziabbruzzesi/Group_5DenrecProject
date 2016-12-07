@@ -46,8 +46,8 @@ import view.View.button;
 public class Controller implements MouseListener {
 	private status gameStatus = status.IN_PROGRESS;
 	
-	private static Model m;
-	private static View v;
+	private  Model m;
+	private  View v;
 	private boolean pickUpRequest = false;
 	private boolean putDownRequest = false;
    
@@ -87,8 +87,8 @@ public class Controller implements MouseListener {
 			
 			//m.gameDi = v.getContentPane().getSize();
 			moveWaves();
-			
-			
+			//v.updateViewObjs();
+			v.repaint();
 			checkGameStatus();
 			
 		}
@@ -211,7 +211,7 @@ public class Controller implements MouseListener {
 	}
 
 	/**
-	 * @author 
+	 * @author ?
 	 * @return String type
 	 */
 	public String putDown() {
@@ -301,8 +301,8 @@ public class Controller implements MouseListener {
 				w.move();		
 			}
 			
-			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset.
-			else {		
+			//else, wave has reached the shore. Shoreline, Estuary Health must be updated and Wave must be reset
+			else  if (w.getPosition().x >= w.getDestination().x){		
 				int shoreDamage = determineDamage(w);				
 				int healthDamage = shoreDamage;//this is redundant in terms of code, but makes it more obvious what's going on. Leaving for improved readability.				
 				
@@ -328,7 +328,7 @@ public class Controller implements MouseListener {
 			a++;	
 		}
 		m.updateWavesDestinations();
-//		v.updateViewObjs();
+		v.updateViewObjs();
 	}
 
 	/**
@@ -340,28 +340,45 @@ public class Controller implements MouseListener {
 	 */
 	public int determineDamage(Wave w) {
 		int decrement = 0;
-		Box b = null;
+		Box b = new Box();
+		HoldingType contains = b.getContains();
 		
 		for( Box k : m.getBoxes().values() ){
+			contains = k.getContains();
 			if(k.getIndex() == w.getIndex()){
+			//	contains = k.getContains();
 				b = k;
+				
+				
+				
 			}
+			//b.setIndex(b.getIndex()+1);
+		
 		}
-		if(b == null){
-			System.out.println("error in Controller: determineDamage: no box with index matching wave");
-		}
-		if(!b.isfull()){
+//		if(b == null){
+//			System.out.println("error in Controller: determineDamage: no box with index matching wave");
+//		}
 			// set decrement based box contents
-			switch (b.getContains()) {
+	if(!b.isfull()) {
+		System.out.println("in switch");
+		System.out.println("BOX CONTAINS: "  +  b.getContains() + " COUNT: " +  b.getCount() + " CAPACITY: " + b.getCapacity());
+			switch (contains) {
+			
+			
+			
 			case EMPTY:
+				System.out.println("IM EMPTY");
+				
 				decrement = 5;
 				// b.setCount(b.getCount() -1);
 				// b.setObjIcon(m.concreteImages[b.getCount() - 1]);
 				break;
 			case OYSTER:
-			
+				System.out.println("IM OYSTER");
+				
 				if (b.isfull()) {
 					decrement = 1;
+					break;
 
 				} else {
 					decrement = 3;
@@ -372,14 +389,17 @@ public class Controller implements MouseListener {
 				
 				break;
 			case CONCRETE:
+				System.out.println("IM CONCRETE");
 				
 				if (b.isfull()) {
 					decrement = 3;
 				} else {
 					decrement = 4;
 				}
+				if(b.getCount() > 0){
 				b.setCount(b.getCount() - 1);
 				b.setObjIcon(m.concreteImages[b.getCount()]);
+				}
 				break;
 			case TUTORIAL_C:
 				decrement = 4;
@@ -393,6 +413,7 @@ public class Controller implements MouseListener {
 				break;
 			}
 		}
+		
 		return decrement;
 	}
 
@@ -510,19 +531,11 @@ public class Controller implements MouseListener {
 			}
 		});
 		
-		/**
-		 * @author Eaviles
-		 * Purpose: reset model and view after tutorial executes
-		 */
 		public void resetAll(){
 			m.resetGameObjsArray();
 			v.resetGameObjBtnsArray();
 		}
 		
-		/**
-		 * @author Eaviles
-		 * Purpose: handle moving the tutorial wave
-		 */
 		public void moveTutorialWave(){
 			
 			if ( m.gettBWave().getPosition().x  > m.gettBWave().getDestination().x ) {
@@ -560,7 +573,7 @@ public class Controller implements MouseListener {
 				resetAll();
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
-				//initViewSaveBtnListeners();
+				initViewSaveBtnListeners();
 				System.out.println("tutorial: "+m.getShoreLine());
 				wTimer.start();
 				wTutorialTimer.stop();
@@ -651,7 +664,23 @@ public class Controller implements MouseListener {
 	}
 
 	
-/*
+public Model getM() {
+		return m;
+	}
+
+	public void setM(Model m) {
+		this.m = m;
+	}
+
+	public View getV() {
+		return v;
+	}
+
+	public void setV(View v) {
+		this.v = v;
+	}
+
+	/*
  * Unused mouse listener functions (these are required to implement MouseListener, even if they're not used)
  */
 	@Override
