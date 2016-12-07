@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import javax.imageio.ImageIO;
+import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.Icon;
@@ -34,7 +35,6 @@ import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
 import javax.swing.plaf.synth.SynthSeparatorUI;
-
 import controller.status;
 import model.*;
 import view.View.HealthPanel;
@@ -46,18 +46,17 @@ public class View extends JFrame {
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 	Point playerPos = (new Point(0, 0));
 
-	public button gettWave() {
-		return tWave;
+	public button getBuildingTWave() {
+		return buildingTWave;
 	}
 
-	// public void settWave(button tWave) {
-	// this.tWave = tWave;
-	// }
+	
 	Point playerDest = (new Point(200, 200));
 
 	String playerDir = "";
 
-	JPanel jP = new jpanel();
+	private JPanel jP = new jpanel();
+	private Menu menu;
 	exitJframe eJf = new exitJframe();
 
 	private HealthPanel healthBar;
@@ -69,48 +68,53 @@ public class View extends JFrame {
 
 	private int totalShoreDecrement = 0;
 
-	private button tWave = new button();
-	private int tWaveZIndex;
-
-	private boolean tWaveAdded = false;
-
 	public SaveButton sb;
 	public LoadButton lb;
 	public ExitButton eb;
 
+	//tutorial vars
 	button oTBtn = new button();
 	button cTBtn = new button();
+	private button erosionTWave1 = new button();
+	public button getErosionTWave1() {
+		return erosionTWave1;
+	}
 
-	public Timer screenTimer = new Timer(1, new ActionListener() {
+	public button getErosionTWave2() {
+		return erosionTWave2;
+	}
+
+
+	private button erosionTWave2 = new button();
+	private button buildingTWave = new button();
+	private boolean tWave1Added = false;
+	private boolean tWave2Added = false;
+	private boolean tWave3Added = false;
+	
+	/**
+	 * @author Eaviles
+	 * Purpose: regularly updates View. This timer became necessary after
+	 * integrating the tutorial.
+	 */
+
+	public Timer screenTimer = new Timer(30, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			
-			// setSize(Toolkit.getDefaultToolkit().getScreenSize());
-			// viewHeight = getContentPane().getHeight();
-			// viewWidth = getContentPane().getWidth();
-			 updateViewObjs();
-			 repaint();
-			// m.gameDi = v.getContentPane().getSize();
+			viewHeight = getContentPane().getHeight();
+			viewWidth = getContentPane().getWidth();
+			getJPanel().setSize(getContentPane().getSize());
 
+			updateViewObjs();
+			repaint();
 		}
 	});
 
-	// public button removeTutorialWave(){
-	// button tW = new button();
-	// Iterator<button> myIt = gameObjBtns.iterator();
-	// while( myIt.hasNext() ){
-	// tW = myIt.next();
-	// System.out.println(tW.getType());
-	// if(tW.getType() == HoldingType.TUTORIAL_WAVE ){
-	//// myIt.remove();
-	// System.out.println("v.removed");
-	// break;
-	// }
-	// }
-	// return tW;
-	// }
-
+	/**
+	 * @author Eaviles
+	 * Purpose: reset View's button array after tutorial, so user can start with a fresh game.
+	 */
 	public void resetGameObjBtnsArray() {
 		this.gameObjBtns.clear();
 		this.jP.removeAll();
@@ -122,54 +126,103 @@ public class View extends JFrame {
 	 * View Constructor
 	 */
 	public View() {
+		menu = new Menu();
+
 		initView();
-
 	}
 
-	public void initTWave() {
-		tWave.setMargin(new Insets(0, 0, 0, 0));
-		tWave.setBorder(BorderFactory.createEmptyBorder());
-		tWave.setContentAreaFilled(false);
+	/**
+	 * @author Eaviles Purpose: initialize wave to be played in second animation
+	 *         of the tutorial
+	 */
+	public void initTWave(TutorialWave t) {
+		
+		if(t.getAnimationNumber() == 1){
+			if(!tWave1Added){
+				erosionTWave1.setMargin(new Insets(0, 0, 0, 0));
+				erosionTWave1.setBorder(BorderFactory.createEmptyBorder());
+				erosionTWave1.setContentAreaFilled(false);
 
-		tWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
-		tWave.setType(HoldingType.TUTORIAL_WAVE);
-		tWave.setLocation(0, 0);
-		tWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+				erosionTWave1.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+				erosionTWave1.setType(HoldingType.TUTORIAL_WAVE);
+				erosionTWave1.setLocation(0, 0);
+				erosionTWave1.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+				jP.add(erosionTWave1);
+				tWave1Added = true;
+				System.out.println("View added 1st wave");
+			} 
+			else if(!tWave2Added){
+				erosionTWave2.setMargin(new Insets(0, 0, 0, 0));
+				erosionTWave2.setBorder(BorderFactory.createEmptyBorder());
+				erosionTWave2.setContentAreaFilled(false);
+
+				erosionTWave2.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+				erosionTWave2.setType(HoldingType.TUTORIAL_WAVE);
+				erosionTWave2.setLocation(0, 0);
+				erosionTWave2.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+				jP.add(erosionTWave2);
+				tWave2Added = true;
+				System.out.println("View added 2nd wave");
+			}
+			else{
+				System.out.println("error in View.initTWave: booleans incorrect.");
+			}
+		}
+		else if(t.getAnimationNumber() == 2){
+			buildingTWave.setMargin(new Insets(0, 0, 0, 0));
+			buildingTWave.setBorder(BorderFactory.createEmptyBorder());
+			buildingTWave.setContentAreaFilled(false);
+
+			buildingTWave.setSize(new Dimension(Wave.waveWidth, Wave.waveHeight));
+			buildingTWave.setType(HoldingType.TUTORIAL_WAVE);
+			buildingTWave.setLocation(0, 0);
+			buildingTWave.setBounds(0, 0, Wave.waveWidth, Wave.waveHeight);
+			jP.add(buildingTWave);
+			tWave3Added = true;
+		}		
+		else{
+			System.out.println("error in View.initTWave: TWave animation numbers incorrect");
+		}
 	}
 
+	/**
+	 * @author Eaviles
+	 * @param n: dictates which part of the tutorial sequence to execute.
+	 * Purpose: display relevant messages/animations during tutorial.
+	 */
 	public void playTutorialSequence(int n) {
 		// screenTimer.start();
 
 		switch (n) {
 		case 1:
 			JOptionPane.showMessageDialog(null, "Welcome to Estuary Quest!");
+			break;
+		case 2:
 			JOptionPane.showMessageDialog(null,
 					"Oh no, the estuary is being eroded away by BIG waves! Let's protect it!");
 			JOptionPane.showMessageDialog(null, "Click on an oyster or a piece of concrete to pick it up!");
 			initPickupTutorial();
 			break;
-		case 2:
-			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building a Gabion...");
-			break;
 		case 3:
-			JOptionPane.showMessageDialog(null,
-					"You've started building a Gabion! Let's see what happens when a wave hits it...");
-			// animation
+			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building protection for the Estuary...");
 			break;
 		case 4:
 			JOptionPane.showMessageDialog(null,
-					"You've started building a Sea Wall! Let's see what happens when a wave hits it...");
-			// animation
+					"You've started building a Gabion! Let's see what happens when a wave hits it...");
 			break;
 		case 5:
 			JOptionPane.showMessageDialog(null,
-					"The Estuary didn't erode as much! But we lost an oyster from our Gabion. Use lots of oysters to make it stronger!");
+					"You've started building a Sea Wall! Let's see what happens when a wave hits it...");
 			break;
 		case 6:
 			JOptionPane.showMessageDialog(null,
-					"The Estuary didn't erode as much! But we lost an piece of our Sea Wall. Use lots of concrete to make it stronger!");
+					"The Estuary didn't erode as much! But we lost an oyster from our Gabion. Use lots of oysters to make it stronger!");
 			break;
 		case 7:
+			JOptionPane.showMessageDialog(null,
+					"The Estuary didn't erode as much! But we lost an piece of our Sea Wall. Use lots of concrete to make it stronger!");
+			break;
+		case 8:
 			JOptionPane.showMessageDialog(null,
 					"Ready to play?" + "\n~ Tip: different materials will protect the estuary better ~");
 			break;
@@ -208,16 +261,30 @@ public class View extends JFrame {
 			}
 			// WAVE
 			else if (Model.getGameObjs().get(i) instanceof Wave) {
+	
 				if (!(Model.getGameObjs().get(i) instanceof TutorialWave)) {
 					gameObjBtns.get(i).setLocation(Model.getGameObjs().get(i).getPosition());
-				} else {
-					if (tWaveAdded == false) {
-						initTWave();
-						jP.add(tWave);
-						tWaveAdded = true;
+				} 
+				else {
+					
+					if (!tWave1Added || !tWave2Added || !tWave3Added) {
+						initTWave((TutorialWave)Model.getGameObjs().get(i));
 					}
-					tWave.setLocation(Model.getGameObjs().get(i).getPosition());
-					tWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+					
+					switch(  ( (TutorialWave) Model.getGameObjs().get(i) ).getAnimationNumber()  ){
+					case 1:
+						erosionTWave1.setLocation(Model.getGameObjs().get(i).getPosition());
+						erosionTWave1.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+						break;
+					case 2:
+						erosionTWave2.setLocation(Model.getGameObjs().get(i).getPosition());
+						erosionTWave2.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+						break;
+					case 3:
+						buildingTWave.setLocation(Model.getGameObjs().get(i).getPosition());
+						buildingTWave.setIcon((Icon) ((Wave) (Model.getGameObjs().get(i))).getObjIcon());
+						break;
+					}				
 				}
 			}
 			// BEACHOBJ
@@ -240,7 +307,6 @@ public class View extends JFrame {
 	public void gameEnd(String m) {
 		JOptionPane.showMessageDialog(null, m);
 		System.exit(0);
-
 	}
 
 	public void exitWindow() {
@@ -249,12 +315,10 @@ public class View extends JFrame {
 		eJf.getContentPane().setLayout(null);
 		eJf.setVisible(true);
 		initSaveBtn();
-
 	}
 
 	public void updateShoreline(int damage) {
 		shoreLineTop -= damage;
-		// repaint();
 	}
 
 	/*
@@ -276,14 +340,10 @@ public class View extends JFrame {
 		initLoadBtn();
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 
-		// Thanks!
 		getContentPane().add(jP);
 		pack();
 		setVisible(true);
-		// screenTimer.start();
-		// System.out.println("\n\nView's array of buttons
-		// contains:\n"+this.gameObjBtns+"\n\n");
-
+		screenTimer.start();
 	}
 
 	public void initSaveBtn() {
@@ -367,16 +427,10 @@ public class View extends JFrame {
 					j.setBounds(j.getLocation().x, j.getLocation().y, BeachObject.beachObjDimensions,
 							BeachObject.beachObjDimensions);
 					j.setIcon((Icon) ((BeachObject) (Model.getGameObjs().get(i))).getObjIcon());
-					// System.out.println("button width "+j.getWidth()+" button
-					// height = "+j.getHeight());
-					// System.out.println("instanceof =
-					// "+Model.getGameObjs().get(i).getClass());
 				}
 				// BOX
 				else if (Model.getGameObjs().get(i) instanceof Box) {
 					j.setSize(new Dimension(Box.boxDimensions, Box.boxDimensions));
-					// j.setHoldingType((((Box)
-					// ((Model.getGameObjs()).get(i))).getContains()));
 					j.setType(HoldingType.BOX);
 					j.setLocation((Point) (((Box) (Model.getGameObjs().get(i))).getPosition()));
 					j.setBounds(j.getLocation().x, j.getLocation().y, Box.boxDimensions, Box.boxDimensions);
@@ -543,7 +597,7 @@ public class View extends JFrame {
 			if (getHealthHeight() <= 100) {
 				g.setColor(Color.yellow);
 			}
-			if(getHealthHeight() < 50){
+			if (getHealthHeight() < 50) {
 				g.setColor(Color.RED);
 			}
 			g.fillRect(this.xPos, (int) this.startingY, this.getWidth(), (int) healthHeight);
@@ -591,6 +645,14 @@ public class View extends JFrame {
 
 	public JPanel getJPanel() {
 		return this.jP;
+	}
+
+	public Menu getMenu() {
+		return menu;
+	}
+
+	public void setMenu(Menu menu) {
+		this.menu = menu;
 	}
 
 	public HealthPanel getHealthBar() {

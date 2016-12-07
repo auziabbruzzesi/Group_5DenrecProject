@@ -17,7 +17,7 @@ public class Menu extends JFrame {
 	JButton newGame = new JButton();
 	JButton saveGame = new JButton();
 	JButton loadGame = new JButton();
-	JButton quit = new JButton();
+	JButton quit = new JButton(); 
 	buttonPanel b = new buttonPanel();
 	
 
@@ -30,6 +30,7 @@ public class Menu extends JFrame {
 	    pack();
 	    setLocation(x, y);
 		add(b);
+		this.setContentPane(b);
 		
 		setVisible(true);
 		this.setAlwaysOnTop(true);
