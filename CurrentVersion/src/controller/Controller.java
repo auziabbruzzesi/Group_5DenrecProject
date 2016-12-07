@@ -694,6 +694,7 @@ public class Controller implements MouseListener {
 				
 				
 				resetAll();
+				initViewBtnListeners();
 				v.updateViewObjs();
 				wTimer.start();
 				pTimer.start();
