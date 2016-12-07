@@ -43,6 +43,14 @@ public class View extends JFrame {
 	public static int viewHeight = 650;
 	public static int viewWidth = 1200;
 
+	public boolean resetBOs = false; 
+
+
+	public void setResetBOs(boolean resetBOs) {
+		this.resetBOs = resetBOs;
+	}
+
+
 	public ArrayList<button> gameObjBtns = new ArrayList<button>();
 	Point playerPos = (new Point(0, 0));
 
@@ -301,6 +309,10 @@ public class View extends JFrame {
 
 				if (Model.getGameObjs().get(i).getObjIcon() == null) {
 					gameObjBtns.get(i).setVisible(false);
+				}
+				
+				if(this.resetBOs){
+					gameObjBtns.get(i).setVisible(true);
 				}
 			}
 			// BOX
