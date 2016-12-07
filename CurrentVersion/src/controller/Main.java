@@ -20,13 +20,13 @@ public class Main {
 			//c.startTutorial();
 		}
 		else{
-			c.wTimer.start();
+			
 		}		
 		
 
 //		v.screenTimer.start();
 		c.pTimer.start();
-		//c.wTimer.start();
+		c.wTimer.start();
 
 		v.getJPanel().addMouseListener(c);
 		v.repaint();

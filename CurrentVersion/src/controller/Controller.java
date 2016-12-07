@@ -451,6 +451,7 @@ public class Controller implements MouseListener {
 	 * and tell View to display it.
 	 */
 	private void checkGameStatus() {
+		System.out.println("check game status");
 //		System.out.println("in Controller->check game status function \nShoreline = "+ m.getShoreLine() + "\nmin shoreline = "+ m.getminShoreLine());
 		String endMessage = "";
 		
@@ -475,6 +476,7 @@ public class Controller implements MouseListener {
 			wTimer.stop();
 			pTimer.stop();
 			v.gameEnd(endMessage);
+			
 		}
 		
 	}
