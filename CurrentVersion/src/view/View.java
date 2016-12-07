@@ -256,6 +256,7 @@ public class View extends JFrame {
 			}
 			// PLAYER
 			else if (Model.getGameObjs().get(i) instanceof Player) {
+				gameObjBtns.get(i).setVisible(true);
 				gameObjBtns.get(i).setLocation(Model.getGameObjs().get(i).getPosition());
 				gameObjBtns.get(i).setIcon(Model.getGameObjs().get(i).getObjIcon());
 			}
