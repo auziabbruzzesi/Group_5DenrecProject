@@ -81,7 +81,7 @@ public class View extends JFrame {
 	button oTBtn = new button();
 	button cTBtn = new button();
 
-	public Timer screenTimer = new Timer(1, new ActionListener() {
+	public Timer screenTimer = new Timer(60, new ActionListener() {
 
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -153,7 +153,7 @@ public class View extends JFrame {
 			initPickupTutorial();
 			break;
 		case 2:
-			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building a Gabion...");
+			JOptionPane.showMessageDialog(null, "Great Job! Now place it in a box to start building protection for the Estuary...");
 			break;
 		case 3:
 			JOptionPane.showMessageDialog(null,

@@ -81,6 +81,7 @@ public class Controller implements MouseListener {
 	Timer wTimer = new Timer(30, new ActionListener() {
 		@Override
 		public void actionPerformed(ActionEvent e) {
+			
 			View.viewHeight = v.getContentPane().getHeight();
 			View.viewWidth = v.getContentPane().getWidth();
 			v.getJPanel().setSize(v.getContentPane().getSize());
@@ -96,7 +97,7 @@ public class Controller implements MouseListener {
 	/**
 	 * @author Auzi
 	 */
-	Timer pTimer = new Timer(10, new ActionListener() {
+	Timer pTimer = new Timer(8, new ActionListener() {
 		
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -254,6 +255,7 @@ public class Controller implements MouseListener {
 						}						
 						
 					m.getP().setHT(HoldingType.EMPTY);
+					m.updatePlayerSprite();
 				}
 			}
 		 
@@ -503,7 +505,7 @@ public class Controller implements MouseListener {
 			public void actionPerformed(ActionEvent e) {
 				m.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
 				moveTutorialWave();
-				v.updateViewObjs();
+//				v.updateViewObjs();
 			}
 		});
 		
@@ -537,7 +539,7 @@ public class Controller implements MouseListener {
 				Point wLoc = new Point( v.gettWave().getLocation() );
 				v.getJPanel().getComponentAt( wLoc ).setVisible(false);
 				m.removeTutorialWave();
-				v.updateViewObjs();
+//				v.updateViewObjs();
 								
 				switch(tutorialPickUp){
 				case TUTORIAL_O:

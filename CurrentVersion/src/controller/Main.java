@@ -24,7 +24,7 @@ public class Main {
 		}		
 		
 
-		v.screenTimer.start();
+//		v.screenTimer.start();
 		c.pTimer.start();
 		//c.wTimer.start();
 
