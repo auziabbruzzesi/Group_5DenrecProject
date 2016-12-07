@@ -113,12 +113,11 @@ public class Controller implements MouseListener {
 		this.v = v; //init occurs in view's constructor
 		v.viewHeight = m.gameDi.height;
 		v.viewWidth = m.gameDi.width;
-		//v.getJPanel().setSize(m.gameDi);
+
 		initViewBtnListeners();
 		initViewLoadBtnListeners();
 		initViewExitBtnListeners();
 		initMenu();
-//		System.out.println("shoreline start = "+m.getShoreLine().getTotalDecrement());
 	}
 
 	/*
@@ -177,7 +176,6 @@ public class Controller implements MouseListener {
 
 		if (m.getP().getDestination().distance(m.getP().getPosition()) < 10) {	
 			pTimer.stop();
-//			 System.out.println("we've reached our destination");
 
 			//if player clicked on oyster or concrete
 			if (pickUpRequest) {
@@ -304,18 +302,6 @@ public class Controller implements MouseListener {
 			else {						
 				waveCollision(w);
 				m.resetWave(a);
-				
-//				System.out.println("################################################################################");
-//				for(Box b : m.getBoxes().values()){
-//				
-//					System.out.println("box index: " + b.getIndex());
-//					System.out.println("box Type: " + b.getContains());
-//					System.out.println("box IconImage: " + b.getObjIcon());
-//					System.out.println("Box Count: "+ b.getCount());
-//					
-//				}
-//				System.out.println("###############################################################################");
-				//checkGameStatus();//we call this here bc shoreline was updated (above)
 			}
 			a++;	
 		}
@@ -404,6 +390,7 @@ public class Controller implements MouseListener {
 //			//save(m.getGameObjs());
 //			saveRequest=false;
 //		}
+		
 		// if a button was clicked
 		if (e.getComponent() instanceof button) {
 
@@ -607,7 +594,6 @@ public class Controller implements MouseListener {
 				initViewBtnListeners();
 				initViewLoadBtnListeners();
 
-				System.out.println("tutorial: " + m.getShoreLine());
 				wTimer.start();
 				wTutorialTimer.stop();
 			}
@@ -684,6 +670,7 @@ public class Controller implements MouseListener {
 				v.getMenu().dispose();	
 			}
 		});	
+		//clicking new game button
 		((JButton)v.getMenu().getContentPane().getComponent(1)).addActionListener(new ActionListener(){
 
 			@Override
@@ -691,12 +678,15 @@ public class Controller implements MouseListener {
 				v.getMenu().setAlwaysOnTop(false);
 				v.getMenu().dispose();
 
-				
-				
+				tutorial = false;
+
 				resetAll();
-				v.updateViewObjs();
+				
+				initViewBtnListeners();
+				initViewLoadBtnListeners();
+
 				wTimer.start();
-				pTimer.start();
+				wTutorialTimer.stop();
 				
 			}
 			

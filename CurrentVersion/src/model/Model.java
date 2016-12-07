@@ -282,7 +282,6 @@ public class Model {
 				}
 			}
 		}
-//		System.out.println(gameObjs);
 	}
 	public void resetGameObjsArray(){
 
@@ -293,17 +292,13 @@ public class Model {
 			b.setCount(0);
 			b.setObjIcon(concreteImages[b.getCount()]);
 		}
-//		for(Wave w : waves){
-//			w.setPosition(w.getInitialPos());
-//			w.resetVelocity();
-//		}
+
 		this.HB.reset();
 		
 		this.gameObjs.clear();
 		this.initGameObjsArr();
 		
 		System.out.println("reset game objs array:");
-//		System.out.println(gameObjs);
 	}
 	
 /*
