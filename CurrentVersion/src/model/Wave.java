@@ -91,7 +91,7 @@ public class Wave extends GameObject {
 	 * Purpose: to reset a wave's velocity within the specified range.
 	 */
 	public void resetVelocity(){
-		int v = randomGenerator.nextInt(4) + 1;
+		int v = randomGenerator.nextInt(1) + 1;
 		this.setVelocity(v);
 	}
 	
