@@ -1,8 +1,3 @@
-/*
- * Quick Notes:
- * 	1. Might be able to consolidate comparison if/else statements of checkOverlap functions into their own callable function. That's not
- * 		tonight's problem, but it's something to think about for later.
- */
 package model;
 
 import java.awt.Dimension;
@@ -41,23 +36,10 @@ public class Model {
 	public final Double b = .45;
 	public final Double c = .625;
 
-	
+	//Array of gameObjects that view can access
 	private static ArrayList<GameObject> gameObjs = new ArrayList<GameObject>();
 	
 	//General variables
-	
-	public TutorialWave gettSWave1() {
-		return tSWave1;
-	}
-	public TutorialWave gettSWave2() {
-		return tSWave2;
-	}
-//	public void settSWave1(TutorialWave tSWave1) {
-//		this.tSWave1 = tSWave1;
-//	}
-//	public void settSWave2(TutorialWave tSWave2) {
-//		this.tSWave2 = tSWave2;
-//	}
 	private Player p;
 	private HashMap<Point, BeachObject> beachObjHM = new HashMap<Point, BeachObject>();
 	private LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
@@ -75,7 +57,6 @@ public class Model {
 	//Sprite-related variables
 		ImageIcon oystIcon;
 		ImageIcon concIcon;
-
 		final int numSprites = 6;
 		final int startPSprites = 0;
 		final int oystSprite = 9;
@@ -94,6 +75,10 @@ public class Model {
 /*
  * Model Constructor
  */
+	/**
+	 * @author Eaviles
+	 * @Purpose initialize all relevant Model variables/objects
+	 */
 	public Model() {
 		this.gameDi = Toolkit.getDefaultToolkit().getScreenSize();
 		initSprites();//DO NOT MOVE. This must come first for other inits to work. Thanks!
@@ -107,13 +92,6 @@ public class Model {
 		tBWave = new TutorialWave(new Point(1100,650),  pics[11], 500, 3);
 		shoreLine.setLoosingCoordinate(shoreLine.getShoreBottom().x - HB.getHeight() + 100);
 		initGameObjsArr();	
-
-		System.out.println("Instantiating new game");
-		System.out.println("Player Position: " + this.p.getPosition());
-		System.out.println(this.boxes.size() + " Boxes.");
-		System.out.println(this.waves.size() + " Waves.");
-		System.out.println(this.beachObjHM.size() + " Beach Objects.");
-		//System.out.println("Shoreline = " + getShoreLine());
 	}
 
 
@@ -149,15 +127,28 @@ public class Model {
 		}		
 	}
 
+	/**
+	 * @param updatedPos set Player position to this
+	 */
 	public void updatePlayerPosition(Point updatedPos) {
 		this.p.setPosition(updatedPos);
 	}
+	
+	/**
+	 * @author Auzi
+	 * @Purpose update player sprite to reflect current game state
+	 */
 	public void updatePlayerSprite() {
 		p.setObjIcon(crabPics[p.findIndex()]);
 	}
 	
-	public void updateShoreLine(int damage) {
-		
+	
+	/**
+	 * @author Estella
+	 * @param damage erode the shoreline by this much
+	 * @Purpose erode shoreline by damage param to reflect current state of game
+	 */
+	public void updateShoreLine(int damage) {	
 		this.shoreLine.setShoreTop(new Point(this.shoreLine.getShoreTop().x -= damage,this.shoreLine.getShoreTop().y));
 		this.shoreLine.setShoreBottom(new Point(this.shoreLine.getShoreBottom().x -= damage,this.shoreLine.getShoreBottom().y));
 	}
@@ -165,7 +156,7 @@ public class Model {
 	/**
 	 * @author Eaviles
 	 * @return true if all boxes are full. Else, return false.
-	 * Purpose: used by controller to check whether all boxes are full
+	 * @Purpose: used by controller to check whether all boxes are full
 	 * (i.e. all boxes count variables are equal to their capacity)
 	 */
 	public boolean allBoxesFull() {
@@ -179,10 +170,11 @@ public class Model {
 
 		return allFull;
 	}
+	
 	/**
 	 * @author Eaviles
 	 * @return true if at least 50% of boxes were filled with oysters. Else, returns false
-	 * Purpose: used by controller at end of game to determine whether enough boxes were made into gabions
+	 * @Purpose: used by controller at end of game to determine whether enough boxes were made into gabions
 	 */
 	public boolean boxesCorrect() {
 		boolean correct = false;
@@ -226,7 +218,7 @@ public class Model {
 	
 	/**
 	 * @author Eaviles
-	 * Purpose: handles Model's role in the game tutorial. Allows tutorial to
+	 * @Purpose: handles Model's role in the game tutorial. Allows tutorial to
 	 * demonstrate the effects of a wave hitting a box/the shore
 	 */
 	public void playTutorialWaveCollision(Box tBox) {
@@ -241,7 +233,7 @@ public class Model {
 
 	/**
 	 * @author Eaviles
-	 * Purpose: handles Model's role in playing the first wave animation for the tutorial
+	 * @Purpose: handles Model's role in playing the first wave animation for the tutorial
 	 */
 	public void playTutorialWaveAnimation(){
 		int x, y;
@@ -265,7 +257,7 @@ public class Model {
 	
 	/**
 	 * @author Eaviles
-	 * Purpose: removes the tutorialwaves from gameobjs array after tutorial is done with them.
+	 * @Purpose: removes the tutorialwaves from gameobjs array after tutorial is done with them.
 	 * This is nice for the update function, as it won't have to process unused objects. It also
 	 * keeps the array clean/consisting of only objects that are being used by the game. 
 	 */
@@ -281,6 +273,13 @@ public class Model {
 			}
 		}
 	}
+	
+	/**
+	 * @author Eaviles
+	 * @Purpose reset gameObjsArray by resetting all objects contained within it, 
+	 * then clearing the array and re-adding everything. The latter step isn't technically necessary,
+	 * but I prefer to have it because I'm paranoid.
+	 */
 	public void resetGameObjsArray(){
 
 		initShoreline();
@@ -309,7 +308,7 @@ public class Model {
 
 	/**
 	 * @author Eaviles
-	 * Purpose: initialize gameObjsArr to contain all game objects needed for 
+	 * @Purpose: initialize gameObjsArr to contain all game objects needed for 
 	 * saving the game and updating View.
 	 */
 	public void initGameObjsArr() {
@@ -325,15 +324,23 @@ public class Model {
 	}
 	/**
 	 * @author Eaviles
-	 * Purpose: initializes Player 
+	 * @Purpose: initializes Player 
 	 */
 	public void initPlayer(){
 		p = new Player(new Point(Player.startPosition));
 		updatePlayerSprite();
 	}
+	
+	/**
+	 * @Purpose initialize shoreline according to screen size
+	 */
+	public void initShoreline(){
+		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
+	}
+
 	/**
 	 * @author @Auzi
-	 * Purpose: initializes Boxes 
+	 * @Purpose: initializes Boxes 
 	 */
 	public void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
@@ -355,7 +362,7 @@ public class Model {
 	}
 	/**
 	 * @author Eaviles
-	 * Purpose: initializes Waves
+	 * @Purpose: initializes Waves
 	 */
 	public void initWaves(){
 
@@ -374,7 +381,7 @@ public class Model {
 	}
 	/**
 	 * @author Eaviles
-	 * Purpose: initializes BeachObjects within their spawn zone (area they're allowed to spawn in)
+	 * @Purpose: initializes BeachObjects within their spawn zone (area they're allowed to spawn in)
 	 * and makes sure they are not created with positions that would overlap with player/boxes
 	 */
 	public void initBeachObjs(){
@@ -416,7 +423,7 @@ public class Model {
 	 * @author Eaviles
 	 * @param toCreate: proposed point of creation
 	 * @return true = spot available false = spot not available
-	 * Purpose: checks whether creating a beachObject at Point toCreate would
+	 * @Purpose: checks whether creating a beachObject at Point toCreate would
 	 * cause the beachObject to overlap with Player. Takes into account the size
 	 * of beachObjects and Player, as well as their position variables.
 	 */
@@ -470,7 +477,7 @@ public class Model {
 	 * @author Eaviles
 	 * @param toCreate: proposed point of creation
 	 * @return true = spot available false = spot not available
-	 * Purpose: checks whether creating a beachObject at Point toCreate would
+	 * @Purpose: checks whether creating a beachObject at Point toCreate would
 	 * cause the beachObject to overlap with a box. Takes into account the size
 	 * of beachObjects and Boxes, as well as their position variables.
 	 */
@@ -524,7 +531,7 @@ public class Model {
 	 * @author Eaviles
 	 * @param toCreate: proposed point of creation
 	 * @return true = spot available false = spot not available
-	 * Purpose: checks whether creating a beachObject at Point toCreate would
+	 * @Purpose: checks whether creating a beachObject at Point toCreate would
 	 * cause the BeachObject to overlap with another BeachObject. Takes into account the size
 	 * of the BeachObjects, as well as their position variables.
 	 */
@@ -578,7 +585,7 @@ public class Model {
 	
 	/**
 	 * @author Auzi
-	 * Purpose:
+	 * @Purpose:
 	 */
 	public void initSprites() {
 
@@ -632,7 +639,7 @@ public class Model {
 	 * @author Pulled from Orc animation lab
 	 * @param n: name of file to be read from
 	 * @return: imageIcon that was created from file, or null
-	 * Purpose: read from file, create imageIcon from file. 
+	 * @Purpose: read from file, create imageIcon from file. 
 	 */
 	private ImageIcon createImage(String n) {
 		ImageIcon imageIcon;
@@ -650,88 +657,153 @@ public class Model {
 /*
  * Setters and Getters
  */
-	public int getScore() {
-		return score;
-	}
-
-	public void setScore(int score) {
-		this.score = score;
-	}
+	/**
+	 * @return Player object
+	 */
 	public Player getP() {
 		return p;
 	}
-
+	
+	/**
+	 * @param p set player to this (used in testing)
+	 */
 	public void setP(Player p) {
 		this.p = p;
 	}
 
+	/**
+	 * @return beachObjHM - HashMap of beachObjects
+	 */
 	public HashMap<Point, BeachObject> getBeachObject() {
 		return beachObjHM;
 	}
 
+	/**
+	 * @param beachObject set beachObjHM (HashMap of beachObjects) to this
+	 */
 	public void setBeachObject(HashMap<Point, BeachObject> beachObject) {
 		beachObjHM = beachObject;
 	}
 
+	/**
+	 * @return LinkedHashMap of boxes
+	 */
 	public LinkedHashMap<Point, Box> getBoxes() {
 		return boxes;
 	}
 
+	/**
+	 * @param boxes set LinedHashMap boxes to this
+	 */
 	public void setBoxes(LinkedHashMap<Point, Box> boxes) {
 		this.boxes = boxes;
 	}
+	
+	/**
+	 * @return HB health bar
+	 */
 	public HealthBar getHB() {
 		return HB;
 	}
 
+	/**
+	 * @param hB health bar
+	 */
 	public void setHB(HealthBar hB) {
 		HB = hB;
 	}
+	
+	/**
+	 * @return waves
+	 */
 	public ArrayList<Wave> getWaves() {
 		return waves;
 	}
 
+	/**
+	 * @param waves set waves to this
+	 */
 	public void setWaves(ArrayList<Wave> waves) {
 		this.waves = waves;
 	}
 
+	/**
+	 * @return shoreLine object
+	 */
 	public Shoreline getShoreLine() {
 		return shoreLine;
 	}
 
+	/**
+	 * @param shoreLine set shoreLine to this
+	 */
 	public void setShoreLine(Shoreline shoreLine) {
 			this.shoreLine = shoreLine;
 	}
+	/**
+	 * @return gabionImages
+	 */
 	public ImageIcon[] getGabionImages() {
 		return gabionImages;
 	}
+	/**
+	 * @param gabionImages set gabionImages to this
+	 */
 	public void setGabionImages(ImageIcon[] gabionImages) {
 		this.gabionImages = gabionImages;
 	}
-	public void initShoreline(){
-		shoreLine =  new Shoreline(new Point((int)(this.gameDi.width*b),(int)(this.gameDi.height*a)),new Point((int) (this.gameDi.width*c),this.gameDi.height));
-	}
-
+	
+	/**
+	 * @return numBoxes
+	 */
 	public int getNumBoxes() {
 		return numBoxes;
 	}
 
+	/**
+	 * @return gameObjs arraylist
+	 */
 	public static ArrayList<GameObject> getGameObjs(){
 		return gameObjs;
 	}
 
+	/**
+	 * @return tBWave (tutorial wave for the second wave animation)
+	 */
 	public Wave gettBWave() {
 		return tBWave;
 	}
 
+	/**
+	 * @param tBWave set tBWave (tutorial wave for the second wave animation) to this
+	 */
 	public void settBWave(TutorialWave tBWave) {
 		this.tBWave = tBWave;
 	}
 
+	/**
+	 * @return gameScenery
+	 */
 	public Scenery getGameScenery() {
 		return gameScenery;
 	}
+	/**
+	 * @param gameScenery set gameScenery to this
+	 */
 	public void setGameScenery(Scenery gameScenery) {
 		this.gameScenery = gameScenery;
-	}	
+	}
+	/**
+	 * @return tSWave1 the first wave of the first wave animation in the tutorial
+	 */
+	public TutorialWave gettSWave1() {
+		return tSWave1;
+	}
+	/**
+	 * @return tSWave2 the second wave of the first wave animation in the tutorial
+	 */
+	public TutorialWave gettSWave2() {
+		return tSWave2;
+	}
+
 }

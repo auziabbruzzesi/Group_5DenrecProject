@@ -1,5 +1,10 @@
 package model;
 
+/**
+ * 
+ * @author Auzi
+ *
+ */
 public enum HoldingType {
 	
 	EMPTY(0),

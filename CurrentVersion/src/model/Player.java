@@ -13,7 +13,12 @@ public class Player extends GameObject implements MoveObjects {
 	private int velocity;
 	Direction direction = Direction.EAST;//default
 	private HoldingType hT;
-	// Constructor
+
+	
+	/**
+	 * @Constructor initialize player variables
+	 * @param p set player's position to this
+	 */
 	public Player(Point p) {
 		this.setPosition(p);
 		this.setVelocity(7);
@@ -21,15 +26,15 @@ public class Player extends GameObject implements MoveObjects {
 		this.setHT(HoldingType.EMPTY);
 	}
 
-	/*
-	 * General functions
-	 */
+/*
+ * General functions
+ */
+	
 	/**
 	 * @author Auzi
-	 * @param boType:
-	 *            the enum type of the beach object we want to pick up
-	 * @return boolean: whether or not the player was able to pickup the object
-	 *         Purpose: Last modified: 12.1.16
+	 * @param boType the enum type of the beach object we want to pick up
+	 * @return boolean whether or not the player was able to pickup the object
+	 * @Purpose attempt to pickup an object of type boType
 	 * 
 	 */
 	public boolean pickUp(HoldingType boType) {
@@ -45,6 +50,10 @@ public class Player extends GameObject implements MoveObjects {
 		return false;
 	}
 
+
+	/**
+	 * @Purpose used in testing. updates sprite based on current direction
+	 */
 	public void updateSprite() {
 		this.getDirection();
 		// crabPics[m.getP().findIndex()]);
@@ -54,9 +63,7 @@ public class Player extends GameObject implements MoveObjects {
 	 * @author Eaviles
 	 * Purpose: moves the player north (decrements y-coordinate of position) 
 	 * by 1 increment of velocity, or by whatever distance is left.
-	 * 
 	 */
-
 	public void moveNorth() {
 		// if we don't have a full tick available to move, move whatever
 		// distance is left north
@@ -84,11 +91,11 @@ public class Player extends GameObject implements MoveObjects {
 			this.getPosition().translate(0, this.getVelocity());
 		}
 	}
+	
 	/**
 	 * @author Eaviles
 	 * Purpose: moves the player east (increments x-coordinate of position) 
-	 * by 1 increment of velocity, or by whatever distance is left.
-	 * 
+	 * by 1 increment of velocity, or by whatever distance is left. 
 	 */
 	public void moveEast() {
 		// check if there is enough space for 1 tick
@@ -100,11 +107,11 @@ public class Player extends GameObject implements MoveObjects {
 			this.getPosition().translate(this.getVelocity(), 0);
 		}
 	}
+	
 	/**
 	 * @author Eaviles
 	 * Purpose: moves the player east (decrements x-coordinate of position) 
 	 * by 1 increment of velocity, or by whatever distance is left.
-	 * 
 	 */
 	public void moveWest() {
 		if (this.getPosition().getX() - this.getVelocity() < this.getDestination().getX()) {
@@ -116,12 +123,11 @@ public class Player extends GameObject implements MoveObjects {
 	}
 
 	/**
-	 * @author EAviles
+	 * @author Eaviles
 	 * Function Purpose: to update Player's position by one increment of velocity. 
 	 * This function checks player's current direction and destination, then checks whether position's
 	 * x & y coordinates match those of destination. If either does not match, x and/or y is incremented
 	 * by velocity, or (if distance to destination is less than velocity), by whatever distance remains.
-	 * 
 	 */
 	@Override
 	public void move() {
@@ -207,7 +213,7 @@ public class Player extends GameObject implements MoveObjects {
 	}// end move()
 
 	/**
-	 * @author EAviles
+	 * @author Eaviles
 	 * Purpose: Sets player direction by checking position & destination.
 	 */
 	public void updateDirection() {
@@ -247,47 +253,82 @@ public class Player extends GameObject implements MoveObjects {
 		}
 	}
 
+	/**
+	 * @author Auzi
+	 * @return
+	 */
 	public int findIndex() {
 		return direction.getRank() + (this.getHT().getRank() * 8);
 	}
-	/*
-	 * Setters and Getters
-	 */
 
+/*
+ * Setters and Getters
+ */
+
+	/**
+	 * @param destination set player destination to this
+	 */
 	public void setDestination(Point destination) {
 		this.destination = destination;
 	}
 
+	/**
+	 * @param velocity set player velocity to this
+	 */
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
 	}
 
+	/**
+	 * @param h set player's holdingtype h to this
+	 */
 	public void setHT(HoldingType h) {
 		this.hT = h;
 	}
+	/**
+	 * @return health - used in testing
+	 */
 	public int getHealth() {
 		return health;
 	}
 
+	/**
+	 * @param health set health to this - used in testing
+	 */
 	public void setHealth(int health) {
 		this.health = health;
 	}
 
+	/**
+	 * @return holdingtype hT
+	 */
 	public HoldingType getHT() {
 		return hT;
 	}
+	/**
+	 * return player destination
+	 */
 	public Point getDestination() {
 		return destination;
 	}
 
+	/**
+	 * @return player velocity
+	 */
 	public int getVelocity() {
 		return velocity;
 	}
 
+	/**
+	 * @return player direction
+	 */
 	public Direction getDirection() {
 		return direction;
 	}
 	
+	/**
+	 * @param d set player direction to this
+	 */
 	public void setDirection(Direction d){
 		this.direction = d;
 	}

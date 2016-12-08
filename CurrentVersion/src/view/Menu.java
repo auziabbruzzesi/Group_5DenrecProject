@@ -12,6 +12,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+/**
+ * @author Auzi
+ * @Purpose Class Menu: 
+ */
+
 public class Menu extends JFrame {
 	JButton tutorial = new JButton();
 	JButton newGame = new JButton();

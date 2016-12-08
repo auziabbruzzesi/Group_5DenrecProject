@@ -1,4 +1,9 @@
-//move set color for bo's to view
+/*
+ * Note:
+ * 		- Green comments exist to denote the start of new sections of code (grouped by functionality)
+ * 		and to aid with code readability
+ * 		- Blue comments are Javadocs
+ */
 
 package controller;
 
@@ -92,6 +97,7 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author Auzi
+	 * @Purpose: regulate player movement in the game
 	 */
 	Timer pTimer = new Timer(10, new ActionListener() {
 		
@@ -105,7 +111,8 @@ public class Controller implements MouseListener {
 	});
 
 	/**
-	 * Constructor
+	 * @Constructor
+	 * @param m, v instance of Model and View objects to work with
 	 */
 
 
@@ -123,6 +130,12 @@ public class Controller implements MouseListener {
 	/*
 	 * Save and load function
 	 */
+		/**
+		 * @author Rzhao
+		 * @param objectToSerializa
+		 * @param filename
+		 * @Purpose
+		 */
 		public void save(Serializable objectToSerializa,String filename){
 			FileOutputStream fos=null;//file creation
 			try{
@@ -140,6 +153,11 @@ public class Controller implements MouseListener {
 		
 	}
 
+		/**
+		 * @author Rzhao
+		 * @param loadName
+		 * @Purpose
+		 */
 		public static void load(String loadName){
 			if(checkFileExists()){
 				FileInputStream fis=null;
@@ -159,6 +177,10 @@ public class Controller implements MouseListener {
 		}
 		}
 
+		/**
+		 * @author Rzhao
+		 * @Purpose 
+		 */
 		private static boolean checkFileExists() {
 			return new File("game.sav").isFile();
 		}
@@ -208,9 +230,9 @@ public class Controller implements MouseListener {
 	}
 
 	/**
-	 * @author 
+	 * @author Auzi, Eaviles
 	 * @return String type
-	 * @Purpose
+	 * @Purpose handles logic for when player tries to place a beachObject in a box 
 	 */
 	public String putDown() {
 		String type = "";
@@ -230,8 +252,7 @@ public class Controller implements MouseListener {
 			 
 					
 					m.getBoxes().get(putDownBox).incrementCount();
-					//System.out.println("*************** CURRENT BOX TYPE " + m.getBoxes().get(putDownBox).getContains());
-					//System.out.println("*************** CURRENT BOX COUNT " + m.getBoxes().get(putDownBox).getCount());
+
 					// set box type in model if this is 1st item placed in box
 						currBox = m.getBoxes().get(putDownBox);
 						currBox.setContains(m.getP().getHT());
@@ -293,7 +314,7 @@ public class Controller implements MouseListener {
 	/**
 	 * @author Eaviles
 	 * @Purpose move all waves by one increment of their respective velocities. This is done by
-	 * calling Wave.move() on each wave.
+	 * calling Wave.move() on each wave. Reset waves upon collision by calling appropriate helper functions.
 	 */
 	public void moveWaves() {
 		int a = 0;
@@ -379,7 +400,10 @@ public class Controller implements MouseListener {
 		return decrement;
 	}
 
-	
+	/**
+	 * @author Auzi/Eaviles
+	 * @Purpose handle action when user clicks the mouse (regardless of where on the screen they click)
+	 */
 	@Override
 	public void mousePressed(MouseEvent e) {
 
@@ -622,10 +646,10 @@ public class Controller implements MouseListener {
 		}			
 	}
 
-
-
-	
-
+	/**
+	 * @author Auzi
+	 * @Purpose 
+	 */
 	
 	private void initMenu(){
 		//System.out.println(v.getMenu);
@@ -706,18 +730,30 @@ public class Controller implements MouseListener {
 /*
  * Setters & Getters
  */
+	/**
+	 * @return gameStatus (current win/lose/inprogress status of game)
+	 */
 	public status getGameStatus() {
 		return gameStatus;
 	}
 
+	/**
+	 * @param gameStatus set gameStatus to this
+	 */
 	public void setGameStatus(status gameStatus) {
 		this.gameStatus = gameStatus;
 	}
 
+	/**
+	 * @return objToPickUp
+	 */
 	public Point getObjToPickUp() {
 		return objToPickUp;
 	}
 
+	/**	
+	 * @param objToPickUp set objToPickUp to this
+	 */
 	public void setObjToPickUp(Point objToPickUp) {
 		this.objToPickUp = objToPickUp;
 	}

@@ -8,7 +8,7 @@ import javax.swing.text.View;
 
 /**
  * @author Eaviles
- * Class Wave: wave objects spawn continuously throughout the game, move toward the beach (shoreline), and, upon
+ * @Purpose Class Wave: wave objects spawn continuously throughout the game, move toward the beach (shoreline), and, upon
  * collision, erode the estuary. 
  */
 
@@ -18,16 +18,13 @@ public class Wave extends GameObject {
 	public static final int waveHeight = 50; // wave height
 	public static final int waveSpawnSpacing = 150; // minimum distance spawned objects should be from waves upon creation
 	public static final int waveToWaveInterval = 100;// distance between created waves
-	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen
-
-	//public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
+	public static final int waveToViewEdgeSpacing = 20;// distance waves are from the right edge of the screen 
 	public static final int waveToTopSpacing = 100;
+	
 	private int velocity;
 
 	private final Point initialPos;
-	private Random randomGenerator = new Random();
-	private Shoreline shoreline;
-	
+	private Random randomGenerator = new Random();	
 	
 /*
  * Constructor
@@ -54,7 +51,6 @@ public class Wave extends GameObject {
 		this.setDestination(d);
 		
 		setObjIcon(k);
-//		System.out.println("wave constructor: startpos = "+this.getInitialPos());
 	}
 
 	
@@ -62,11 +58,17 @@ public class Wave extends GameObject {
  * General Functions
  */
 	
-	// note that direction is always west
+	/**
+	 * @author Eaviles
+	 * @Purpose move a wave west by one tick of velocity
+	 */
 	public void move() {
 			this.setPosition(getPosition().x - getVelocity(), getPosition().y);
 	}
 
+	/**
+	 * @return initialPos
+	 */
 	public Point getInitialPos() {
 		return initialPos;
 	}
@@ -95,20 +97,17 @@ public class Wave extends GameObject {
 		this.setVelocity(v);
 	}
 	
-	
+	/**
+	 * @return velocity
+	 */
 	public int getVelocity() {
 		return velocity;
 	}	
+	
+	/**
+	 * @param velocity set velocity to this
+	 */
 	public void setVelocity(int velocity) {
 		this.velocity = velocity;
-	}
-
-
-	public Shoreline getShoreline() {
-		return this.shoreline;
-	}
-	
-	public void setShoreline(Shoreline shoreline) {
-		this.shoreline = shoreline;
 	}
 }

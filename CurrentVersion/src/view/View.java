@@ -1,5 +1,3 @@
-//make set-up func in view, then call it in controller
-
 package view;
 
 import java.awt.BorderLayout;
@@ -45,20 +43,6 @@ public class View extends JFrame {
 
 	public boolean resetBOs = false; 
 
-
-	public void setResetBOs(boolean resetBOs) {
-		this.resetBOs = resetBOs;
-	}
-
-
-	public ArrayList<button> gameObjBtns = new ArrayList<button>();
-	Point playerPos = (new Point(0, 0));
-
-	public button getBuildingTWave() {
-		return buildingTWave;
-	}
-
-	
 	Point playerDest = (new Point(200, 200));
 
 	String playerDir = "";
@@ -76,6 +60,9 @@ public class View extends JFrame {
 
 	private int totalShoreDecrement = 0;
 
+	public ArrayList<button> gameObjBtns = new ArrayList<button>();
+	
+	// save/load vars
 	public SaveButton sb;
 	public LoadButton lb;
 	public ExitButton eb;
@@ -84,15 +71,6 @@ public class View extends JFrame {
 	button oTBtn = new button();
 	button cTBtn = new button();
 	private button erosionTWave1 = new button();
-	public button getErosionTWave1() {
-		return erosionTWave1;
-	}
-
-	public button getErosionTWave2() {
-		return erosionTWave2;
-	}
-
-
 	private button erosionTWave2 = new button();
 	private button buildingTWave = new button();
 	private boolean tWave1Added = false;
@@ -133,14 +111,18 @@ public class View extends JFrame {
 	/*
 	 * View Constructor
 	 */
+	/**
+	 * @Constructor
+	 * @Purpose initialize view to the proper state
+	 */
 	public View() {
 		menu = new Menu();
-
 		initView();
 	}
 
 	/**
-	 * @author Eaviles Purpose: initialize wave to be played in second animation
+	 * @author Eaviles 
+	 * @Purpose: initialize wave to be played in second animation
 	 *         of the tutorial
 	 */
 	public void initTWave(TutorialWave t) {
@@ -250,7 +232,8 @@ public class View extends JFrame {
 	}
 
 	/**
-	 * @author Eaviles Purpose: look at each GameObject in Model's array and
+	 * @author Eaviles 
+	 * @Purpose: look at each GameObject in Model's array and
 	 *         update corresponding buttons/images/panels
 	 */
 	public void updateViewObjs() {
@@ -312,27 +295,24 @@ public class View extends JFrame {
 				}
 				
 				if(this.resetBOs){
-					gameObjBtns.get(i).setVisible(true);
-					
-					
+					gameObjBtns.get(i).setVisible(true);	
 				}
-				
 			}
 			// BOX
-
 			else if (Model.getGameObjs().get(i) instanceof Box) {
 				gameObjBtns.get(i).setLocation((Model.getGameObjs().get(i)).getPosition());
 				gameObjBtns.get(i).setIcon(((Model.getGameObjs().get(i))).getObjIcon());
 				gameObjBtns.get(i).setSize(Box.boxDimensions, Box.boxDimensions);
-				
 			}
 		}
 		
 	}
 
+	/**
+	 * @param m message to display when the game ends
+	 */
 	public void gameEnd(String m) {
-		JOptionPane.showMessageDialog(null, m);
-		
+		JOptionPane.showMessageDialog(null, m);		
 	}
 
 	public void exitWindow() {
@@ -343,25 +323,29 @@ public class View extends JFrame {
 		initSaveBtn();
 	}
 
+	/**
+	 * @param damage decrement shoreLineTop by this
+	 * @Purpose update where View starts drawing the shoreline at
+	 */
 	public void updateShoreline(int damage) {
 		shoreLineTop -= damage;
 	}
 
-	/*
-	 * Functions required for View initialization
-	 */
+/*
+* Functions required for View initialization
+*/
 
+	/**
+	 * @author Auzi/Eaviles
+	 * @Purpose initialize View's variables
+	 */
 	public void initView() {
-		// BorderLayout b = new BorderLayout();
 
 		setTitle("Estuary Quest");
 		setLayout(new BorderLayout());
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
 		jP = new jpanel();
-		// jP.setLayout(b);
-
-		// initSaveBtn();
 		
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 
@@ -396,7 +380,8 @@ public class View extends JFrame {
 	}
 
 	/**
-	 * @author Eaviles Purpose: look at each GameObject in Model's array and
+	 * @author Eaviles 
+	 * @Purpose: look at each GameObject in Model's array and
 	 *         initialize corresponding buttons/images/panels
 	 */
 	public void initGameObjs() {
@@ -464,7 +449,6 @@ public class View extends JFrame {
 
 				gameObjBtns.add(j);
 
-				// System.out.println(Model.getGameObjs().get(i));
 				if (!(Model.getGameObjs().get(i) instanceof TutorialWave)) {
 					jP.add(gameObjBtns.get(i));
 				}
@@ -472,6 +456,10 @@ public class View extends JFrame {
 		}
 	}
 
+	/**
+	 * @author Eaviles
+	 * @Purpose create & add to screen the two beachobjects used in the tutorial
+	 */
 	public void initPickupTutorial() {
 		boolean haveAnOyst = false;
 		boolean haveAConc = false;
@@ -514,14 +502,18 @@ public class View extends JFrame {
 		}
 	}
 
-	/*
-	 * Inner Classes
-	 */
+/*
+ * Inner Classes
+ */
 	public class exitJframe extends JFrame {
 		// comment // test test
 
 	}
 
+	/**
+	 * @author Auzi
+	 *
+	 */
 	public class jpanel extends JPanel {
 
 		public jpanel() {
@@ -535,22 +527,11 @@ public class View extends JFrame {
 
 			g.drawImage(scenery[0], 0, 0, viewWidth, viewHeight, this);
 			g.drawImage(scenery[1], 0 + totalShoreDecrement, 0, viewWidth, viewHeight, this);
-			// g.drawImage(scenery[1], 0, 0, this);
 
 			g.setColor(Color.red);
 			Double a = .206;
 			Double b = .45;
 			Double c = .625;
-			// System.out.println("viewWidth = " + viewWidth);
-			// System.out.println("viewHeight = " + viewHeight);
-			// System.out.println("first line coord: (" +
-			// ((Double)((b)*viewWidth)).intValue() + ", " +
-			// ((Double)((a)*viewHeight)).intValue() + ")" );
-			// System.out.println("second line coord: (" +
-			// ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
-			//g.drawLine(((Double) ((b) * viewWidth)).intValue(), ((Double) ((a) * viewHeight)).intValue(),
-					//((Double) ((c) * viewWidth)).intValue(), (viewHeight));
-
 		}
 	}
 
@@ -567,16 +548,8 @@ public class View extends JFrame {
 	}
 
 	public class button extends JButton {
-		// private HoldingType h = HoldingType.EMPTY;
-		private HoldingType type;
 
-		// public HoldingType getHoldingType() {
-		// return this.h;
-		// }
-		//
-		// public void setHoldingType(HoldingType h) {
-		// this.h = h;
-		// }
+		private HoldingType type;
 
 		public button() {
 			this.setPreferredSize(new Dimension(20, 20));
@@ -600,7 +573,7 @@ public class View extends JFrame {
 		private int yPos = 0;
 
 		/**
-		 * Constructor TODO: update this
+		 * @Constructor
 		 * 
 		 * @param overallHeight
 		 * @param healthHeight
@@ -648,59 +621,99 @@ public class View extends JFrame {
 		}
 	}// end healthPanel class
 
-	/*
-	 * Setters & getters
+/*
+* Setters & getters
+*/
+
+	/**
+	 * @return jPanel jP
 	 */
-
-	public void setPlayerPos(Point position) {
-		this.playerPos = position;
-	}
-
-	public void setPlayerPos(double x, double y) {
-		this.playerPos.setLocation(x, y);
-	}
-
-	public void setPlayerDest(Point destination) {
-		this.playerDest = destination;
-	}
-
-	public Point getPlayerPos() {
-		return playerPos;
-	}
-
 	public JPanel getJPanel() {
 		return this.jP;
 	}
 
+	/**
+	 * @return menu
+	 */
 	public Menu getMenu() {
 		return menu;
 	}
 
+	/**
+	 * @param menu set the menu to this
+	 */
 	public void setMenu(Menu menu) {
 		this.menu = menu;
 	}
 
+	/**
+	 * @return healthbar
+	 */
 	public HealthPanel getHealthBar() {
 		return healthBar;
 	}
 
+	/**
+	 * @param healthBar set healthBar to this
+	 */
 	public void setHealthBar(HealthPanel healthBar) {
 		this.healthBar = healthBar;
 	}
 
+	/**
+	 * @param scenery set scenery to this
+	 */
 	public void setScenery(BufferedImage[] scenery) {
 		this.scenery = scenery;
 	}
 
+	/**
+	 * @return shoreLineTop
+	 */
 	public int getShoreLineTop() {
 		return shoreLineTop;
 	}
 
+	/**
+	 * @return oTBtn (button representing oyster of tutorial)
+	 */
 	public button getOTBtn() {
 		return oTBtn;
 	}
 
+	/**
+	 * @return cTBtn (button representing concrete of tutorial)
+	 */
 	public button getCTBtn() {
 		return cTBtn;
 	}
+	
+	/**
+	 * @param resetBOs set resetBOs to this (resetBOs = boolean flagged to respawn beachobjects when user has picked up a lot of them)
+	 */
+	public void setResetBOs(boolean resetBOs) {
+		this.resetBOs = resetBOs;
+	}
+
+	/**
+	 * @return buildingWave (wave of 2nd tutorial animation)
+	 */
+	public button getBuildingTWave() {
+		return buildingTWave;
+	}
+	/**
+	 * @return erosionTWave1, 1st wave of 1st animation of tutorial
+	 */
+	public button getErosionTWave1() {
+		return erosionTWave1;
+	}
+
+	/**
+	 * @return erosionTWave2, 2nd wave of 1st animation of tutorial
+	 */
+	public button getErosionTWave2() {
+		return erosionTWave2;
+	}
+
+
 }// end View class
