@@ -179,7 +179,6 @@ public class Model {
 
 		return allFull;
 	}
-
 	/**
 	 * @author Eaviles
 	 * @return true if at least 50% of boxes were filled with oysters. Else, returns false
