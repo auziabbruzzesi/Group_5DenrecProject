@@ -113,7 +113,7 @@ public class View extends JFrame {
 			viewHeight = getContentPane().getHeight();
 			viewWidth = getContentPane().getWidth();
 			getJPanel().setSize(getContentPane().getSize());
-
+			//System.out.println(resetBOs);
 			updateViewObjs();
 			repaint();
 		}
@@ -313,7 +313,10 @@ public class View extends JFrame {
 				
 				if(this.resetBOs){
 					gameObjBtns.get(i).setVisible(true);
+					
+					
 				}
+				
 			}
 			// BOX
 
@@ -324,6 +327,7 @@ public class View extends JFrame {
 				
 			}
 		}
+		
 	}
 
 	public void gameEnd(String m) {
@@ -358,8 +362,7 @@ public class View extends JFrame {
 		// jP.setLayout(b);
 
 		// initSaveBtn();
-		initExitBtn();
-		initLoadBtn();
+		
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 
 		getContentPane().add(jP);

@@ -116,8 +116,7 @@ public class Controller implements MouseListener {
 		v.viewWidth = m.gameDi.width;
 
 		initViewBtnListeners();
-		initViewLoadBtnListeners();
-		initViewExitBtnListeners();
+		
 		initMenu();
 	}
 
@@ -202,6 +201,7 @@ public class Controller implements MouseListener {
 				
 				if(movedObjs >= 10){
 					v.setResetBOs(true);
+					movedObjs = 0;
 				}
 			}
 		}
@@ -599,7 +599,7 @@ public class Controller implements MouseListener {
 				resetAll();
 				
 				initViewBtnListeners();
-				initViewLoadBtnListeners();
+				
 
 				wTimer.start();
 				wTutorialTimer.stop();
@@ -622,46 +622,10 @@ public class Controller implements MouseListener {
 		}			
 	}
 
-	private void initViewSaveBtnListeners() {
-		v.sb.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
 
-				for (GameObject go : m.getGameObjs()) {
-					save(go, fname);
-					saveFileNum = saveFileNum + 1;
-					fname = Integer.toString(saveFileNum) + ".sav";
-				}
-			}
-		});
-	}
 	
-	private void initViewLoadBtnListeners() {
-		v.lb.addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				for (int loadNum = saveFileNum - 1; loadNum > 0; loadNum--) {
-					fname = Integer.toString(loadNum) + ".sav";
-					load(fname);
-				}
-			}
-		});
-	}
-	
-	private void initViewExitBtnListeners() {
-		v.eb.addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				v.exitWindow();
-				initViewSaveBtnListeners();
-			}
-		});
-	}
 	
 	private void initMenu(){
 		//System.out.println(v.getMenu);
@@ -675,7 +639,7 @@ public class Controller implements MouseListener {
 				resetAll();
 				
 				initViewBtnListeners();
-				initViewLoadBtnListeners();
+				
 
 				
 				v.getMenu().setAlwaysOnTop(false);
@@ -700,7 +664,7 @@ public class Controller implements MouseListener {
 				
 				
 				initViewBtnListeners();
-				initViewLoadBtnListeners();
+				
 				
 
 				wTimer.start();
@@ -708,6 +672,35 @@ public class Controller implements MouseListener {
 				
 			}
 			
+		});
+		
+		((JButton)v.getMenu().getContentPane().getComponent(2)).addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				for (GameObject go : m.getGameObjs()) {
+					save(go, fname);
+					saveFileNum = saveFileNum + 1;
+					fname = Integer.toString(saveFileNum) + ".sav";
+				}
+				
+			}
+			
+		
+		});
+		
+		((JButton)v.getMenu().getContentPane().getComponent(3)).addActionListener(new ActionListener(){
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				wTimer.stop();
+				pTimer.stop();
+				v.getMenu().setAlwaysOnTop(false);
+				v.getMenu().dispose();
+				v.dispose();
+				
+			}
+		
 		});
 	}
 /*

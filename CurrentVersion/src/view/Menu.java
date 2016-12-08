@@ -50,10 +50,10 @@ public class Menu extends JFrame {
 			add(tutorial);
 			add(newGame);
 			add(saveGame);
-			add(loadGame);
+			
 			add(quit);
 			
-			this.setLayout(new GridLayout(5,1));
+			this.setLayout(new GridLayout(4,1));
 			
 			this.setVisible(true);
 		}
