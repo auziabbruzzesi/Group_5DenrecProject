@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import model.TutorialWave;
 import model.Wave;
 
 public class WaveTest {
@@ -48,6 +49,13 @@ public class WaveTest {
 		wave.resetVelocity();
 		assertTrue(wave.getVelocity() <= 5);
 		
+	}
+	@Test
+	public void tutorialWave(){
+		TutorialWave tw = new TutorialWave(new Point(1,1), null, 0, 0);
+		tw.getAnimationNumber();
+		
+		assertEquals(tw.getAnimationNumber(), 0);
 	}
 
 }

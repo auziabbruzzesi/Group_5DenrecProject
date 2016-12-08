@@ -189,12 +189,13 @@ public class Model {
 		double oyst = 0;
 		double conc = 0;
 		if (allBoxesFull()) {
-			for (Box b : boxes.values()) {
+			for (Box b : getBoxes().values()) {
 				switch (b.getContains()) {
 				case OYSTER:
 					oyst++;
 					break;
 				case CONCRETE:
+					System.out.println("IM A CONRETE");
 					conc++;
 					break;
 				default:
@@ -204,6 +205,7 @@ public class Model {
 			}
 			double percentageOyst = (oyst / (oyst + conc)) * 100;
 			if (percentageOyst < 50) {
+				
 				correct = false;
 			} else {
 				correct = true;
