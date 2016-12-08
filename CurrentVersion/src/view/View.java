@@ -548,8 +548,8 @@ public class View extends JFrame {
 			// ((Double)((a)*viewHeight)).intValue() + ")" );
 			// System.out.println("second line coord: (" +
 			// ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
-			g.drawLine(((Double) ((b) * viewWidth)).intValue(), ((Double) ((a) * viewHeight)).intValue(),
-					((Double) ((c) * viewWidth)).intValue(), (viewHeight));
+			//g.drawLine(((Double) ((b) * viewWidth)).intValue(), ((Double) ((a) * viewHeight)).intValue(),
+					//((Double) ((c) * viewWidth)).intValue(), (viewHeight));
 
 		}
 	}
