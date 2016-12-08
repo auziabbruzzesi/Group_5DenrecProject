@@ -115,11 +115,8 @@ public class Model {
 		System.out.println(this.beachObjHM.size() + " Beach Objects.");
 		//System.out.println("Shoreline = " + getShoreLine());
 	}
-	//TODO: what is this?
-	public Model(Dimension d){
-		super();
-		
-	}
+
+
 
 	
 /*
@@ -286,7 +283,9 @@ public class Model {
 	public void resetGameObjsArray(){
 
 		initShoreline();
-		
+		p.setHT(HoldingType.EMPTY);
+		p.setObjIcon(this.crabPics[p.getIndex()]);
+		this.HB.reset();
 		for(Box b: boxes.values()){
 			b.setIsfull(false);
 			b.setContains(HoldingType.EMPTY);

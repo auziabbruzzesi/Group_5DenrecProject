@@ -438,7 +438,8 @@ public class Controller implements MouseListener {
 
 		String endMessage = "";
 
-		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
+//		if(m.getShoreLine().getShoreBottom().x <= m.getShoreLine().getLoosingCoordinate()){
+		if(m.getHB().getHealth() <= 0){
 			System.out.println("SHORELINE TOP COORD: " + m.getShoreLine().getShoreBottom().getX());
 			System.out.println("SHORELINE LOOSING  COORD: " + m.getShoreLine().getLoosingCoordinate());
 			gameStatus = status.LOSE_SHORE;
