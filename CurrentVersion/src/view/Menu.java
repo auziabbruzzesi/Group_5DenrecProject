@@ -14,7 +14,8 @@ import javax.swing.JPanel;
 
 /**
  * @author Auzi
- * @Purpose Class Menu: jframe to hold menu and buttons
+ * purpose Class Menu: jframe to hold menu Jpanel
+ *
  */
 
 public class Menu extends JFrame {
@@ -41,6 +42,11 @@ public class Menu extends JFrame {
 		this.setAlwaysOnTop(true);
 		
 	}
+	/**
+	 * 
+	 * @author Auzi
+	 * Jpanel with buttons, the listeners for this are set in initMenu
+	 */
 	class buttonPanel extends JPanel{
 		public buttonPanel(){
 			
@@ -59,10 +65,7 @@ public class Menu extends JFrame {
 			
 			this.setVisible(true);
 		}
-		@Override
-		public void paintComponents(Graphics g){
-			
-		}
+		
 	}
 
 }

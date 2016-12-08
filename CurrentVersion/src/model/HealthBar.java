@@ -42,7 +42,10 @@ public class HealthBar extends GameObject {
 		setStartingY(0);
 		setInsideHeight(startHeight);
 	}
-
+	/**
+	 * 
+	 * @return percent health
+	 */
 	public int getHealth(){
 		return this.health;
 	}

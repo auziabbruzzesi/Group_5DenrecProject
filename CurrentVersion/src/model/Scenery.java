@@ -11,11 +11,17 @@ public class Scenery extends GameObject{
 		
 	}
 	
-	@Override
+	
+	/**
+	 * @return scenery image array
+	 */
 	public BufferedImage[] getScenery(){
 		return scenery;
 	}
-
+	/**
+	 * 
+	 * @param s - an array of scenery images
+	 */
 	public void setScenery(BufferedImage[] s) {
 		this.scenery = s;
 	}

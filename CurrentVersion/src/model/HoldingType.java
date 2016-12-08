@@ -25,6 +25,10 @@ public enum HoldingType {
 	HoldingType(int rank){
 		this.rank = rank;
 	}
+	/**
+	 * 
+	 * @return rank
+	 */
 	public int getRank(){
 		return rank;
 	}
