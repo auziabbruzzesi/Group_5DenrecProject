@@ -249,13 +249,13 @@ public class Model {
 		int x, y;
 		int i=0;
 		for(Box b : this.boxes.values()){
-			if(i==1){
+			if(i==0){
 				x = this.shoreLine.findCorrespondingX(b.getPosition().y) + 50;
 				y = b.getPosition().y + Box.boxDimensions/2;
 				tSWave1 = new TutorialWave(new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(b.getPosition().y), 1);
 				gameObjs.add(this.tSWave1);
 			}
-			else if(i==2){
+			else if(i==1){
 				x = this.shoreLine.findCorrespondingX(b.getPosition().y) + 100;
 				y = b.getPosition().y + Box.boxDimensions/2;
 				tSWave2 = new TutorialWave(new Point(x, y), pics[11], this.shoreLine.findCorrespondingX(b.getPosition().y), 2);
