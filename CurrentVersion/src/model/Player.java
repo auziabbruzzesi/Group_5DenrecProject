@@ -7,7 +7,7 @@ import javax.swing.Icon;
 public class Player extends GameObject implements MoveObjects {
 
 	private int health = 100;
-	public static final Point startPosition = new Point(100, 100);
+	public static final Point startPosition = new Point(280, 280);
 	public static final int playerDimensions = 60;
 	private Point destination;
 	private int velocity;

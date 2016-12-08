@@ -378,7 +378,7 @@ public class Model {
 		BeachObject.spawnZoneHeight = (int) (this.gameDi.height*.88);
 		BeachObject.spawnZoneWidth = (int) (this.gameDi.width*.45);
 		Random r = new Random();
-		Boolean canPlace;
+		Boolean canPlace = false;
 		
 		for (int i = 0; i < numBOS; i++) {
 			do {
@@ -386,7 +386,12 @@ public class Model {
 				Point p = new Point(r.nextInt(BeachObject.spawnZoneWidth),(int) ((this.gameDi.height*.22) + r.nextInt(BeachObject.spawnZoneHeight)));
 
 				if (checkBeachObjectOverlap(p) && checkBoxOverlap(p) && checkPlayerOverlap(p)) {
-					canPlace = true;
+					if(p.y<HB.getHeight()){
+						if(p.x > HB.getWidth()){
+							canPlace = true;
+						}
+					}
+					
 				} else {
 					canPlace = false;
 				}
