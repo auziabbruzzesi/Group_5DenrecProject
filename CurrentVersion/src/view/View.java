@@ -113,7 +113,7 @@ public class View extends JFrame {
 			viewHeight = getContentPane().getHeight();
 			viewWidth = getContentPane().getWidth();
 			getJPanel().setSize(getContentPane().getSize());
-
+			//System.out.println(resetBOs);
 			updateViewObjs();
 			repaint();
 		}
@@ -313,7 +313,10 @@ public class View extends JFrame {
 				
 				if(this.resetBOs){
 					gameObjBtns.get(i).setVisible(true);
+					
+					
 				}
+				
 			}
 			// BOX
 
@@ -321,8 +324,10 @@ public class View extends JFrame {
 				gameObjBtns.get(i).setLocation((Model.getGameObjs().get(i)).getPosition());
 				gameObjBtns.get(i).setIcon(((Model.getGameObjs().get(i))).getObjIcon());
 				gameObjBtns.get(i).setSize(Box.boxDimensions, Box.boxDimensions);
+				
 			}
 		}
+		
 	}
 
 	public void gameEnd(String m) {
@@ -357,8 +362,7 @@ public class View extends JFrame {
 		// jP.setLayout(b);
 
 		// initSaveBtn();
-		initExitBtn();
-		initLoadBtn();
+		
 		initGameObjs();// DO NOT MOVE - dependent on lines of code above&below.
 
 		getContentPane().add(jP);
@@ -544,8 +548,8 @@ public class View extends JFrame {
 			// ((Double)((a)*viewHeight)).intValue() + ")" );
 			// System.out.println("second line coord: (" +
 			// ((Double)((c)*viewWidth)).intValue() + ", "+ (viewHeight) + ")");
-			g.drawLine(((Double) ((b) * viewWidth)).intValue(), ((Double) ((a) * viewHeight)).intValue(),
-					((Double) ((c) * viewWidth)).intValue(), (viewHeight));
+			//g.drawLine(((Double) ((b) * viewWidth)).intValue(), ((Double) ((a) * viewHeight)).intValue(),
+					//((Double) ((c) * viewWidth)).intValue(), (viewHeight));
 
 		}
 	}

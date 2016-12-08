@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.Set;
 
@@ -195,13 +196,54 @@ public class ModelTest {
 		b2.setIsfull(true);
     	b3.setIsfull(true);
     	b4.setIsfull(true);
+   
 //    	@Mayah
 //    	b1.setHT(HoldingType.CONCRETE);
 //    	b2.setHT(HoldingType.OYSTER);
 //    	b3.setHT(HoldingType.CONCRETE);
 //    	b4.setHT(HoldingType.OYSTER);
 		assertFalse(model.boxesCorrect());
-
+		LinkedHashMap<Point, Box> bb = new LinkedHashMap<Point, Box>();
+		LinkedHashMap<Point, Box> cc = new LinkedHashMap<Point, Box>();
+		bb.put(new Point(1,1), b1);
+		bb.put(new Point(2,2), b2);
+		b1.setContains(HoldingType.OYSTER);
+		b2.setContains(HoldingType.OYSTER);
+		
+		model.setBoxes(bb);
+		assertTrue(model.boxesCorrect());
+		
+		Model m = new Model();
+	
+		
+		
+		
+		b3.setContains(HoldingType.CONCRETE);
+		b4.setContains(HoldingType.CONCRETE);
+		cc.put(new Point(1,1), b3);
+		cc.put(new Point(200,2), b4);
+		
+		b3.isfull();
+		b4.isfull();
+		b2.isfull();
+		b1.isfull();
+		m.setBoxes(cc);
+		m.boxesCorrect();
+		assertTrue(m.allBoxesFull());
+//		System.out.println("BOXES CORRECT?: " + m.boxesCorrect());
+//		System.out.println("******** CONTAINS ************ :  " + m.getBoxes().get(new Point(1,1)).getContains() + "FULL  " + m.getBoxes().get(new Point(1,1)).isfull());
+//	//	System.out.println("******** CONTAINS ************ :  " + m.getBoxes().get(new Point(200,2)).getContains()  + "FULL  " + m.getBoxes().get(new Point(200,2)).isfull());
+		assertFalse(m.boxesCorrect());
+		
+		Model em = new Model();
+		LinkedHashMap<Point, Box> oc = new LinkedHashMap<Point, Box>();
+		oc.put(new Point(1,1), b3);
+		oc.put(new Point(200,2), b4);
+		oc.put(new Point(1,1), b1);
+		oc.put(new Point(200,2), b2);
+		
+		em.setBoxes(oc);
+		assertTrue(em.boxesCorrect());
 	}
 	
 	@Test 
@@ -230,21 +272,22 @@ public class ModelTest {
 		assertEquals(sl.getShoreBottom().x, 90);  // decrement 10
 		assertEquals(sl.getShoreBottom().y, 100);  
 	}
-//	@Test
-//	public void testRemoveTutorialWave(){
-//		Iterator<GameObject> myIt = Model.getGameObjs().iterator();
-//		model.removeTutorialWave();
-//		
-//		assertTrue(myIt.hasNext());
-//		
-//		model.removeTutorialWave();
-//		assertTrue(myIt.hasNext());
-//		
-//		model.removeTutorialWave();
-//		assertTrue(myIt.hasNext());
-//		
-//		
-//	}
+	@Test
+	public void testRemoveTutorialWave(){
+		Iterator<GameObject> myIt = Model.getGameObjs().iterator();
+		model.removeTutorialWave(1);
+		TutorialWave tw = new TutorialWave(new Point(1,1), null, 0, 1);
+		model.settBWave(tw);
+		assertTrue(myIt.hasNext());
+		
+		model.removeTutorialWave(2);
+		assertTrue(myIt.hasNext());
+		
+		model.removeTutorialWave(3);
+		assertTrue(myIt.hasNext());
+		
+		
+	}
 	@Test 
 	public void updatePlayerPosTest(){
 		model.updatePlayerPosition(new Point(10,10));
@@ -275,7 +318,6 @@ public class ModelTest {
 		Point test = new Point(10,5);
 		Box tbox = new Box();
 		tbox.setPosition(test);
-		char b = 'b';
 		TutorialWave tBWave = new TutorialWave(new Point((model.getShoreLine().findCorrespondingX(tbox.getPosition().y) + 100), tbox.getPosition().y + Box.boxDimensions/2), null, model.getShoreLine().findCorrespondingX(tbox.getPosition().y), numWaves);
 		model.playTutorialWaveCollision(tbox);
 		assertEquals(tBWave.getPosition().y, model.getShoreLine().findCorrespondingX((tBWave.getPosition().y)));
@@ -446,8 +488,41 @@ public class ModelTest {
 		ww.add(w);
 		model.setWaves(ww);
 		model.getWaves().get(0).move();
-		assertEquals(model.getWaves().get(0).getPosition(), w.getDestination() );
+		assertEquals(model.getWaves().get(0).getPosition().y, w.getDestination().y );
+		assertTrue(model.getWaves().get(0).getPosition().x <= w.getDestination().x);
 	}
+	@Test
+	public void playTutorialWaveAnimationTest(){
+		Point p1 = new Point(5,5);
+		Point p2 = new Point(10,10);
+		int x, y;
+		int i = 0;
+		Shoreline sl = new Shoreline(new Point(0,0), new Point(100,100));
+		Box b1 = new Box();  
+		Box b2 = new Box();
+		b1.setPosition(p1);
+		b2.setPosition(p2);
+		
+		LinkedHashMap<Point, Box> boxes = new LinkedHashMap<Point, Box>();
+		boxes.put(p1, b1);
+		boxes.put(p2, b2);
+		model.setBoxes(boxes);
+		model.setShoreLine(sl);
+		model.playTutorialWaveAnimation();
+		TutorialWave tBWave = new TutorialWave(new Point((model.getShoreLine().findCorrespondingX(b1.getPosition().y) + 50), b1.getPosition().y + Box.boxDimensions/2), null, model.getShoreLine().findCorrespondingX(b1.getPosition().y), numWaves);
+		assertEquals(tBWave.getPosition().y, model.getShoreLine().findCorrespondingX((tBWave.getPosition().y)));
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	}
+	
+	
 
 	
 }

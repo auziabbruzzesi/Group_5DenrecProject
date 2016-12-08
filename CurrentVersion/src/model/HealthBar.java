@@ -24,6 +24,7 @@ public class HealthBar extends GameObject {
 	}
 	
 	public void reset(){
+		this.health = 100;
 		setStartingY(0);
 		setInsideHeight(startHeight);
 	}
