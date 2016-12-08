@@ -56,7 +56,6 @@ public class Player extends GameObject implements MoveObjects {
 	 */
 	public void updateSprite() {
 		this.getDirection();
-		// crabPics[m.getP().findIndex()]);
 	}
 
 	/**
@@ -255,7 +254,8 @@ public class Player extends GameObject implements MoveObjects {
 
 	/**
 	 * @author Auzi
-	 * @return
+	 * @return the index for the proper sprite based on 
+	 * holding type and direction
 	 */
 	public int findIndex() {
 		return direction.getRank() + (this.getHT().getRank() * 8);

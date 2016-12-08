@@ -187,11 +187,9 @@ public class Model {
 					oyst++;
 					break;
 				case CONCRETE:
-					System.out.println("IM A CONRETE");
 					conc++;
 					break;
 				default:
-					System.out.println("Problem in model->boxesCorrect: box contains " + b.getContains());
 					break;
 				}
 			}
@@ -203,7 +201,6 @@ public class Model {
 				correct = true;
 			}
 		} else {
-			System.out.println("All boxes not yet full");
 			correct = false;
 		}
 		return correct;
@@ -298,7 +295,6 @@ public class Model {
 		this.gameObjs.clear();
 		this.initGameObjsArr();
 		
-		System.out.println("reset game objs array:");
 	}
 	
 /*
@@ -320,7 +316,6 @@ public class Model {
 		gameObjs.add(this.shoreLine);
 		gameObjs.add(gameScenery);//might not need to save this
 		gameObjs.add(this.HB);
-//		System.out.println("\n\nModel's array of game objects contains:\n"+gameObjs+"\n\n");
 	}
 	/**
 	 * @author Eaviles
@@ -344,20 +339,15 @@ public class Model {
 	 */
 	public void initBoxes(){
 		for (int i = 0; i < numBoxes; i++) {
-			//Point p = new Point(Box.boxX + (45*i),i*Box.boxToBoxInterval + Box.boxToTopSpacing);
-			System.out.println(((this.gameDi.width*.36)+(i*47)));
-			System.out.println("game height: " + this.gameDi.height);
-			Point p = new Point((int) ((this.gameDi.width*.40)+(i*47)),(int) ((.2)*this.gameDi.height+(i*131)));
-			//Box.boxDimensions = (int) (.3*this.gameDi.height);
-			//pics[10].setImage(pics[10].getImage());
 			
-			Box box = new Box(p, concreteImages[0]);//.getImage().getScaledInstance(Box.boxDimensions, Box.boxDimensions, 0)));
+			Point p = new Point((int) ((this.gameDi.width*.40)+(i*47)),(int) ((.2)*this.gameDi.height+(i*131)));
+			
+			Box box = new Box(p, concreteImages[0]);
 			box.setCapacity(3);
 			box.setCount(0);
 			box.setContains(HoldingType.EMPTY);
 			box.setIndex(i);
 			boxes.put(p, box);
-//			System.out.println("ht (not contains) for this box = "+box.getH());
 		}
 	}
 	/**
@@ -371,11 +361,9 @@ public class Model {
 			
 			Point p = new Point( this.gameDi.width - Wave.waveWidth, b.getPosition().y + Box.boxDimensions/2 );
 			Wave w = new Wave(p, pics[11],this.shoreLine.findCorrespondingX(p.y));
-
 			w.setIndex(i);
 			this.waves.add(w);
 			i++;
-//			System.out.println("in model's initwaves() startpos = "+w.getInitialPos()+"\n");
 		}
 		
 	}
@@ -632,7 +620,6 @@ public class Model {
 		scenery[1] = (BufferedImage) createImage("shore.png").getImage();	
 		
 		this.gameScenery.setScenery(scenery);
-		System.out.println(gameScenery);
 	}
 
 	/**
@@ -644,9 +631,7 @@ public class Model {
 	private ImageIcon createImage(String n) {
 		ImageIcon imageIcon;
 		try {
-			// System.out.println("About to read an image");
 			imageIcon = new ImageIcon(ImageIO.read(new File("src/Sprites/Player/copy/" + n)));
-			// System.out.println("bufferedImage");
 			return imageIcon;
 		} catch (IOException e) {
 			e.printStackTrace();

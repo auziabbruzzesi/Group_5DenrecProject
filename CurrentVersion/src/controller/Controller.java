@@ -121,6 +121,7 @@ public class Controller implements MouseListener {
 		this.v = v; //init occurs in view's constructor
 		v.viewHeight = m.gameDi.height;
 		v.viewWidth = m.gameDi.width;
+		v.getJPanel().addMouseListener(this);
 
 		initViewBtnListeners();
 		
@@ -144,9 +145,7 @@ public class Controller implements MouseListener {
 				oos.writeObject(objectToSerializa);
 				oos.flush();
 				oos.close();
-				//System.out.println("save game"+filename);
-
-				//System.out.println(objectToSerializa.toString());
+			
 			}catch(IOException e){
 				e.printStackTrace();
 			}
@@ -167,7 +166,6 @@ public class Controller implements MouseListener {
 
 				ObjectInputStream ois=new ObjectInputStream(fis);
 				GameObject loadedObject=(GameObject)ois.readObject();
-
 				ois.close();
 				System.out.println("load game");
 				System.out.println(loadedObject.toString());

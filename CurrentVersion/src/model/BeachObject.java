@@ -19,11 +19,6 @@ public class BeachObject extends GameObject {
 /*
  * Constructor
  */
-	/**
-	 * @param position set position to this
-	 * @param h set object's type to this
-	 * @param k set object's icon to this
-	 */
 	public BeachObject(Point position, HoldingType h, Icon k){
 		this.setH(h);
 		this.setPosition(position);
@@ -35,10 +30,13 @@ public class BeachObject extends GameObject {
 /*
  * Setters & Getters
  */
-	/**
-	 * @param h set h to this
-	 */
+
+	
 	public void setH(HoldingType h) {
 		this.h = h;
-	}	
+	}
+
+	
+	
+	
 }

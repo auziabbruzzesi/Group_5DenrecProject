@@ -31,7 +31,7 @@ public abstract class GameObject implements Serializable {
 	private int totalDecrement = 0;
 	private double insideHeight = height;
 	private double startingY = 0;
-	BufferedImage[] scenery;
+
 	
     public GameObject(){
     	

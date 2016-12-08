@@ -3,6 +3,7 @@ package model;
 /**
  * 
  * @author Auzi
+ * an enum to tell us what a player or box is holding
  *
  */
 public enum HoldingType {

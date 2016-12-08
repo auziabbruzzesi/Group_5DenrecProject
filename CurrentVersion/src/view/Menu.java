@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 
 /**
  * @author Auzi
- * @Purpose Class Menu: 
+ * @Purpose Class Menu: jframe to hold menu and buttons
  */
 
 public class Menu extends JFrame {
@@ -45,10 +45,7 @@ public class Menu extends JFrame {
 		public buttonPanel(){
 			
 			tutorial.setText("Tutorial");
-			
 			newGame.setText("New Game!");
-			
-			//newGame.setBounds(300,75, 0, 0);
 			saveGame.setText("Save Game");
 			loadGame.setText("LoadGame");
 			quit.setText("quit");
