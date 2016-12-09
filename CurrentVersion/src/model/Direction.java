@@ -8,9 +8,15 @@ public enum Direction {
     
     private int rank;
     
+    /**
+     * @param rank set rank to this
+     */
     Direction(int rank){
         this.rank = rank;
     }
+    /**
+     * @return rank
+     */
     public int getRank(){
         return this.rank;
     }

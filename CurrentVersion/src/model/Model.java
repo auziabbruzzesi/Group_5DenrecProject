@@ -1,7 +1,6 @@
 package model;
 
 import java.awt.Dimension;
-import java.awt.Image;
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
@@ -10,21 +9,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
-
-import java.util.Random;
-import java.util.Set;
-import model.BeachObject;
-import model.*;
-import view.View;
 /**
  * @Class Model handles game logic, backend representation of the game
  */
@@ -576,7 +566,7 @@ public class Model {
 	
 	/**
 	 * @author Auzi
-	 * @Purpose:
+	 * @Purpose: initialize game sprites. Pulled & modified from orc lab.
 	 */
 	public void initSprites() {
 
@@ -793,5 +783,4 @@ public class Model {
 	public TutorialWave gettSWave2() {
 		return tSWave2;
 	}
-
 }

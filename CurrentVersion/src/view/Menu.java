@@ -1,13 +1,9 @@
 package view;
 
-import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 
-import javax.swing.AbstractButton;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -27,6 +23,10 @@ public class Menu extends JFrame {
 	buttonPanel b = new buttonPanel();
 	
 
+	/**
+	 * @Constructor initialize menu properly
+	 * @author Auzi
+	 */
 	public Menu(){
 
 		setPreferredSize(new Dimension(300,300));

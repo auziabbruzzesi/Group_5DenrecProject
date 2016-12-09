@@ -1,8 +1,6 @@
 package model;
 
 import java.awt.Point;
-
-import javax.swing.Icon;
 /**
  *@Class Player represents the player of the game. Handles player actions.
  */

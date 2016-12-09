@@ -5,7 +5,6 @@ import java.awt.Point;
 import javax.swing.Icon;
 
 import view.View;
-import model.Box;
 
 /**
  * @Class BeachObject - representation of oysters and concrete

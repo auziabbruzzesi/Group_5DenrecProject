@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
-
 import javax.swing.Icon;
 
 

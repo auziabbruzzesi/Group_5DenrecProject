@@ -4,7 +4,6 @@ import java.awt.Point;
 import java.util.Random;
 
 import javax.swing.Icon;
-import javax.swing.text.View;
 
 /**
  * @Class Wave wave objects spawn continuously throughout the game, move toward the beach (shoreline), and, upon
