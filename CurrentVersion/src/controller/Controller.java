@@ -114,8 +114,6 @@ public class Controller implements MouseListener {
 	 * @Constructor
 	 * @param m, v instance of Model and View objects to work with
 	 */
-
-
 	public Controller(Model m, View v) {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor

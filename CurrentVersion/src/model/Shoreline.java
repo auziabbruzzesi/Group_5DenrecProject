@@ -1,7 +1,10 @@
 package model;
 
 import java.awt.Point;
-
+/**
+ * @Class Shoreline represents the eroding shoreline of the game.
+ *
+ */
 public class Shoreline extends GameObject{
 	private Point shoreTop;
 	private Point shoreBottom;

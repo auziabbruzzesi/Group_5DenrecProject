@@ -25,6 +25,9 @@ import java.util.Set;
 import model.BeachObject;
 import model.*;
 import view.View;
+/**
+ * @Class Model handles game logic, backend representation of the game
+ */
 public class Model {	
 	
 	//Variables related to initialization

@@ -4,7 +4,11 @@ package model;
 import java.awt.Point;
 
 import javax.swing.Icon;
-
+/**
+ * @Class TutorialWave Model representation of waves used in tutorial animations
+ * @author Estella
+ *
+ */
 public class TutorialWave extends Wave {
 	int animation;
 	
