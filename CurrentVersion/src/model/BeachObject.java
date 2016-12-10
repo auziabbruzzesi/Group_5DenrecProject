@@ -5,8 +5,11 @@ import java.awt.Point;
 import javax.swing.Icon;
 
 import view.View;
-import model.Box;
 
+/**
+ * @Class BeachObject - representation of oysters and concrete
+ *
+ */
 public class BeachObject extends GameObject {
 	private HoldingType h;
 	
@@ -19,24 +22,16 @@ public class BeachObject extends GameObject {
 /*
  * Constructor
  */
+	/**
+	 * @Constructor
+	 * @param position set position to this
+	 * @param h set type to this
+	 * @param k set icon to this
+	 */
 	public BeachObject(Point position, HoldingType h, Icon k){
-		this.setH(h);
 		this.setPosition(position);
 		this.setDestination(null);
 		setObjIcon(k);
 		setMyType(h);
-	}
-
-/*
- * Setters & Getters
- */
-
-	
-	public void setH(HoldingType h) {
-		this.h = h;
-	}
-
-	
-	
-	
+	}	
 }

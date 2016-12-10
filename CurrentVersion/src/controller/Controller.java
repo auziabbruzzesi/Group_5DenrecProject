@@ -7,20 +7,12 @@
 
 package controller;
 
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Insets;
-
 import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -28,28 +20,21 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.HashMap;
 
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JPanel;
 import javax.swing.Timer;
 
-import model.BeachObject;
 import model.Box;
 import model.GameObject;
 import model.HoldingType;
 import model.Model;
-import model.Player;
 import model.Wave;
 import view.Menu;
 import view.View;
-import view.View.SaveButton;
 import view.View.button;
-
+/**
+ * @Class Controller regulates the game and handles Model and View
+ */
 public class Controller implements MouseListener {
 	private status gameStatus = status.IN_PROGRESS;
 	
@@ -64,7 +49,7 @@ public class Controller implements MouseListener {
 	private Point putDownBox = new Point();
 	private int movedObjs = 0;
 	
-	Box currBox = new Box();//this may cause problems
+	Box currBox = new Box();
 	
 	int i = 0;
 	
@@ -92,6 +77,7 @@ public class Controller implements MouseListener {
 		public void actionPerformed(ActionEvent e) {
 			m.gameDi = v.getContentPane().getSize();
 			moveWaves();
+			checkGameStatus();
 		}
 	});
 
@@ -114,8 +100,6 @@ public class Controller implements MouseListener {
 	 * @Constructor
 	 * @param m, v instance of Model and View objects to work with
 	 */
-
-
 	public Controller(Model m, View v) {
 		this.m = m; //initialization occurs in model's constructor
 		this.v = v; //init occurs in view's constructor
@@ -131,12 +115,12 @@ public class Controller implements MouseListener {
 	/*
 	 * Save and load function
 	 */
-		/**
-		 * @author Rzhao
-		 * @param objectToSerializa
-		 * @param filename
-		 * @Purpose
-		 */
+	/**
+	 * @author Rzhao
+	 * @param objectToSerializa
+	 * @param filename, the name of the file where classes are saved
+	 * @Purpose save class to a file
+	 */
 		public void save(Serializable objectToSerializa,String filename){
 			FileOutputStream fos=null;//file creation
 			try{
@@ -154,8 +138,8 @@ public class Controller implements MouseListener {
 
 		/**
 		 * @author Rzhao
-		 * @param loadName
-		 * @Purpose
+		 * @param loadName, name of file to read object from
+		 * @Purpose load class from a file
 		 */
 		public static void load(String loadName){
 			if(checkFileExists()){
@@ -177,7 +161,7 @@ public class Controller implements MouseListener {
 
 		/**
 		 * @author Rzhao
-		 * @Purpose 
+		 * @Purpose check if the given file exists
 		 */
 		private static boolean checkFileExists() {
 			return new File("game.sav").isFile();
@@ -646,7 +630,7 @@ public class Controller implements MouseListener {
 
 	/**
 	 * @author Auzi
-	 * @Purpose 
+	 * @Purpose initializes game Menu
 	 */
 	
 	private void initMenu(){

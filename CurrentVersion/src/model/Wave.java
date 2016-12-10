@@ -4,12 +4,11 @@ import java.awt.Point;
 import java.util.Random;
 
 import javax.swing.Icon;
-import javax.swing.text.View;
 
 /**
- * @author Eaviles
- * @Purpose Class Wave: wave objects spawn continuously throughout the game, move toward the beach (shoreline), and, upon
+ * @Class Wave wave objects spawn continuously throughout the game, move toward the beach (shoreline), and, upon
  * collision, erode the estuary. 
+ * @author Eaviles
  */
 
 public class Wave extends GameObject {

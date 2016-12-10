@@ -15,6 +15,7 @@ public class Scenery extends GameObject{
 	/**
 	 * @return scenery image array
 	 */
+	@Override
 	public BufferedImage[] getScenery(){
 		return scenery;
 	}

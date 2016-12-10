@@ -2,8 +2,6 @@ package view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Insets;
@@ -11,20 +9,11 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
-import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.Icon;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
@@ -32,10 +21,17 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.Border;
 import javax.swing.border.LineBorder;
-import javax.swing.plaf.synth.SynthSeparatorUI;
-import controller.status;
-import model.*;
-import view.View.HealthPanel;
+
+import model.BeachObject;
+import model.Box;
+import model.HealthBar;
+import model.HoldingType;
+import model.Model;
+import model.Player;
+import model.Scenery;
+import model.Shoreline;
+import model.TutorialWave;
+import model.Wave;
 
 public class View extends JFrame {
 	public static int viewHeight = 650;
@@ -355,6 +351,9 @@ public class View extends JFrame {
 		screenTimer.start();
 	}
 
+	/**
+	 * @Purpose initialize save button
+	 */
 	public void initSaveBtn() {
 
 		sb = new SaveButton();
@@ -363,6 +362,9 @@ public class View extends JFrame {
 		eJf.add(sb);
 	}
 
+	/**
+	 * @Purpose initialize exit button
+	 */
 	public void initExitBtn() {
 
 		eb = new ExitButton();
@@ -371,6 +373,9 @@ public class View extends JFrame {
 		jP.add(eb);
 	}
 
+	/**
+	 * @Purpose initialize load button
+	 */
 	public void initLoadBtn() {
 
 		lb = new LoadButton();
@@ -547,6 +552,11 @@ public class View extends JFrame {
 
 	}
 
+	/**
+	 * @Class custom jbutton class
+	 * @author Auzi
+	 *
+	 */
 	public class button extends JButton {
 
 		private HoldingType type;
@@ -564,6 +574,11 @@ public class View extends JFrame {
 		}
 	}
 
+	/**
+	 * @Class HealthPanel handles view's representation of health bar by creating a custom jpanel for it
+	 * @author Auzi
+	 *
+	 */
 	public class HealthPanel extends JPanel {
 		public int overallHeight;
 		public double healthHeight;
@@ -574,9 +589,9 @@ public class View extends JFrame {
 
 		/**
 		 * @Constructor
-		 * 
-		 * @param overallHeight
-		 * @param healthHeight
+		 * @author Auzi
+		 * @param overallHeight set to this
+		 * @param healthHeight set to this
 		 */
 
 		public HealthPanel(int totalHeight, double startHeight, int w) {
@@ -587,6 +602,9 @@ public class View extends JFrame {
 			setBounds(0, 0, width, overallHeight);
 		}
 
+		/**
+		 * overrided paintComponent method for graphics g
+		 */
 		@Override
 		protected void paintComponent(Graphics g) {
 			g.setColor(Color.WHITE);
@@ -602,20 +620,32 @@ public class View extends JFrame {
 
 		}
 
+		/**
+		 * @param d set healthHeight to this
+		 */
 		public void setHealthHeight(double d) {
 			this.healthHeight = d;
 			repaint();
 		}
 
+		/**
+		 * @return healthHeight
+		 */
 		public double getHealthHeight() {
 			return this.healthHeight;
 		}
 
+		/**
+		 * @param healthDamage update heatlhheight by this
+		 */
 		public void damage(int healthDamage) {
 			healthHeight = healthHeight + healthDamage;
 			repaint();
 		}
 
+		/**
+		 * @return overallheight
+		 */
 		public int getOverallHeight() {
 			return overallHeight;
 		}

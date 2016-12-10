@@ -1,12 +1,16 @@
 package model;
 
-import java.awt.Dimension;
 import java.awt.Point;
 
 import javax.swing.Icon;
 
 import view.View;
 
+
+/**
+ * @Class Box representation of boxes in the game. Can be filled/depleted according to player actions and game events.
+ * 		  Contents of a box used in determining how much a wave will damage the shore.
+ */
 public class Box extends GameObject {
 	private Point position;
 	private int capacity = 3;

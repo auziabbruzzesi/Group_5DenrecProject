@@ -1,9 +1,9 @@
 package model;
 
 import java.awt.Point;
-
-import javax.swing.Icon;
-
+/**
+ *@Class Player represents the player of the game. Handles player actions.
+ */
 public class Player extends GameObject implements MoveObjects {
 
 	private int health = 100;
